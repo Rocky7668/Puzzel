@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "338420713201",
+    "project_id": "fir-3f478",
+    "storage_bucket": "fir-3f478.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:338420713201:android:1dd280ed8bc67570940b50",
+        "android_client_info": {
+          "package_name": "com.puzzle.kamal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "338420713201-9iocbfjtjhpm6sjapui80tk7l96jpcud.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.puzzle.kamal",
+            "certificate_hash": "da182e94b7ee360688e00ce6e1fef7388a1b0a4b"
+          }
+        },
+        {
+          "client_id": "338420713201-sn073khvb8ugrs5j0rulv1i5ioppf3jo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAp89gSEeebS9rQH6t1HxHFUbxNZjDZBH4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "338420713201-sn073khvb8ugrs5j0rulv1i5ioppf3jo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
