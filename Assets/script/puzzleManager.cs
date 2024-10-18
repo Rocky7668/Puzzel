@@ -18,6 +18,9 @@ public class puzzleManager : MonoBehaviour
     public int cout, time;
     public TextMeshProUGUI timmerTxt;
 
+
+
+
     public TimerHandler timerHandler;
 
     private void OnEnable()
@@ -152,7 +155,7 @@ public class puzzleManager : MonoBehaviour
     }
 
 
-    internal IEnumerator GetImages()
+    internal IEnumerator GetPuzzelSprites()
     {
         UnityWebRequest request = UnityWebRequestTexture.GetTexture("url");
         yield return request.SendWebRequest();
@@ -172,6 +175,7 @@ public class puzzleManager : MonoBehaviour
             JArray array = (JArray)json["sprites"];
 
             int count = array.Count;
+            puzzles[0].sprites.Clear();
 
             foreach (var sprites in array)
             {
@@ -180,7 +184,7 @@ public class puzzleManager : MonoBehaviour
                 // Convert the texture to a sprite
                 Sprite sprite = ConvertTextureToSprite(texture);
 
-                puzzles[puzzles.Count - 1].
+                puzzles[0].sprites.Add(sprite); 
             }
         }
     }

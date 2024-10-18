@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -29,6 +30,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         token = PlayerPrefs.GetString("token");
+        Debug.Log("Token ------ " + token);
     }
 
     public void ButtonsOnOff(bool isOpen)
@@ -98,7 +100,7 @@ public class GameManager : MonoBehaviour
             position = Input.mousePosition
         };
 
-        var results = new System.Collections.Generic.List<RaycastResult>();
+        var results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(eventData, results);
 
         foreach (var result in results)

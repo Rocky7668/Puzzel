@@ -108,7 +108,7 @@ public class LoginHandler : MonoBehaviour
 
                 registerPanel.SetActive(false);
                 loginPanel.SetActive(true);
-                // JSONNode data = JSONNode.Parse (api.downloadHandler.text);
+                //JSONNode data = JSONNode.Parse (api.downloadHandler.text);
 
 
             }

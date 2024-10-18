@@ -24,4 +24,6 @@ public class StaticData
     public static string verifyOtp = "/user/verifyOtp";
     public static string transactionHistory = "/user/getTransactionHistory";
     public static string getTopusers = "/user/getTopUsers";
+    public static string userAccountView = "/user/getAccountOverview";
+    public static string commisionPoints = "/user/commissionPoints";
 }
