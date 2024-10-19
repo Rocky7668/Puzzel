@@ -127,7 +127,7 @@ public class uimanager : MonoBehaviour
     public void onChangePanel(int index)
     {
         foreach (GameObject g in panels)
-        {
+        {   
             g.SetActive(false);
         }
         panels[index].SetActive(true);
