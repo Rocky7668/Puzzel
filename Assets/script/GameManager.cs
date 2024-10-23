@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         token = PlayerPrefs.GetString("token");
-        Debug.Log("Token ------ " + token); 
+        Debug.Log("Token ------ " + token);
     }
 
     public void ButtonsOnOff(bool isOpen)

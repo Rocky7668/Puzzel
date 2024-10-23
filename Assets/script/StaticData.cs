@@ -26,4 +26,9 @@ public class StaticData
     public static string getTopusers = "/user/getTopUsers";
     public static string userAccountView = "/user/getAccountOverview";
     public static string commisionPoints = "/user/commissionPoints";
+    public static string depositAmount = "/user/depositAmount";
+    public static string userWithdrawHistory = "/user/getWithdrawHistory";
+    public static string userDepositeHistory = "/user/getDepositHistory";
+
+    public static double TotalBalance;
 }

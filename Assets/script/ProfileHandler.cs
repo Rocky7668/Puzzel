@@ -63,6 +63,8 @@ public class ProfileHandler : MonoBehaviour
                 pointSlider.maxValue = profileRes.data.totalGamePlayed;
                 pointSlider.value = profileRes.data.totalWinGame;
                 amtTxt.text = profileRes.data.amount.ToString();
+
+                StaticData.TotalBalance = profileRes.data.amount;
             }
         }
     }
