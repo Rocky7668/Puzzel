@@ -38,7 +38,7 @@ public class WalletHandler : MonoBehaviour
         using (var profileApi = UnityWebRequest.Post(StaticData.baseURL + StaticData.userWithdrawHistory, form))
         {
             profileApi.SetRequestHeader("Authorization", GameManager.instance.token);
-
+                
             yield return profileApi.SendWebRequest();
 
             if (profileApi.result == UnityWebRequest.Result.ConnectionError)

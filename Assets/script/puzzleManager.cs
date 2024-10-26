@@ -10,9 +10,10 @@ using Newtonsoft.Json.Linq;
 public class puzzleManager : MonoBehaviour
 {
     public GameObject play;
-    public List<Puzzle> puzzles;
-    public List<Image> box;
-    public List<int> couter;
+
+    public List<Puzzle> puzzles; // list of sprite
+    public List<Image> box; // box images
+    public List<int> couter; 
     public List<Sprite> temp;
     public GameObject cols, rows;
     public int cout, time;
@@ -25,12 +26,17 @@ public class puzzleManager : MonoBehaviour
 
     private void OnEnable()
     {
+        string url = "https://drive.google.com/file/d/1NhleXtwOWM15vslMns9_oinCjuTZydLY/view?usp=sharing";
+        
+
+
         uimanager.instance.top.SetActive(false);
         time = 180;
         temp.Clear();
         cout = 0;
         couter.Clear();
-        temp.AddRange(puzzles[0].sprites);
+        int n = 0;
+        temp.AddRange(puzzles[uimanager.instance.imgIdx].sprites);
         for (int i = 0; i < box.Count; i++)
         {
             int num = i;

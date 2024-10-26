@@ -10,7 +10,6 @@ using System.Collections.Generic;
 public class SliderScript : MonoBehaviour
 {
     public static SliderScript Instance;
-
     [SerializeField] private Slider fillImage;
     public GameObject login, register, otp, term, splash;
     //[SerializeField] private Text loadingText;

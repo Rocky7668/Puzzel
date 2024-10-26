@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
+    public Selection SelectObject;
+
     public List<Button> playObjBtns;
 
     public string myUserId;
@@ -65,14 +67,8 @@ public class GameManager : MonoBehaviour
 
     public void PracticeMode()
     {
-        uimanager.instance.play.SetActive(true);
-        uimanager.instance.practiceModeTxt.SetActive(true);
-        uimanager.instance.top.SetActive(false);
-        uimanager.instance.home.SetActive(false);
-        //uimanager.instance.time.SetActive(false);
-        uimanager.instance.winBtnObj.SetActive(false);
-        uimanager.instance.backBtn.SetActive(true);
-        ButtonsOnOff(true);
+        
+        SelectObject.gameObject.SetActive(true);
     }
 
     public void IBtn()

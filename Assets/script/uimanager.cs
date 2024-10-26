@@ -21,6 +21,8 @@ public class uimanager : MonoBehaviour
     public EntryFeeResponse entryFeeResponse;
     public TextMeshProUGUI GamePointTxt;
 
+    internal int imgIdx = 0;
+
 
     private void Awake()
     {
@@ -87,6 +89,7 @@ public class uimanager : MonoBehaviour
     {
         magic.SetActive(true);
         home.SetActive(false);
+        menu.GetComponent<RectTransform>().DOAnchorPos(new Vector2(-990, 0), 0.5f);
     }
     public void profileButClick()
     {
@@ -130,6 +133,7 @@ public class uimanager : MonoBehaviour
         {   
             g.SetActive(false);
         }
+        menu.GetComponent<RectTransform>().DOAnchorPos(new Vector2(-990, 0), 0.5f);
         panels[index].SetActive(true);
     }
     public void onclicmainpanel(int index)
@@ -153,6 +157,7 @@ public class uimanager : MonoBehaviour
         {
             panels.SetActive(false);
         }
+        menu.GetComponent<RectTransform>().DOAnchorPos(new Vector2(-990, 0), 0.5f);
         _newPanels[number].SetActive(true);
         Screen.orientation = ScreenOrientation.Portrait;
     }
