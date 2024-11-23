@@ -10,5 +10,16 @@ public class OrientionManager : MonoBehaviour
     {
         Screen.orientation = ScreenOrientation.LandscapeLeft;
     }
-   
+
+    public void PortraitScreen()
+    {
+        Screen.orientation = ScreenOrientation.Portrait;
+    }
+
+    public void LandscapeLeftScreen()
+    {
+        Screen.orientation = ScreenOrientation.LandscapeLeft;
+    }
+
+
 }

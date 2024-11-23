@@ -88,7 +88,7 @@ public class TransactionHistoryResData
     public object prevPage;
     public object nextPage;
 }
-
+[System.Serializable]
 public class Doc
 {
     public string _id;
@@ -96,11 +96,11 @@ public class Doc
     public string title;
     public double amount;
     public string transactionType;
-    public DateTime createdAt;
-    public DateTime updatedAt;
+    public string createdAt;
+    public string updatedAt;
     public string id;
 }
-
+[System.Serializable]
 public class TransactionHistoryRes
 {
     public string message;

@@ -48918,6 +48918,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 966922076}
+        m_TargetAssemblyTypeName: OrientionManager, Assembly-CSharp
+        m_MethodName: PortraitScreen
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1332775394
 GameObject:
   m_ObjectHideFlags: 0
@@ -71640,6 +71652,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 812b131cb545bb643bc3fa2c89f062d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  transactionHistoryRes:
+    message: 
+    status: 
+    statusCode: 0
+    success: 0
+    data:
+      docs: []
+      totalDocs: 0
+      offset: 0
+      limit: 0
+      totalPages: 0
+      page: 0
+      pagingCounter: 0
+      hasPrevPage: 0
+      hasNextPage: 0
   transactionHistoryHandler: {fileID: 6109037488420868981, guid: a818c89f1076cdf408507f3f5ef8b7f8, type: 3}
   transactionHistoryHandlers: []
   historyGenerator: {fileID: 650527265}
