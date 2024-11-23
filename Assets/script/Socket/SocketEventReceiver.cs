@@ -83,6 +83,10 @@ public class SocketEventReceiver : MonoBehaviour
             case PuzzleEvent.RES_TIMER:
                 resTimer = JsonUtility.FromJson<ResTimer>(res);
                 timerHandler.SecondSet(resTimer);
+                GameManager.instance.isStarGame = resTimer.iStartGame;
+                GameManager.instance.isWingame = resTimer.isWinning;
+                GameManager.instance.periodnumber = resTimer.roundId;
+                GameManager.instance.time = resTimer.timer;
                 break;
         }
     }

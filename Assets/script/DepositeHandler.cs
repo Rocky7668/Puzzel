@@ -10,10 +10,40 @@ public class DepositeHandler : MonoBehaviour
     public InputField amountInputfield, transctionIdinputfield;
 
     public MainDeposite mainDeposite;
+    public GenerateQr GenerateQr;
+
+    public List<Button> DepositeButtons;
+    [SerializeField] private List<int> depositeBtnAmount;
+
+    public RawImage QrCodeImage;
+
+    public GameObject QrCodePanel;
+
+    private void OnEnable()
+    {
+        for (int i = 0; i < DepositeButtons.Count; i++)
+        {
+            int index = i;
+            DepositeButtons[i].onClick.AddListener(delegate
+            {
+                SetTextAmountInputField(index);
+            });
+        }
+        StartCoroutine(GetBarcodeImg());
+    }
+    public void OnClickPayNow()
+    {
+        if (amountInputfield.text.Length >= 3)
+            QrCodePanel.SetActive(true);
+    }
 
     public void DepositeAmount()
     {
-        StartCoroutine(Deposite());
+        if (transctionIdinputfield.text.Length >= 2)
+        {
+            StartCoroutine(Deposite());
+            QrCodePanel.SetActive(false);
+        }
     }
 
     public IEnumerator Deposite()
@@ -53,8 +83,56 @@ public class DepositeHandler : MonoBehaviour
         {
             Debug.Log("Response: " + request.downloadHandler.text);
             mainDeposite = JsonUtility.FromJson<MainDeposite>(request.downloadHandler.text);
+            amountInputfield.text = "";
+            transctionIdinputfield.text = "";
 
         }
+    }
+
+
+
+    public IEnumerator GetBarcodeImg()
+    {
+        print("Barcode");
+        WWWForm www = new WWWForm();
+        UnityWebRequest request = UnityWebRequest.Post(StaticData.baseURL + StaticData.GetQrCode, www);
+        request.SetRequestHeader("Authorization", GameManager.instance.token);
+        yield return request.SendWebRequest();
+        if (request.result != UnityWebRequest.Result.Success)
+        {
+            print("Error: " + request.error);
+        }
+        else
+        {
+            GenerateQr = JsonUtility.FromJson<GenerateQr>(request.downloadHandler.text);
+            StartCoroutine(DownloadQr(GenerateQr.data[0]));
+
+        }
+    }
+
+    public IEnumerator DownloadQr(string url)
+    {
+        using (UnityWebRequest request = UnityWebRequestTexture.GetTexture(url))
+        {
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.LogError("Error downloading texture: " + request.error);
+            }
+            else
+            {
+                Texture2D texture = DownloadHandlerTexture.GetContent(request);
+                QrCodeImage.texture = texture;
+                QrCodeImage.color = Color.white;
+            }
+        }
+    }
+
+
+    public void SetTextAmountInputField(int Index)
+    {
+        amountInputfield.text = depositeBtnAmount[Index].ToString();
     }
 }
 
@@ -72,6 +150,7 @@ public class DepositeData
     public string id;
 }
 
+[System.Serializable]
 public class MainDeposite
 {
     public string message;
@@ -82,13 +161,27 @@ public class MainDeposite
 }
 
 
-    // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
-    [System.Serializable]
-    public class SendDeposite
-    {
-        public int amount;
-        public double transactionId;
-    }
+
+#region Generate Qr
+// Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
+[System.Serializable]
+public class GenerateQr
+{
+    public string message;
+    public string status;
+    public int statusCode;
+    public bool success;
+    public List<string> data;
+}
+
+#endregion
 
 
 
+// Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
+[System.Serializable]
+public class SendDeposite
+{
+    public int amount;
+    public double transactionId;
+}

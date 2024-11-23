@@ -40,12 +40,90 @@ public class uimanager : MonoBehaviour
 
     private void Update()
     {
+
+
+        #region Device Bck
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (isMenuopen)
             {
                 menu.GetComponent<RectTransform>().DOAnchorPos(new Vector2(-990, 0), 0.5f);
                 isMenuopen = false;
+                return;
+            }
+            else if (isNotification)
+            {
+                notification.GetComponent<RectTransform>().DOAnchorPos(new Vector2(910, 0), 0.5f);
+                isNotification = false;
+                return;
+            }
+
+            if (magic.activeSelf)
+            {
+                magic.SetActive(false);
+                home.SetActive(true);
+                return;
+            }
+            if (profile.activeSelf)
+            {
+                profile.SetActive(false);
+                home.SetActive(true);
+                return;
+            }
+            if (play.activeSelf)
+            {
+                play.SetActive(false);
+                home.SetActive(true);
+                top.SetActive(true);
+                return;
+            }
+            for (int i = 0; i < panels.Count; i++)
+            {
+                if (panels[i].activeSelf)
+                {
+                    panels[i].SetActive(false);
+                    return;
+                }
+
+            }
+
+            for (int i = 0; i < _newPanels.Count; i++)
+            {
+                if (_newPanels[i].activeSelf)
+                {
+                    _newPanels[i].SetActive(false);
+                    return;
+                }
+
+            }
+
+            if (topPanel.activeSelf)
+            {
+                topPanel.SetActive(false);
+                home.SetActive(true);
+                return;
+            }
+
+            if (transactionPanel.activeSelf)
+            {
+                transactionPanel.SetActive(false);
+                home.SetActive(true);
+                return;
+            }
+
+            if(win.activeSelf)
+            {
+                win.SetActive(false);
+                home.SetActive(true);
+                top.SetActive(true);
+            }
+
+            #endregion
+            if (home.activeSelf)
+            {
+                Debug.Break();
+                Application.Quit();
             }
         }
     }
@@ -53,9 +131,12 @@ public class uimanager : MonoBehaviour
     {
         Application.Quit();
     }
+    public bool isNotification;
     public void NotificationButton()
     {
-        profile.transform.DOScale(Vector3.zero, 0.5f);
+        isNotification = true;
+        //profile.transform.DOScale(Vector3.zero, 0.5f);
+        profile.SetActive(false);
         menu.GetComponent<RectTransform>().DOAnchorPos(new Vector2(-990, 0), 0.5f); isMenuopen = false;
         //notification.transform.DOLocalMove(new Vector2(0, 0), 0.5f);
         notification.GetComponent<RectTransform>().DOAnchorPos(new Vector2(0, 0), 0.5f);
@@ -64,6 +145,7 @@ public class uimanager : MonoBehaviour
     public void MenuButton()
     {
         isMenuopen = true;
+        isNotification = false;
         //menu.transform.DOLocalMove(new Vector2(-615, 0), 0.5f);
         menu.GetComponent<RectTransform>().DOAnchorPos(new Vector2(-190, 0), 0.5f);
         notification.GetComponent<RectTransform>().DOAnchorPos(new Vector2(910, 0), 0.5f);
@@ -90,6 +172,8 @@ public class uimanager : MonoBehaviour
         magic.SetActive(true);
         home.SetActive(false);
         menu.GetComponent<RectTransform>().DOAnchorPos(new Vector2(-990, 0), 0.5f);
+        isMenuopen = false;
+
     }
     public void profileButClick()
     {
@@ -98,13 +182,15 @@ public class uimanager : MonoBehaviour
         //home.SetActive(false);
         play.SetActive(false);
         magic.SetActive(false);
+        home.SetActive(true);
         notification.GetComponent<RectTransform>().DOAnchorPos(new Vector2(910, 0), 0.5f);
         menu.GetComponent<RectTransform>().DOAnchorPos(new Vector2(-990, 0), 0.5f);
         isMenuopen = false;
     }
     public void ProfileBack()
     {
-        profile.transform.DOScale(Vector3.zero, 0.5f);
+        //profile.transform.DOScale(Vector3.zero, 0.5f);
+        profile.SetActive(false);
         home.SetActive(true);
     }
 
@@ -112,6 +198,7 @@ public class uimanager : MonoBehaviour
     {
         play.SetActive(false);
         win.SetActive(true);
+
     }
     public void BackButton()
     {
@@ -123,18 +210,20 @@ public class uimanager : MonoBehaviour
         //menu.transform.DOLocalMove(new Vector2(-1550, 0), 0.5f); 
         menu.GetComponent<RectTransform>().DOAnchorPos(new Vector2(-990, 0), 0.5f);
         isMenuopen = false;
-        profile.transform.DOScale(Vector3.zero, 0.5f);
+        //profile.transform.DOScale(Vector3.zero, 0.5f);
+        profile.SetActive(false);
         win.SetActive(false);
     }
 
     public void onChangePanel(int index)
     {
         foreach (GameObject g in panels)
-        {   
+        {
             g.SetActive(false);
         }
         menu.GetComponent<RectTransform>().DOAnchorPos(new Vector2(-990, 0), 0.5f);
         panels[index].SetActive(true);
+        Screen.orientation = ScreenOrientation.Portrait;
     }
     public void onclicmainpanel(int index)
     {
@@ -159,6 +248,8 @@ public class uimanager : MonoBehaviour
         }
         menu.GetComponent<RectTransform>().DOAnchorPos(new Vector2(-990, 0), 0.5f);
         _newPanels[number].SetActive(true);
+        isMenuopen = false;
+        isNotification = false;
         Screen.orientation = ScreenOrientation.Portrait;
     }
     public void OnScreenResolutionLandScape()

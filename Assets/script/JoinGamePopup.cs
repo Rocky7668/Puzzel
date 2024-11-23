@@ -8,6 +8,15 @@ public class JoinGamePopup : MonoBehaviour
     public Image gameImg;
     public Text joinGameTxt, periodTxt, joinAmountTxt, gstTxt, amountTxt, payTxt;
 
+
+
+    private void OnEnable()
+    {
+        
+    }
+
+
+
     public void MeCose()
     {
         gameObject.SetActive(false);
@@ -30,4 +39,6 @@ public class JoinGamePopup : MonoBehaviour
             MeCose();
         }
     }
+
+    
 }

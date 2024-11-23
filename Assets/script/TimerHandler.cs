@@ -74,7 +74,13 @@ public class TimerHandler : MonoBehaviour
     {
         int minutes = totalSeconds / 60;
         int seconds = totalSeconds % 60;
+        if(totalSeconds >= 210)
+        {
+            int n = totalSeconds - 210;
+            return n.ToString();
+        }
         return string.Format("{0}:{1:D2}", minutes, seconds);
+
     }
 }
 

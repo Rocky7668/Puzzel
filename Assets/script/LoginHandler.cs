@@ -15,6 +15,7 @@ public class LoginHandler : MonoBehaviour
     public InputField loginMailInputfield, loginPasswordInputfield;
 
     public Text otpTxt;
+    public TextMeshProUGUI OtpPageMobileNumeber;
     public TextMeshProUGUI termsTxt;
 
     public LoginResponse loginData;
@@ -156,6 +157,7 @@ public class LoginHandler : MonoBehaviour
 
     public void SendOTPMain()
     {
+        OtpPageMobileNumeber.text = registerMailInputfield.text;
         StartCoroutine(SendOTP(registerMailInputfield.text));
     }
 

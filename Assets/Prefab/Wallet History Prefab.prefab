@@ -34,8 +34,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 331, y: -26}
-  m_SizeDelta: {x: 160, y: 40}
+  m_AnchoredPosition: {x: 315, y: -50}
+  m_SizeDelta: {x: 255, y: 95}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6628663232776966228
 CanvasRenderer:
@@ -151,7 +151,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1778461398094041867
 RectTransform:
   m_ObjectHideFlags: 0
@@ -280,7 +280,7 @@ GameObject:
   - component: {fileID: 1337653870011496633}
   - component: {fileID: 831130912294286683}
   m_Layer: 5
-  m_Name: Username
+  m_Name: Status txt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -302,8 +302,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -252.08, y: 24.35}
-  m_SizeDelta: {x: 313.84, y: 48.7}
+  m_AnchoredPosition: {x: -200.93, y: 16.41}
+  m_SizeDelta: {x: 416.14, y: 64.57}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1337653870011496633
 CanvasRenderer:
@@ -333,7 +333,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Username
+  m_text: "Status\x03"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
   m_sharedMaterial: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
@@ -360,10 +360,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 45
+  m_fontSize: 55.05
   m_fontSizeBase: 45
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -570,7 +570,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -326, y: -26}
+  m_AnchoredPosition: {x: -326, y: -41}
   m_SizeDelta: {x: 160, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8087130047186491385
@@ -767,4 +767,4 @@ MonoBehaviour:
   AmountTxt: {fileID: 1736254843188711669}
   UsernameTxt: {fileID: 831130912294286683}
   TimmingTxt: {fileID: 4368724347483027350}
-  StatusTxt: {fileID: 6444222277897900457}
+  StatusTxt: {fileID: 831130912294286683}

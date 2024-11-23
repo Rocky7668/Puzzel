@@ -1,8 +1,11 @@
+using DG.Tweening;
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.Networking;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -22,6 +25,22 @@ public class GameManager : MonoBehaviour
     public GameObject HintButton;
 
     public bool isButtonPressed;
+
+    public ImageData imageData;
+
+    public GameObject TimerObject;
+
+    [Header("===== Running Game =========")]
+
+    public Image RunningGameImage;
+    public Image QuestiomarkImage;
+    public Text RunningGamePeriodNumber;
+    public bool isStarGame;
+    public bool isWingame;
+    public int periodnumber;
+    internal bool Onetime;
+    public int time;
+    public Sprite QuestionMark;
 
     private void Awake()
     {
@@ -63,12 +82,28 @@ public class GameManager : MonoBehaviour
             gamePlayImg.gameObject.SetActive(false);
             Debug.Log("UI Button IBtn is released");
         }
+
+        if (isWingame) isStarGame = false;
+
+        if (isStarGame && !Onetime)
+        {
+            StartCoroutine(GetPuzzelTexture());
+            Onetime = true;
+        }
+        if (isWingame)
+        {
+            Onetime = false;
+        }
+        if(time == 0)
+        {
+            QuestiomarkImage.sprite = QuestionMark;
+        }
     }
 
     public void PracticeMode()
     {
-        
         SelectObject.gameObject.SetActive(true);
+        TimerObject.SetActive(false);
     }
 
     public void IBtn()
@@ -85,7 +120,10 @@ public class GameManager : MonoBehaviour
 
     public void JoinTableGame()
     {
+        TimerObject.SetActive(true);
+        //StartCoroutine(GetPuzzelTexture());
         SocketConnection.instance.SendDataToServer(StaticData.PuzzleEvent.JOIN_TABLE.ToString(), "");
+
     }
 
 
@@ -109,4 +147,80 @@ public class GameManager : MonoBehaviour
 
         return false;
     }
+
+
+
+    private Sprite ConvertTextureToSprite(Texture2D texture)
+    {
+        return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+    }
+
+    // Get Images From Api
+
+    internal IEnumerator GetPuzzelTexture()
+    {
+        WWWForm form = new WWWForm();
+
+
+
+        using (var api = UnityWebRequest.Post(StaticData.baseURL + StaticData.GetImage, form))
+        {
+            Debug.Log("<color=white><b>Image Api Calles</b></color>");
+            yield return api.SendWebRequest();
+            if (api.result == UnityWebRequest.Result.ConnectionError)
+            {
+                Debug.Log("Data Not Found");
+            }
+            else
+            {
+                Debug.Log(api.downloadHandler.text);
+                imageData = JsonUtility.FromJson<ImageData>(api.downloadHandler.text);
+                StartCoroutine(GenerateTexture());
+
+            }
+        }
+    }
+
+
+    public IEnumerator GenerateTexture()
+    {
+        using (UnityWebRequest request = UnityWebRequestTexture.GetTexture(imageData.data))
+        {
+            yield return request.SendWebRequest();
+
+            if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.LogError("Error downloading texture: " + request.error);
+            }
+            else
+            {
+                Texture2D texture = DownloadHandlerTexture.GetContent(request);
+                SpriteCutter.instance.spriteToCut = texture;
+                SpriteCutter.instance.GenerateAndDisplaySprites(6, 4);
+                gamePlaySprite = ConvertTextureToSprite(texture);
+                yield return new WaitUntil(() => isStarGame);
+                SetImageAfterStartGame();
+            }
+        }
+    }
+
+    public void SetImageAfterStartGame()
+    {
+        RunningGameImage.sprite = gamePlaySprite;
+        QuestiomarkImage.sprite = gamePlaySprite;
+        RunningGamePeriodNumber.text = periodnumber.ToString();
+    }
 }
+
+[System.Serializable]
+// Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
+public class ImageData
+{
+    public string message;
+    public string status;
+    public int statusCode;
+    public bool success;
+    public string data;
+}
+
+

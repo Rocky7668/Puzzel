@@ -7,50 +7,81 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 using Newtonsoft.Json.Linq;
 
+
 public class puzzleManager : MonoBehaviour
 {
+    public static puzzleManager instance;
+
     public GameObject play;
 
     public List<Puzzle> puzzles; // list of sprite
     public List<Image> box; // box images
-    public List<int> couter; 
+    public List<int> couter;
     public List<Sprite> temp;
-    public GameObject cols, rows;
+    public GameObject cols, rows,mainimageObj;
     public int cout, time;
     public TextMeshProUGUI timmerTxt;
-
-
+    public TextMeshProUGUI pointsTxt;
 
 
     public TimerHandler timerHandler;
 
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+    }
+
     private void OnEnable()
     {
-        string url = "https://drive.google.com/file/d/1NhleXtwOWM15vslMns9_oinCjuTZydLY/view?usp=sharing";
-        
-
-
         uimanager.instance.top.SetActive(false);
+        cols.SetActive(false);
+        rows.SetActive(false);
+        mainimageObj.SetActive(false);
+        GameManager.instance.HintButton.SetActive(false);
+        //string url = "https://drive.google.com/file/d/1NhleXtwOWM15vslMns9_oinCjuTZydLY/view?usp=sharing";
         time = 180;
         temp.Clear();
         cout = 0;
         couter.Clear();
         int n = 0;
+        gamePoints = 0;
+
+        //InvokeRepeating(nameof(timmer), 1, 1
+        Invoke(nameof(EnablePlayImage),.5f);
+    }
+
+
+    public void EnablePlayImage()
+    {
+        UpdatePoints();
+
+        SpriteCutter.instance.SetImageinPuzzel();
+
+        cols.SetActive(true);
+        rows.SetActive(true);
+        mainimageObj.SetActive(true);
+        GameManager.instance.HintButton.SetActive(true);
+
         temp.AddRange(puzzles[uimanager.instance.imgIdx].sprites);
+
         for (int i = 0; i < box.Count; i++)
         {
             int num = i;
             box[i].GetComponent<Button>().onClick.AddListener(() => puzzlbox(num));
             temp[i].name = i.ToString();
         }
+
         SwapImagesRandomly();
 
         for (int i = 0; i < temp.Count; i++)
         {
             box[i].sprite = temp[i];
         }
-        //InvokeRepeating(nameof(timmer), 1, 1
     }
+
     private void OnDisable()
     {
         time = 180;
@@ -100,7 +131,7 @@ public class puzzleManager : MonoBehaviour
             }
         }
 
-        if (cout == 30)
+        if (cout == 24)
         {
             Debug.Log("You are win");
             SocketConnection.instance.SendDataToServer(StaticData.PuzzleEvent.SUBMIT_TIMER.ToString(), SubmitTimerReq(timerHandler.gamePlaySecond));
@@ -127,6 +158,8 @@ public class puzzleManager : MonoBehaviour
             if (couter.Count == 2)
             {
                 SwapImagesAtIndices(couter[0], couter[1]);
+                CheckNumberForPoints(couter[1]);
+
             }
         }
         else
@@ -159,52 +192,48 @@ public class puzzleManager : MonoBehaviour
 
         return JsonUtility.ToJson(submitTimer);
     }
+    public List<int> tempPointCheck = new List<int>();
 
+    public float gamePoints;
+    public float addPoints = 1100;
 
-    internal IEnumerator GetPuzzelSprites()
+    internal void CheckNumberForPoints(int index)
     {
-        UnityWebRequest request = UnityWebRequestTexture.GetTexture("url");
-        yield return request.SendWebRequest();
 
-        // Check if the request has an error
-        if (request.isNetworkError || request.isHttpError)
+        if (!tempPointCheck.Contains(index))
         {
-            Debug.LogError(request.error);
+            if (temp[index].name == index.ToString())
+            {
+                tempPointCheck.Add(index);
+                gamePoints += addPoints;
+            }
+            else
+            {
+                gamePoints -= addPoints;
+            }
         }
         else
         {
-            // Get the downloaded texture
-
-            string s = request.downloadHandler.text;
-
-            JObject json = JObject.Parse(s);
-            JArray array = (JArray)json["sprites"];
-
-            int count = array.Count;
-            puzzles[0].sprites.Clear();
-
-            foreach (var sprites in array)
+            if (temp[index].name != index.ToString())
             {
-                Texture2D texture = ((DownloadHandlerTexture)request.downloadHandler).texture;
-
-                // Convert the texture to a sprite
-                Sprite sprite = ConvertTextureToSprite(texture);
-
-                puzzles[0].sprites.Add(sprite); 
+                gamePoints -= addPoints;
             }
         }
+
+        UpdatePoints();
     }
 
-    private Sprite ConvertTextureToSprite(Texture2D texture)
+    public void UpdatePoints()
     {
-        return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+        pointsTxt.text = gamePoints.ToString("F0");
     }
-
 }
+
 [System.Serializable]
 public class Puzzle
 {
-    public List<Sprite> sprites;
+    public List<Sprite> sprites = new List<Sprite>();
+
 }
 
 #region Model Class
@@ -218,4 +247,5 @@ public class SubmitTimerData
 {
     public int completeTime;
 }
+
 #endregion

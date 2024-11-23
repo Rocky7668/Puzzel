@@ -10,7 +10,7 @@ public class ProfileHandler : MonoBehaviour
     public static ProfileHandler instance;
 
 
-    public Text userNameTxt, userIdTxt;
+    public Text userNameTxt, userIdTxt,userMobilenumber;
     public Slider pointSlider;
 
     public TextMeshProUGUI amtTxt;
@@ -63,6 +63,7 @@ public class ProfileHandler : MonoBehaviour
                 pointSlider.maxValue = profileRes.data.totalGamePlayed;
                 pointSlider.value = profileRes.data.totalWinGame;
                 amtTxt.text = profileRes.data.amount.ToString();
+                userMobilenumber.text = profileRes.data.phoneNumber;
 
                 StaticData.TotalBalance = profileRes.data.amount;
             }

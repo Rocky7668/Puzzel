@@ -14,10 +14,13 @@ public class WallerhistoryPrefabHandler : MonoBehaviour
     public TextMeshProUGUI TimmingTxt;
     public TextMeshProUGUI StatusTxt;
 
-    public void SetDataHistory(string Paymenttype, int Amount, string username , string timming , string statusdata)
+    public void SetDataHistory(string Paymenttype, int Amount, string username, string timming, string statusdata)
     {
+        char ch = '-';
         PaymenttypeTxt.text = Paymenttype;
-        AmountTxt.text = "+ ₹ "+Amount.ToString();
+        if (Paymenttype == "Deposit")
+            ch = '+';
+        AmountTxt.text = ch + " ₹ " + Amount.ToString();
         UsernameTxt.text = username;
         TimmingTxt.text = timming;
         StatusTxt.text = statusdata;

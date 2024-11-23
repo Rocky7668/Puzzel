@@ -13,19 +13,21 @@ public class Selection : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void SelectImage(int idx)
     {
         Debug.Log(idx);
         uimanager.instance.imgIdx = idx;
+
+        GameManager.instance.gamePlaySprite = AllImg[idx];
         uimanager.instance.play.SetActive(true);
         uimanager.instance.practiceModeTxt.SetActive(true);
         uimanager.instance.top.SetActive(false);

@@ -29,6 +29,11 @@ public class StaticData
     public static string depositAmount = "/user/depositAmount";
     public static string userWithdrawHistory = "/user/getWithdrawHistory";
     public static string userDepositeHistory = "/user/getDepositHistory";
+    public static string GetImage = "/user/getGamePlayImage";
+    public static string AddBank = "/user/addBank";
+    public static string UpdateBank = "/user/updateBank";
+    public static string GetBankHistory = "/user/getBankHistory";
+    public static string GetQrCode = "/user/getBarcodeImage";
 
     public static double TotalBalance;
 }
