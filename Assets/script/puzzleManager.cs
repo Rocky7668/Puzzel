@@ -35,6 +35,12 @@ public class puzzleManager : MonoBehaviour
     }
 
     private void OnEnable()
+    { 
+        //InvokeRepeating(nameof(timmer), 1, 1
+        // Invoke(nameof(EnablePlayImage), .5f);
+    }
+
+    public void OnStartGame()
     {
         uimanager.instance.top.SetActive(false);
         cols.SetActive(false);
@@ -46,22 +52,14 @@ public class puzzleManager : MonoBehaviour
         temp.Clear();
         cout = 0;
         couter.Clear();
-        int n = 0;
         gamePoints = 0;
-
-        //InvokeRepeating(nameof(timmer), 1, 1
-        Invoke(nameof(EnablePlayImage), .5f);
     }
 
 
     public void EnablePlayImage()
     {
+        OnStartGame();
         UpdatePoints();
-
-        if (!GameManager.instance.isPraticeMode)
-        {
-            SpriteCutter.instance.SetImageinPuzzel();
-        }
 
         cols.SetActive(true);
         rows.SetActive(true);
@@ -125,16 +123,16 @@ public class puzzleManager : MonoBehaviour
 
     void SwapImagesRandomly()
     {
-      
+
         for (int i = 0; i < temp.Count; i++)
         {
-           
+
             int randomIndex = Random.Range(0, temp.Count);
             Sprite t = temp[i];
             temp[i] = temp[randomIndex];
             temp[randomIndex] = t;
         }
-       
+
     }
 
     void SwapImagesAtIndices(int index1, int index2)

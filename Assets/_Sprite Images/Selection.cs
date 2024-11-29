@@ -38,6 +38,7 @@ public class Selection : MonoBehaviour
         uimanager.instance.backBtn.SetActive(true);
 
         GameManager.instance.ButtonsOnOff(true);
+        puzzleManager.instance.EnablePlayImage();
         this.gameObject.SetActive(false);
         
     }

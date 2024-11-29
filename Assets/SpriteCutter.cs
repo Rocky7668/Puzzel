@@ -59,21 +59,18 @@ public class SpriteCutter : MonoBehaviour
             }
         }
         isImage = true;
+        SetImageinPuzzel();
     }
 
     public void SetImageinPuzzel()
     {
-        if (isImage)
-        {
-            Debug.Log("Set Image In gAme");
+        if (puzzleManager.instance.puzzles.Count > 7)
+            puzzleManager.instance.puzzles.RemoveAt(7);
 
-            if (puzzleManager.instance.puzzles.Count > 7)
-                puzzleManager.instance.puzzles.RemoveAt(7);
+        puzzleManager.instance.puzzles.Add(pzl);
+        uimanager.instance.imgIdx = puzzleManager.instance.puzzles.Count - 1;
 
-            puzzleManager.instance.puzzles.Add(pzl);
-            uimanager.instance.imgIdx = puzzleManager.instance.puzzles.Count - 1;
-            Debug.Log("From Here");
-            isImage = false;
-        }
+        puzzleManager.instance.EnablePlayImage();
+
     }
 }
