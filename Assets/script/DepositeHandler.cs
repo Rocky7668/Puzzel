@@ -29,7 +29,15 @@ public class DepositeHandler : MonoBehaviour
                 SetTextAmountInputField(index);
             });
         }
+        amountInputfield.text = "";
+        transctionIdinputfield.text = "";
         StartCoroutine(GetBarcodeImg());
+    }
+    private void OnDisable()
+    {
+        QrCodePanel.SetActive(false);
+        amountInputfield.text = "";
+        transctionIdinputfield.text = "";
     }
     public void OnClickPayNow()
     {

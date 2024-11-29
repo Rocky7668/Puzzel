@@ -26,6 +26,8 @@ public class SocketEventReceiver : MonoBehaviour
 
         Debug.Log("Event : " + en + "\nResponse : " + res);
 
+
+        Debug.Log("enumValue ------- " + enumValue);
         switch (enumValue)
         {
             case PuzzleEvent.START_TIMER:
@@ -44,7 +46,7 @@ public class SocketEventReceiver : MonoBehaviour
                 {
                     GameManager.instance.ButtonsOnOff(false);
                     uimanager.instance.HomeButtonClick();
-                    uimanager.instance.amountTxt.text = joinTableRes.amount.ToString();
+                    uimanager.instance.amountTxt.text = joinTableRes.amount.ToString("F2");
                 }
                 else
                     uimanager.instance.NotChips();

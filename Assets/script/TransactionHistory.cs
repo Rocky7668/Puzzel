@@ -54,11 +54,9 @@ public class TransactionHistory : MonoBehaviour
         for (int i = 0; i < cnt; i++)
         {
             TransactionHistoryHandler transactionHistoryHandlerClone = Instantiate(transactionHistoryHandler, historyGenerator);
-            transactionHistoryHandlerClone.typeTxt.text = transactionHistoryRes.data.docs[i].amount.ToString();
-            if (transactionHistoryRes.data.docs[i].transactionType == "credited")
-                transactionHistoryHandlerClone.typeTxt.color = Color.green;
-            else
-                transactionHistoryHandlerClone.typeTxt.color = Color.red;
+            transactionHistoryHandlerClone.typeTxt.text = transactionHistoryRes.data.docs[i].transactionType.ToString();
+            transactionHistoryHandlerClone.amtTxt.text = transactionHistoryRes.data.docs[i].amount.ToString();
+            transactionHistoryHandlerClone.TitleTxt.text = transactionHistoryRes.data.docs[i].title.ToString();
             transactionHistoryHandlers.Add(transactionHistoryHandlerClone);
         }
     }

@@ -18,7 +18,7 @@ public class puzzleManager : MonoBehaviour
     public List<Image> box; // box images
     public List<int> couter;
     public List<Sprite> temp;
-    public GameObject cols, rows,mainimageObj;
+    public GameObject cols, rows, mainimageObj;
     public int cout, time;
     public TextMeshProUGUI timmerTxt;
     public TextMeshProUGUI pointsTxt;
@@ -50,7 +50,7 @@ public class puzzleManager : MonoBehaviour
         gamePoints = 0;
 
         //InvokeRepeating(nameof(timmer), 1, 1
-        Invoke(nameof(EnablePlayImage),.5f);
+        Invoke(nameof(EnablePlayImage), .5f);
     }
 
 
@@ -58,15 +58,47 @@ public class puzzleManager : MonoBehaviour
     {
         UpdatePoints();
 
-        SpriteCutter.instance.SetImageinPuzzel();
+        if (!GameManager.instance.isPraticeMode)
+        {
+            SpriteCutter.instance.SetImageinPuzzel();
+        }
 
         cols.SetActive(true);
         rows.SetActive(true);
         mainimageObj.SetActive(true);
         GameManager.instance.HintButton.SetActive(true);
-
+        temp.Clear();
         temp.AddRange(puzzles[uimanager.instance.imgIdx].sprites);
+        Debug.Log($"puzzles[uimanager.instance.imgIdx].sprites{uimanager.instance.imgIdx}");
+        for (int i = 0; i < box.Count; i++)
+        {
+            int num = i;
+            box[i].GetComponent<Button>().onClick.AddListener(() => puzzlbox(num));
+            temp[i].name = i.ToString();
+        }
 
+        SwapImagesRandomly();
+
+        for (int i = 0; i < temp.Count; i++)
+        {
+            box[i].sprite = temp[i];
+        }
+        GameManager.instance.isPraticeMode = false;
+
+
+    }
+
+    public void SetPuzzelImageForPracticePanel(int Index)
+    {
+        UpdatePoints();
+
+        cols.SetActive(true);
+        rows.SetActive(true);
+        mainimageObj.SetActive(true);
+        GameManager.instance.HintButton.SetActive(true);
+        temp.Clear();
+        temp.AddRange(puzzles[uimanager.instance.imgIdx].sprites);
+        Debug.Log($"puzzles[uimanager.instance.imgIdx].sprites{uimanager.instance.imgIdx}");
         for (int i = 0; i < box.Count; i++)
         {
             int num = i;
@@ -90,16 +122,21 @@ public class puzzleManager : MonoBehaviour
         uimanager.instance.top.SetActive(false);
 
     }
+
     void SwapImagesRandomly()
     {
+      
         for (int i = 0; i < temp.Count; i++)
         {
+           
             int randomIndex = Random.Range(0, temp.Count);
             Sprite t = temp[i];
             temp[i] = temp[randomIndex];
             temp[randomIndex] = t;
         }
+       
     }
+
     void SwapImagesAtIndices(int index1, int index2)
     {
         if (index1 >= 0 && index1 < box.Count && index2 >= 0 && index2 < box.Count)
@@ -131,7 +168,7 @@ public class puzzleManager : MonoBehaviour
             }
         }
 
-        if (cout == 24)
+        if (cout == 20)
         {
             Debug.Log("You are win");
             SocketConnection.instance.SendDataToServer(StaticData.PuzzleEvent.SUBMIT_TIMER.ToString(), SubmitTimerReq(timerHandler.gamePlaySecond));

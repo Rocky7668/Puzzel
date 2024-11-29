@@ -13,9 +13,14 @@ public class WinHandler : MonoBehaviour
 
     public WinRes winRes;
 
+    private void OnEnable()
+    {
+        Invoke(nameof(OnCloseWinPage), 8f);
+    }
+
     private void Update()
     {
-        if(Input.GetKey(KeyCode.Escape))
+        if (Input.GetKey(KeyCode.Escape))
         {
             this.gameObject.SetActive(false);
         }
@@ -23,20 +28,14 @@ public class WinHandler : MonoBehaviour
 
     public void WinningSet(WinRes winResData)
     {
+
+        Debug.Log("WinningSet Funcion called");
         winRes = winResData;
         string first = "Complete 1 minute " + winRes.oneMinutePercentage + "% usrs complete fill color.";
         string second = "Complete 2 minute " + winRes.twoMinutePercentage + "% usrs complete fill color.";
         string third = "Complete 3 minute " + winRes.threeMinutePercentage + "% usrs complete fill color.";
 
-        //for (int i = 0; i < winObjHandlers.Count; i++)
-        //{
-        //    string userName = "";
-        //    string userId = "";
-        //    int randomNum = Random.Range(0, userSprites.Count);
-        //    winObjHandlers[i].WinDataSet(userSprites[randomNum], userName, userId);
-        //}
-
-        WinnerDataSet(winRes.topUsers.Count);
+        WinnerDataSet(winRes.topThreeUsers.Count);
 
         oneMinTxt.text = first;
         twoMinTxt.text = second;
@@ -48,40 +47,54 @@ public class WinHandler : MonoBehaviour
         if (cnt == 1)
         {
             int randomNum = Random.Range(0, userSprites.Count);
-            winObjHandlers[0].WinDataSet(userSprites[randomNum], "Gaurav", winRes.topUsers[0].id);
+            winObjHandlers[0].WinDataSet(userSprites[randomNum], winRes.topThreeUsers[0].winningAmount.ToString(), winRes.topThreeUsers[0].userId);
 
             int randomNum2 = Random.Range(0, userSprites.Count);
-            winObjHandlers[1].WinDataSet(userSprites[randomNum2], userNames[randomNum2], userIds[randomNum2]);
+            winObjHandlers[1].WinDataSet(userSprites[randomNum2], winRes.topThreeUsers[1].winningAmount.ToString(), userIds[randomNum2]);
             int randomNum3 = Random.Range(0, userSprites.Count);
-            winObjHandlers[2].WinDataSet(userSprites[randomNum3], userNames[randomNum3], userIds[randomNum3]);
+            winObjHandlers[2].WinDataSet(userSprites[randomNum3], winRes.topThreeUsers[2].winningAmount.ToString(), userIds[randomNum3]);
         }
         else if (cnt == 2)
         {
             int randomNum = Random.Range(0, userSprites.Count);
-            winObjHandlers[0].WinDataSet(userSprites[randomNum], "Gaurav", winRes.topUsers[0].id);
+            winObjHandlers[0].WinDataSet(userSprites[randomNum], winRes.topThreeUsers[0].winningAmount.ToString(), winRes.topThreeUsers[0].userId);
             int randomNum2 = Random.Range(0, userSprites.Count);
-            winObjHandlers[1].WinDataSet(userSprites[randomNum2], "Gaurav", winRes.topUsers[1].id);
+            winObjHandlers[1].WinDataSet(userSprites[randomNum2], winRes.topThreeUsers[1].winningAmount.ToString(), winRes.topThreeUsers[1].userId);
 
             int randomNum3 = Random.Range(0, userSprites.Count);
-            winObjHandlers[2].WinDataSet(userSprites[randomNum3], userNames[randomNum3], userIds[randomNum3]);
+            winObjHandlers[2].WinDataSet(userSprites[randomNum3], winRes.topThreeUsers[2].winningAmount.ToString(), userIds[randomNum3]);
         }
         else if (cnt == 3)
         {
             int randomNum = Random.Range(0, userSprites.Count);
-            winObjHandlers[0].WinDataSet(userSprites[randomNum], "Gaurav", winRes.topUsers[0].id);
+            winObjHandlers[0].WinDataSet(userSprites[randomNum], winRes.topThreeUsers[0].winningAmount.ToString(), winRes.topThreeUsers[0].userId);
             int randomNum2 = Random.Range(0, userSprites.Count);
-            winObjHandlers[1].WinDataSet(userSprites[randomNum2], "Gaurav", winRes.topUsers[1].id);
+            winObjHandlers[1].WinDataSet(userSprites[randomNum2], winRes.topThreeUsers[1].winningAmount.ToString(), winRes.topThreeUsers[1].userId);
             int randomNum3 = Random.Range(0, userSprites.Count);
-            winObjHandlers[2].WinDataSet(userSprites[randomNum3], "Gaurav", winRes.topUsers[2].id);
+            winObjHandlers[2].WinDataSet(userSprites[randomNum3], winRes.topThreeUsers[2].winningAmount.ToString(), winRes.topThreeUsers[2].userId);
+        }
+
+
+    }
+
+    public void OnCloseWinPage()
+    {
+        if (gameObject.activeInHierarchy)
+        {
+            gameObject.SetActive(false);
+            uimanager.instance.play.SetActive(false);
+            uimanager.instance.home.SetActive(true);
+            uimanager.instance.top.SetActive(true);
         }
     }
+
 
 }
 
 [System.Serializable]
 public class WinRes
 {
-    public List<TopUser> topUsers;
+    public List<TopThreeUser> topThreeUsers;
     public int totalUsers;
     public int oneMinuteUsers;
     public int oneMinutePercentage;
@@ -90,17 +103,12 @@ public class WinRes
     public int threeMinuteUsers;
     public int threeMinutePercentage;
 }
-
 [System.Serializable]
-public class TopUser
+public class TopThreeUser
 {
-    public string _id;
+    public int rank;
     public string userId;
-    public int gameCompleteTime;
-    public int entryFee;
-    public string tableId;
-    public System.DateTime createdAt;
-    public System.DateTime updatedAt;
-    public string id;
+    public int winningAmount;
 }
+
 

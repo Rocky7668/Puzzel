@@ -17,6 +17,7 @@ public class WithdrawHandler : MonoBehaviour
     public MainGetBank MainGetBank;
 
     public GameObject addBankPanel;
+    public GameObject BankListPanel;
 
 
     [Header("AddBank Section")]
@@ -42,6 +43,11 @@ public class WithdrawHandler : MonoBehaviour
     {
         GetBankData();
     }
+    private void OnDisable()
+    {
+        addBankPanel.SetActive(false);
+        BankListPanel.SetActive(false);
+    }
 
     public void WithdrawAmount()
     {
@@ -60,9 +66,9 @@ public class WithdrawHandler : MonoBehaviour
 
     public void ClearBankHistory()
     {
-        for (int i = 0; i < bankHistoryPrefabList.Count; i++)
+        for (int i = 0; i < HistoryParent.transform.childCount; i++)
         {
-            Destroy(bankHistoryPrefabList[i]);
+            Destroy(HistoryParent.transform.GetChild(i).gameObject);
         }
         bankHistoryPrefabList.Clear();
     }
@@ -93,6 +99,7 @@ public class WithdrawHandler : MonoBehaviour
     public void OnClickBanHistoryButton(int Index)
     {
         addBankPanel.SetActive(false);
+        BankListPanel.SetActive(false);
         bankNameInputfield.text = bankHistoryPrefabList[Index].bankNameTxt.text;
         accountHolderNameInputfield.text = bankHistoryPrefabList[Index].AccountHolderNameTxt.text;
         accountNumberInputfield.text = bankHistoryPrefabList[Index].AccountNumberTxt.text;

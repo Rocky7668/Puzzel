@@ -33,6 +33,7 @@ public class SpriteCutter : MonoBehaviour
 
         int counter = 1; // For naming each cut section with numbers (1, 2, 3...)
         // Loop through each row and column to generate and display sub-sprites
+        pzl = new();
         for (int y = 0; y < rows; y++)
         {
             for (int x = 0; x < columns; x++)
@@ -50,34 +51,28 @@ public class SpriteCutter : MonoBehaviour
 
                 // Create a new sprite from the texture
                 Sprite newSprite = Sprite.Create(cellTexture, new Rect(0, 0, cellWidth, cellHeight), new Vector2(0.5f, 0.5f));
+                int nnn = pzl.sprites.Count;
                 pzl.sprites.Add(newSprite);
-                // Create a new GameObject to display the sprite
-                //GameObject newObject = new GameObject("Sprite_" + counter); // Name as Sprite_1, Sprite_2, etc.
-
-                // Position the sprite in the same order as they appear in the original image
-                //newObject.transform.position = new Vector3(x * (cellWidth + spacing) / 100f, -y * (cellHeight + spacing) / 100f, 0);
-
-
-                //SpriteRenderer renderer = newObject.AddComponent<SpriteRenderer>();
-                //renderer.sprite = newSprite;
-                //renderer.sprite.name = counter.ToString();
 
                 // Increment the counter for the next sprite name
                 counter++;
             }
         }
         isImage = true;
-
-
     }
 
     public void SetImageinPuzzel()
     {
         if (isImage)
-        { 
-            Debug.Log(pzl + "pzl == nulll " + pzl == null);
+        {
+            Debug.Log("Set Image In gAme");
+
+            if (puzzleManager.instance.puzzles.Count > 7)
+                puzzleManager.instance.puzzles.RemoveAt(7);
+
             puzzleManager.instance.puzzles.Add(pzl);
             uimanager.instance.imgIdx = puzzleManager.instance.puzzles.Count - 1;
+            Debug.Log("From Here");
             isImage = false;
         }
     }

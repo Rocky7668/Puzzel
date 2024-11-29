@@ -31,6 +31,8 @@ public class TimerHandler : MonoBehaviour
         if (!resTimer.iStartGame)
         {
             //Debug.Log("First");
+            GameManager.instance.RunningGameTxt.text = "Previous Game";
+            GameManager.instance.RunningGamePeriodNumber.text = (resTimer.roundId - 1).ToString();
             dashboardHandler.firstBtn.interactable = true;
             return;
         }
@@ -41,6 +43,19 @@ public class TimerHandler : MonoBehaviour
             if (newInt < 0) return;
             GameManager.instance.ButtonsOnOff(true);
             string formatteTime = FormatTime(newInt);
+            int min = newInt / 60;
+            int sec = newInt % 60;
+            if (sec <= 30 && min == 0   )
+            {
+                gamePlaySecTxt.fontSize = 100;
+                gamePlaySecTxt.color = Color.white;
+            }
+            else
+            {
+
+                gamePlaySecTxt.fontSize = 52;
+                gamePlaySecTxt.color = Color.red;
+            }
             gamePlaySecTxt.text = formatteTime;
             dashboardHandler.firstBtn.interactable = false;
         }
@@ -74,9 +89,10 @@ public class TimerHandler : MonoBehaviour
     {
         int minutes = totalSeconds / 60;
         int seconds = totalSeconds % 60;
-        if(totalSeconds >= 210)
+        if (totalSeconds >= 210)
         {
             int n = totalSeconds - 210;
+            Debug.Log("<color=red><b> n.ToString() " + n.ToString() + "</b></color>");
             return n.ToString();
         }
         return string.Format("{0}:{1:D2}", minutes, seconds);

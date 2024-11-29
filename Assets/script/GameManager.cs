@@ -35,10 +35,12 @@ public class GameManager : MonoBehaviour
     public Image RunningGameImage;
     public Image QuestiomarkImage;
     public Text RunningGamePeriodNumber;
+    public Text RunningGameTxt;
     public bool isStarGame;
     public bool isWingame;
     public int periodnumber;
     internal bool Onetime;
+    internal bool isPraticeMode;
     public int time;
     public Sprite QuestionMark;
 
@@ -94,9 +96,10 @@ public class GameManager : MonoBehaviour
         {
             Onetime = false;
         }
-        if(time == 0)
+        if (time == 0)
         {
             QuestiomarkImage.sprite = QuestionMark;
+            //StartCoroutine(GetPuzzelTexture());
         }
     }
 
@@ -104,6 +107,7 @@ public class GameManager : MonoBehaviour
     {
         SelectObject.gameObject.SetActive(true);
         TimerObject.SetActive(false);
+        isPraticeMode = true;
     }
 
     public void IBtn()
@@ -121,7 +125,7 @@ public class GameManager : MonoBehaviour
     public void JoinTableGame()
     {
         TimerObject.SetActive(true);
-        //StartCoroutine(GetPuzzelTexture());
+        StartCoroutine(GetPuzzelTexture());
         SocketConnection.instance.SendDataToServer(StaticData.PuzzleEvent.JOIN_TABLE.ToString(), "");
 
     }
@@ -196,7 +200,7 @@ public class GameManager : MonoBehaviour
             {
                 Texture2D texture = DownloadHandlerTexture.GetContent(request);
                 SpriteCutter.instance.spriteToCut = texture;
-                SpriteCutter.instance.GenerateAndDisplaySprites(6, 4);
+                SpriteCutter.instance.GenerateAndDisplaySprites(5, 4);
                 gamePlaySprite = ConvertTextureToSprite(texture);
                 yield return new WaitUntil(() => isStarGame);
                 SetImageAfterStartGame();
@@ -209,6 +213,7 @@ public class GameManager : MonoBehaviour
         RunningGameImage.sprite = gamePlaySprite;
         QuestiomarkImage.sprite = gamePlaySprite;
         RunningGamePeriodNumber.text = periodnumber.ToString();
+        GameManager.instance.RunningGameTxt.text = "Running Game";
     }
 }
 

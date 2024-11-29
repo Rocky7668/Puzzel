@@ -3,13 +3,13 @@ using UnityEngine.UI;
 
 public class WinObjHandler : MonoBehaviour
 {
-    public Text userNameTxt, userIdTxt;
+    public Text userWinningTxt, userIdTxt;
     public Image userImg;
 
-    public void WinDataSet(Sprite userSprite, string userName, string userId)
+    public void WinDataSet(Sprite userSprite, string userwinning, string userId)
     {
         userImg.sprite = userSprite;
-        userNameTxt.text = userName;
+        userWinningTxt.text = "₹" + userwinning;
         userIdTxt.text = userId;
     }
 }

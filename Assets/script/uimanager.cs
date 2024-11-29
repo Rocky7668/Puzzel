@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class uimanager : MonoBehaviour
 {
     public static uimanager instance;
-    public GameObject home, play, magic, profile, notification, menu, win, notChipsObj, top, time, winBtnObj, practiceModeTxt, transactionPanel, topPanel, backBtn;
+    public GameObject home, play, magic, profile, notification, menu, win, notChipsObj, top, time, winBtnObj, practiceModeTxt, transactionPanel, topPanel, backBtn,JoinGamePopup;
     public static int a;
     public List<GameObject> panels;
     public List<GameObject> mainpanels;
@@ -34,14 +34,12 @@ public class uimanager : MonoBehaviour
         Screen.orientation = ScreenOrientation.LandscapeLeft;
         loginResponse = LoginHandler.instance.loginData;
         usernameTxt.text = loginResponse.data.user.email.Split('@')[0];
-        amountTxt.text = loginResponse.data.user.amount.ToString();
+        amountTxt.text = loginResponse.data.user.amount.ToString("F2");
         //myUserId = loginResponse.data.user._id;
     }
 
     private void Update()
     {
-
-
         #region Device Bck
 
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -76,6 +74,11 @@ public class uimanager : MonoBehaviour
                 play.SetActive(false);
                 home.SetActive(true);
                 top.SetActive(true);
+                return;
+            }
+            if(JoinGamePopup.activeSelf)
+            {
+                JoinGamePopup.SetActive(false);
                 return;
             }
             for (int i = 0; i < panels.Count; i++)
@@ -117,6 +120,7 @@ public class uimanager : MonoBehaviour
                 win.SetActive(false);
                 home.SetActive(true);
                 top.SetActive(true);
+                return;
             }
 
             #endregion
