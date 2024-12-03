@@ -4,6 +4,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class uimanager : MonoBehaviour
 {
@@ -268,6 +269,12 @@ public class uimanager : MonoBehaviour
     public void OnScreenResolutionLandScape()
     {
         Screen.orientation = ScreenOrientation.LandscapeLeft;
+    }
+
+    public void LogOut()
+    {
+        PlayerPrefs.DeleteAll();
+        SceneManager.LoadScene(0);
     }
 }
 

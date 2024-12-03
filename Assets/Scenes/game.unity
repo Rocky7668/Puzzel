@@ -3563,7 +3563,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 160.905, y: -87.265015}
+  m_AnchoredPosition: {x: 160.90497, y: -87.265015}
   m_SizeDelta: {x: 141, y: 149}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &104025341
@@ -3744,7 +3744,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 925767447}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1537325254}
+        m_TargetAssemblyTypeName: uimanager, Assembly-CSharp
+        m_MethodName: OnclickHomeInMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &104573575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4942,6 +4954,18 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1537325254}
+        m_TargetAssemblyTypeName: uimanager, Assembly-CSharp
+        m_MethodName: OnclickHomeInMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -6883,7 +6907,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 925767447}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1537325254}
+        m_TargetAssemblyTypeName: uimanager, Assembly-CSharp
+        m_MethodName: OnclickHomeInMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &205354284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10458,7 +10494,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 154.55301, y: -304.28}
+  m_AnchoredPosition: {x: 154.55298, y: -304.28}
   m_SizeDelta: {x: 6, y: 596.68}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &287215759
@@ -13738,6 +13774,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1537325254}
+        m_TargetAssemblyTypeName: uimanager, Assembly-CSharp
+        m_MethodName: OnclickHomeInMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &362564590
 GameObject:
   m_ObjectHideFlags: 0
@@ -15366,6 +15414,18 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 4
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1537325254}
+        m_TargetAssemblyTypeName: uimanager, Assembly-CSharp
+        m_MethodName: OnclickHomeInMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -18120,7 +18180,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 925767447}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1537325254}
+        m_TargetAssemblyTypeName: uimanager, Assembly-CSharp
+        m_MethodName: OnclickHomeInMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &503212474
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19335,7 +19407,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 925767447}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1537325254}
+        m_TargetAssemblyTypeName: uimanager, Assembly-CSharp
+        m_MethodName: OnclickHomeInMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &530383452
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20001,6 +20085,18 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1537325254}
+        m_TargetAssemblyTypeName: uimanager, Assembly-CSharp
+        m_MethodName: OnclickHomeInMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -22399,7 +22495,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 301.905, y: -534.265}
+  m_AnchoredPosition: {x: 301.90497, y: -534.265}
   m_SizeDelta: {x: 141, y: 149}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &588795410
@@ -24236,6 +24332,18 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1537325254}
+        m_TargetAssemblyTypeName: uimanager, Assembly-CSharp
+        m_MethodName: OnclickHomeInMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -28016,7 +28124,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 160.905, y: -236.26501}
+  m_AnchoredPosition: {x: 160.90497, y: -236.26501}
   m_SizeDelta: {x: 141, y: 149}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &745553223
@@ -30720,7 +30828,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 925767447}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1537325254}
+        m_TargetAssemblyTypeName: uimanager, Assembly-CSharp
+        m_MethodName: OnclickHomeInMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &810078516
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32135,7 +32255,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 301.905, y: -236.26501}
+  m_AnchoredPosition: {x: 301.90497, y: -236.26501}
   m_SizeDelta: {x: 141, y: 149}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &859080231
@@ -33407,6 +33527,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: uimanager, Assembly-CSharp
         m_MethodName: OpenNewPanels
         m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1537325254}
+        m_TargetAssemblyTypeName: uimanager, Assembly-CSharp
+        m_MethodName: OnclickHomeInMenu
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -35134,6 +35266,18 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1537325254}
+        m_TargetAssemblyTypeName: uimanager, Assembly-CSharp
+        m_MethodName: OnclickHomeInMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -44132,7 +44276,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 160.905, y: -534.265}
+  m_AnchoredPosition: {x: 160.90497, y: -534.265}
   m_SizeDelta: {x: 141, y: 149}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1143742697
@@ -44446,6 +44590,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1959656500}
         m_TargetAssemblyTypeName: ProfileHandler, Assembly-CSharp
         m_MethodName: ProfileDataSet
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1537325254}
+        m_TargetAssemblyTypeName: uimanager, Assembly-CSharp
+        m_MethodName: OnclickHomeInMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -48662,7 +48818,31 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 925767447}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1537325254}
+        m_TargetAssemblyTypeName: uimanager, Assembly-CSharp
+        m_MethodName: OnclickHomeInMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1537325254}
+        m_TargetAssemblyTypeName: uimanager, Assembly-CSharp
+        m_MethodName: LogOut
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1241061397
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52634,6 +52814,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1537325254}
+        m_TargetAssemblyTypeName: uimanager, Assembly-CSharp
+        m_MethodName: OnclickHomeInMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1342470348
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52787,7 +52979,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 301.905, y: -87.265015}
+  m_AnchoredPosition: {x: 301.90497, y: -87.265015}
   m_SizeDelta: {x: 141, y: 149}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1344727504
@@ -54742,6 +54934,18 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1537325254}
+        m_TargetAssemblyTypeName: uimanager, Assembly-CSharp
+        m_MethodName: OnclickHomeInMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -66382,7 +66586,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 301.905, y: -385.265}
+  m_AnchoredPosition: {x: 301.90497, y: -385.265}
   m_SizeDelta: {x: 141, y: 149}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1713562788
@@ -66934,7 +67138,7 @@ Transform:
   m_GameObject: {fileID: 1723271243}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.14688945, y: 2.0334911, z: 2.7218025}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -68592,7 +68796,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 925767447}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1537325254}
+        m_TargetAssemblyTypeName: uimanager, Assembly-CSharp
+        m_MethodName: OnclickHomeInMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1757628685
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76145,7 +76361,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 160.905, y: -385.265}
+  m_AnchoredPosition: {x: 160.90497, y: -385.265}
   m_SizeDelta: {x: 141, y: 149}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1974324492
@@ -82733,6 +82949,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1959656500}
         m_TargetAssemblyTypeName: ProfileHandler, Assembly-CSharp
         m_MethodName: NotifoicationSet
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1537325254}
+        m_TargetAssemblyTypeName: uimanager, Assembly-CSharp
+        m_MethodName: OnclickHomeInMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
