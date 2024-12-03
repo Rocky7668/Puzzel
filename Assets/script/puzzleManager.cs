@@ -25,6 +25,7 @@ public class puzzleManager : MonoBehaviour
 
 
     public TimerHandler timerHandler;
+    internal bool isEnterGame;
 
     private void Awake()
     {
@@ -35,14 +36,16 @@ public class puzzleManager : MonoBehaviour
     }
 
     private void OnEnable()
-    { 
+    {
         //InvokeRepeating(nameof(timmer), 1, 1
         // Invoke(nameof(EnablePlayImage), .5f);
     }
 
     public void OnStartGame()
     {
-        uimanager.instance.top.SetActive(false);
+        if (isEnterGame)
+            uimanager.instance.top.SetActive(false);
+
         cols.SetActive(false);
         rows.SetActive(false);
         mainimageObj.SetActive(false);

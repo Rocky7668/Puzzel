@@ -33,7 +33,7 @@ public class StaticData
     public static string AddBank = "/user/addBank";
     public static string UpdateBank = "/user/updateBank";
     public static string GetBankHistory = "/user/getBankHistory";
-    public static string GetQrCode = "/user/getBarcodeImage";
+    public static string GetPaymentDetails = "/user/getPaymentDetails";
     public static string GetRefundUserList = "/user/getRefundUsersList";
 
     public static double TotalBalance;

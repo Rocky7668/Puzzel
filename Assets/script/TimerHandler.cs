@@ -6,7 +6,7 @@ public class TimerHandler : MonoBehaviour
 {
     public int second, gamePlaySecond;
 
-    public Text secondTxt;
+    public Text secondTxt, JoinGamePopUpTimeTxt;
     public TextMeshProUGUI gamePlaySecTxt;
 
     public DashboardHandler dashboardHandler;
@@ -45,7 +45,7 @@ public class TimerHandler : MonoBehaviour
             string formatteTime = FormatTime(newInt);
             int min = newInt / 60;
             int sec = newInt % 60;
-            if (sec <= 30 && min == 0   )
+            if (sec <= 30 && min == 0)
             {
                 gamePlaySecTxt.fontSize = 100;
                 gamePlaySecTxt.color = Color.white;
@@ -97,6 +97,11 @@ public class TimerHandler : MonoBehaviour
         }
         return string.Format("{0}:{1:D2}", minutes, seconds);
 
+    }
+
+    private void Update()
+    {
+        JoinGamePopUpTimeTxt.text = "Join Time Left : " + secondTxt.text;
     }
 }
 

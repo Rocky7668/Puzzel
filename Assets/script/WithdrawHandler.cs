@@ -33,6 +33,16 @@ public class WithdrawHandler : MonoBehaviour
 
     public List<BankHistoryPrefab> bankHistoryPrefabList = new();
 
+
+
+    [Header("UPI")]
+    public InputField UPIInputField;
+
+
+
+
+    public GameObject BankSectionBoard, UPISectionBoard;
+
     private void Awake()
     {
         if (instance == null)
@@ -42,17 +52,34 @@ public class WithdrawHandler : MonoBehaviour
     private void OnEnable()
     {
         GetBankData();
+        isBank = true;
     }
     private void OnDisable()
     {
         addBankPanel.SetActive(false);
         BankListPanel.SetActive(false);
+        UPISectionBoard.SetActive(false);
+        BankSectionBoard.SetActive(true);
+
+        UPIInputField.text = "";
+        amountInputfield.text = "";
+        amountInputfield.text = "";
+        bankNameInputfield.text = "";
+        IFSCInputfield.text = "";
+        accountHolderNameInputfield.text = "";
+        accountNumberInputfield.text = "";
+        AddbankNameInputfield.text = "";
+        AddaccountNumberInputfield.text = "";
+        AddIFSCInputfield.text = "";
+        AddaccountHolderNameInputfield.text = "";
     }
 
     public void WithdrawAmount()
     {
-        if (amountInputfield.text.Length >= 3 && bankNameInputfield.text.Length >= 2 && IFSCInputfield.text.Length >= 2 && accountHolderNameInputfield.text.Length >= 2 && accountNumberInputfield.text.Length >= 2)
-            StartCoroutine(WithDrawAmountApi());
+        if (amountInputfield.text.Length >= 3 && bankNameInputfield.text.Length >= 2 && IFSCInputfield.text.Length >= 2 && accountHolderNameInputfield.text.Length >= 2 && accountNumberInputfield.text.Length >= 2 && isBank)
+            StartCoroutine(WithDrawAmountApiBank());
+        else if (amountInputfield.text.Length >= 3 && UPIInputField.text.Length >= 5)
+            StartCoroutine(WithDrawAmountApiBank());  ////////////////////
     }
     public void AddBankData()
     {
@@ -108,8 +135,7 @@ public class WithdrawHandler : MonoBehaviour
     }
 
 
-
-    public IEnumerator WithDrawAmountApi()
+    public IEnumerator WithDrawAmountApiBank()
     {
         WWWForm form = new WWWForm();
         form.AddField("amount", amountInputfield.text);
@@ -251,6 +277,31 @@ public class WithdrawHandler : MonoBehaviour
                 int GenerateCount = MainGetBank.data.docs.Count;
                 GenerateBankHistory(GenerateCount);
             }
+        }
+    }
+    internal bool isBank = true;
+    internal bool isUpi = false;
+
+    public void OnClickToChange(string name)
+    {
+        switch(name)
+        {
+            case "bank":
+                UPIInputField.text = "";
+                amountInputfield.text = "";
+                BankSectionBoard.SetActive(true);
+                UPISectionBoard.SetActive(false);
+                break;
+
+            case "upi":
+                amountInputfield.text = "";
+                bankNameInputfield.text = "";
+                IFSCInputfield.text = "";
+                accountHolderNameInputfield.text = "";
+                accountNumberInputfield.text = "";
+                BankSectionBoard.SetActive(false);
+                UPISectionBoard.SetActive(true);
+                break;
         }
     }
 }

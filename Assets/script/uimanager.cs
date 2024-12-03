@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -40,7 +41,7 @@ public class uimanager : MonoBehaviour
 
     private void Update()
     {
-        #region Device Bck
+        #region Device Back
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -74,6 +75,7 @@ public class uimanager : MonoBehaviour
                 play.SetActive(false);
                 home.SetActive(true);
                 top.SetActive(true);
+                puzzleManager.instance.isEnterGame = false;
                 return;
             }
             if(JoinGamePopup.activeSelf)
@@ -256,6 +258,13 @@ public class uimanager : MonoBehaviour
         isNotification = false;
         Screen.orientation = ScreenOrientation.Portrait;
     }
+
+    public void OnclickHomeInMenu()
+    {
+        menu.GetComponent<RectTransform>().DOAnchorPos(new Vector2(-990, 0), 0.5f);
+        isMenuopen = false;
+    }
+
     public void OnScreenResolutionLandScape()
     {
         Screen.orientation = ScreenOrientation.LandscapeLeft;

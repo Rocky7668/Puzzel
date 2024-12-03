@@ -10,7 +10,7 @@ public class DepositeHandler : MonoBehaviour
     public InputField amountInputfield, transctionIdinputfield;
 
     public MainDeposite mainDeposite;
-    public GenerateQr GenerateQr;
+    public MainDepositePaymentDetails MainDepositePaymentDetails;
 
     public List<Button> DepositeButtons;
     [SerializeField] private List<int> depositeBtnAmount;
@@ -31,7 +31,7 @@ public class DepositeHandler : MonoBehaviour
         }
         amountInputfield.text = "";
         transctionIdinputfield.text = "";
-        StartCoroutine(GetBarcodeImg());
+        StartCoroutine(GetPaymentDetails());
     }
     private void OnDisable()
     {
@@ -99,11 +99,11 @@ public class DepositeHandler : MonoBehaviour
 
 
 
-    public IEnumerator GetBarcodeImg()
+    public IEnumerator GetPaymentDetails()
     {
         print("Barcode");
         WWWForm www = new WWWForm();
-        UnityWebRequest request = UnityWebRequest.Post(StaticData.baseURL + StaticData.GetQrCode, www);
+        UnityWebRequest request = UnityWebRequest.Post(StaticData.baseURL + StaticData.GetPaymentDetails, www);
         request.SetRequestHeader("Authorization", GameManager.instance.token);
         yield return request.SendWebRequest();
         if (request.result != UnityWebRequest.Result.Success)
@@ -112,9 +112,10 @@ public class DepositeHandler : MonoBehaviour
         }
         else
         {
-            GenerateQr = JsonUtility.FromJson<GenerateQr>(request.downloadHandler.text);
-            StartCoroutine(DownloadQr(GenerateQr.data[0]));
-
+            MainDepositePaymentDetails = JsonUtility.FromJson<MainDepositePaymentDetails>(request.downloadHandler.text);
+            //StartCoroutine(DownloadQr(GenerateQr.data[0]));
+            StartCoroutine(DownloadQr(MainDepositePaymentDetails.data.barcodeImageUrl));
+            UpiIdTxt.text = MainDepositePaymentDetails.data.upiId;
         }
     }
 
@@ -142,6 +143,12 @@ public class DepositeHandler : MonoBehaviour
     {
         amountInputfield.text = depositeBtnAmount[Index].ToString();
     }
+
+    public Text UpiIdTxt;
+    public void UpiCopy()
+    {
+        GUIUtility.systemCopyBuffer = UpiIdTxt.text;
+    }
 }
 
 [System.Serializable]
@@ -153,8 +160,8 @@ public class DepositeData
     public string status;
     public string transactionId;
     public string _id;
-    public DateTime createdAt;
-    public DateTime updatedAt;
+    public string createdAt;
+    public string updatedAt;
     public string id;
 }
 
@@ -168,22 +175,30 @@ public class MainDeposite
     public DepositeData data;
 }
 
+#region Deposite Payment Details
 
-
-#region Generate Qr
-// Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
 [System.Serializable]
-public class GenerateQr
+public class DepositePaymentDetails
+{
+    public string _id;
+    public string createdAt;
+    public string updatedAt;
+    public string barcodeImageUrl;
+    public string upiId;
+    public string id;
+}
+
+[System.Serializable]
+public class MainDepositePaymentDetails
 {
     public string message;
     public string status;
     public int statusCode;
     public bool success;
-    public List<string> data;
+    public DepositePaymentDetails data;
 }
 
 #endregion
-
 
 
 // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);

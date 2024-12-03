@@ -1,21 +1,13 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class JoinGamePopup : MonoBehaviour
 {
     public TimerHandler timerHandler;
 
     public Image gameImg;
-    public Text joinGameTxt, periodTxt, joinAmountTxt, gstTxt, amountTxt, payTxt;
-
-
-
-    private void OnEnable()
-    {
-        
-    }
-
-
+    public Text joinGameTxt, periodTxt, joinAmountTxt, gstTxt, amountTxt, payTxt, ReturngstAmount;
 
     public void MeCose()
     {
@@ -24,11 +16,13 @@ public class JoinGamePopup : MonoBehaviour
 
     public void TextSet(int fee, double gst, double total)
     {
-        joinGameTxt.text = "Join Time = " + timerHandler.gamePlaySecond;
-        joinAmountTxt.text = "Join Amount - " + fee.ToString();
-        gstTxt.text = "28% GST - " + gst.ToString();
-        amountTxt.text = "Total Amount - " + total.ToString();
+        // joinGameTxt.text = "Join Time Left : " + timerHandler.secondTxt.text;
+        joinAmountTxt.text = fee.ToString();
+        gstTxt.text = gst.ToString();
+        ReturngstAmount.text = gst.ToString();
+        amountTxt.text = total.ToString();
         payTxt.text = "Pay Now : " + total.ToString();
+        periodTxt.text = GameManager.instance.periodnumber.ToString();
     }
 
     public void SecondManage(int second)
@@ -39,6 +33,4 @@ public class JoinGamePopup : MonoBehaviour
             MeCose();
         }
     }
-
-    
 }

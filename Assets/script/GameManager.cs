@@ -90,6 +90,8 @@ public class GameManager : MonoBehaviour
         if (isStarGame && !Onetime)
         {
             StartCoroutine(GetPuzzelTexture());
+            if (uimanager.instance.JoinGamePopup.activeInHierarchy)
+                uimanager.instance.JoinGamePopup.SetActive(false);
             Onetime = true;
         }
         if (isWingame)
@@ -125,9 +127,9 @@ public class GameManager : MonoBehaviour
     public void JoinTableGame()
     {
         TimerObject.SetActive(true);
+        puzzleManager.instance.isEnterGame = true;
         StartCoroutine(GetPuzzelTexture());
         SocketConnection.instance.SendDataToServer(StaticData.PuzzleEvent.JOIN_TABLE.ToString(), "");
-
     }
 
 
@@ -166,10 +168,10 @@ public class GameManager : MonoBehaviour
         WWWForm form = new WWWForm();
 
 
-
         using (var api = UnityWebRequest.Post(StaticData.baseURL + StaticData.GetImage, form))
         {
             Debug.Log("<color=white><b>Image Api Calles</b></color>");
+            api.SetRequestHeader("Authorization", token);
             yield return api.SendWebRequest();
             if (api.result == UnityWebRequest.Result.ConnectionError)
             {
@@ -188,25 +190,32 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator GenerateTexture()
     {
-        using (UnityWebRequest request = UnityWebRequestTexture.GetTexture(imageData.data))
+        string url = imageData.data;
+        using (UnityWebRequest request = UnityWebRequestTexture.GetTexture(url))
         {
             yield return request.SendWebRequest();
 
-            if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+            // Check for errors
+            if (request.result != UnityWebRequest.Result.Success)
             {
-                Debug.LogError("Error downloading texture: " + request.error);
+                Debug.LogError($"Error downloading texture: {request.error}");
             }
             else
             {
+                Debug.Log("Texture downloaded successfully!");
                 Texture2D texture = DownloadHandlerTexture.GetContent(request);
+
+                // Assign to SpriteCutter or use the texture as needed
                 SpriteCutter.instance.spriteToCut = texture;
                 SpriteCutter.instance.GenerateAndDisplaySprites(5, 4);
                 gamePlaySprite = ConvertTextureToSprite(texture);
+
                 yield return new WaitUntil(() => isStarGame);
                 SetImageAfterStartGame();
             }
         }
     }
+
 
     public void SetImageAfterStartGame()
     {

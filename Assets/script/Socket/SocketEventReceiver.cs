@@ -26,8 +26,6 @@ public class SocketEventReceiver : MonoBehaviour
 
         Debug.Log("Event : " + en + "\nResponse : " + res);
 
-
-        Debug.Log("enumValue ------- " + enumValue);
         switch (enumValue)
         {
             case PuzzleEvent.START_TIMER:
@@ -70,6 +68,7 @@ public class SocketEventReceiver : MonoBehaviour
                 entryFeeResponse = JsonUtility.FromJson<EntryFeeResponse>(res);
                 Debug.Log("Entry Fee deducted and game start");
                 joinGamePopup.gameObject.SetActive(true);
+                entryFeeResponse.totalEntryFee -= entryFeeResponse.gstAmount;
                 joinGamePopup.TextSet(entryFeeResponse.entryFee, entryFeeResponse.gstAmount, entryFeeResponse.totalEntryFee);
                 break;
 
@@ -79,6 +78,7 @@ public class SocketEventReceiver : MonoBehaviour
                 {
                     uimanager.instance.WinButtonClick();
                     winHandler.WinningSet(winRes);
+                    puzzleManager.instance.isEnterGame = false;
                 }
                 break;
 

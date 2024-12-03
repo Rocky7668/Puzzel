@@ -14,6 +14,8 @@ public class CommisionHandler : MonoBehaviour
     public TextMeshProUGUI depositePointTxt;
     public TextMeshProUGUI winningPointTxt;
 
+    public CommisionRefferListPrefab commisionRefferListPrefab;
+
 
     // Start is called before the first frame update
     void Start()
