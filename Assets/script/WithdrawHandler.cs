@@ -4,6 +4,7 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class WithdrawHandler : MonoBehaviour
 {
@@ -15,9 +16,19 @@ public class WithdrawHandler : MonoBehaviour
 
     public MainAddBank MainAddBank;
     public MainGetBank MainGetBank;
+    public MainAddUPI MainAddUPI;
+    public MainUPiHIstory MainUPiHIstory;
 
     public GameObject addBankPanel;
     public GameObject BankListPanel;
+    public GameObject AddUPiPanel;
+    public GameObject UPIListPanel;
+    public GameObject AddBankButton;
+    public GameObject AddUPIButton;
+    public GameObject updateBankButton;
+    public GameObject updateupiButton;
+    public GameObject UpdateBankTextObject;
+    public GameObject UpdateUPiTextObject;
 
 
     [Header("AddBank Section")]
@@ -38,10 +49,21 @@ public class WithdrawHandler : MonoBehaviour
     [Header("UPI")]
     public InputField UPIInputField;
 
+    [Header("Add Upi Section")]
+    public InputField AddUPIInputField;
 
-
+    [Header("UPI HIstory Section")]
+    public UPIHistoryPrefab UPIHistoryPrefab;
+    public Transform UpiContent;
+    public List<UPIHistoryPrefab> UPIHistoryPrefabList = new();
 
     public GameObject BankSectionBoard, UPISectionBoard;
+
+
+    public GameObject AddBankUpiPopUp;
+
+
+    internal bool isUpdate;
 
     private void Awake()
     {
@@ -52,14 +74,23 @@ public class WithdrawHandler : MonoBehaviour
     private void OnEnable()
     {
         GetBankData();
+        GetUPIData();
+
+        DOVirtual.DelayedCall(.5f, delegate { checkForBankAndUPi(); });
         isBank = true;
     }
     private void OnDisable()
     {
+        isUpdate = false;
+
         addBankPanel.SetActive(false);
         BankListPanel.SetActive(false);
         UPISectionBoard.SetActive(false);
         BankSectionBoard.SetActive(true);
+        AddUPiPanel.SetActive(false);
+        UPIListPanel.SetActive(false);
+        updateBankButton.SetActive(false);
+        updateupiButton.SetActive(false);
 
         UPIInputField.text = "";
         amountInputfield.text = "";
@@ -72,14 +103,60 @@ public class WithdrawHandler : MonoBehaviour
         AddaccountNumberInputfield.text = "";
         AddIFSCInputfield.text = "";
         AddaccountHolderNameInputfield.text = "";
+        AddUPIInputField.text = "";
+    }
+
+    public void checkForBankAndUPi()
+    {
+        int count = MainGetBank.data.docs.Count;
+        int count1 = MainUPiHIstory.data.docs.Count;
+
+
+        Debug.Log(count + "  ---------- " + count1);
+
+        if (count >= 2)
+        {
+            Debug.Log("Bank");
+            bankNameInputfield.text = MainGetBank.data.docs[0].bankName;
+            accountHolderNameInputfield.text = MainGetBank.data.docs[0].accountHolderName;
+            accountNumberInputfield.text = MainGetBank.data.docs[0].accountNumber;
+            IFSCInputfield.text = MainGetBank.data.docs[0].IFSC;
+            paymentID = MainGetBank.data.docs[0].id;
+        }
+        else if (count1 >= 1)
+        {
+            Debug.Log("UPI");
+            OnClickToChange("upi");
+            UPIInputField.text = MainUPiHIstory.data.docs[0].upiId;
+            Debug.Log(" -------------------- "+MainUPiHIstory.data.docs[0].upiId);
+            paymentID = MainUPiHIstory.data.docs[0].id;
+        }
+        else
+        {
+            AddBankUpiPopUp.SetActive(true);
+            DOVirtual.DelayedCall(1f, delegate { AddBankUpiPopUp.SetActive(false); });
+        }
     }
 
     public void WithdrawAmount()
     {
-        if (amountInputfield.text.Length >= 3 && bankNameInputfield.text.Length >= 2 && IFSCInputfield.text.Length >= 2 && accountHolderNameInputfield.text.Length >= 2 && accountNumberInputfield.text.Length >= 2 && isBank)
-            StartCoroutine(WithDrawAmountApiBank());
-        else if (amountInputfield.text.Length >= 3 && UPIInputField.text.Length >= 5)
-            StartCoroutine(WithDrawAmountApiBank());  ////////////////////
+        if (amountInputfield.text.Length >= 3 && bankNameInputfield.text.Length >= 2 && IFSCInputfield.text.Length >= 2 && accountHolderNameInputfield.text.Length >= 2 && accountNumberInputfield.text.Length >= 2 && isBank && !string.IsNullOrEmpty(paymentID))
+        {
+            StartCoroutine(WithDrawAmountApi());
+            Debug.Log("Bank ----------------");
+
+        }
+        else if (amountInputfield.text.Length >= 3 && UPIInputField.text.Length >= 5 && isUpi && !string.IsNullOrEmpty(paymentID))
+        {
+            StartCoroutine(WithDrawAmountApi());
+            Debug.Log("Upi ----------------");
+        }
+        else
+        {
+            Debug.Log("Else ------------------");
+            Debug.Log($"{isBank}--  {isUpi} -- {!string.IsNullOrEmpty(paymentID)}");
+            Debug.Log
+        }
     }
     public void AddBankData()
     {
@@ -91,6 +168,26 @@ public class WithdrawHandler : MonoBehaviour
     }
 
 
+    public void AddUPIData()
+    {
+        StartCoroutine(addUPI());
+    }
+    public void GetUPIData()
+    {
+        StartCoroutine(GetUPIHis());
+    }
+
+    public void UpdateBankAccountDetails()
+    {
+        StartCoroutine(updateBankAccount());
+    }
+
+    public void UpdateUpiAccountDetails()
+    {
+        StartCoroutine(updateUPiAccount());
+    }
+
+
     public void ClearBankHistory()
     {
         for (int i = 0; i < HistoryParent.transform.childCount; i++)
@@ -98,6 +195,15 @@ public class WithdrawHandler : MonoBehaviour
             Destroy(HistoryParent.transform.GetChild(i).gameObject);
         }
         bankHistoryPrefabList.Clear();
+    }
+
+    public void ClearUPIHistory()
+    {
+        for (int i = 0; i < UpiContent.transform.childCount; i++)
+        {
+            Destroy(UpiContent.transform.GetChild(i).gameObject);
+        }
+        UPIHistoryPrefabList.Clear();
     }
 
     public void GenerateBankHistory(int count)
@@ -119,30 +225,110 @@ public class WithdrawHandler : MonoBehaviour
             string AccountHolderName = MainGetBank.data.docs[i].accountHolderName;
             string AccountIFSCCode = MainGetBank.data.docs[i].IFSC;
 
-            bankHistoryPrefabClone.SetBankPrefabData(bankname, Accountnumber, AccountHolderName, AccountIFSCCode);
+            bankHistoryPrefabClone.SetBankPrefabData(bankname, Accountnumber, AccountHolderName, AccountIFSCCode, Index);
+        }
+    }
+
+    public void GenerateUPIHistory(int count)
+    {
+        ClearUPIHistory();
+        for (int i = 0; i < count; i++)
+        {
+            int Index = i;
+            UPIHistoryPrefab UPIHistoryPrefabClone = Instantiate(UPIHistoryPrefab, UpiContent);
+            UPIHistoryPrefabClone.GetComponent<Button>().onClick.AddListener(delegate
+            {
+                OnClickUpiHisotyButton(Index);
+            });
+            UPIHistoryPrefabList.Add(UPIHistoryPrefabClone);
+            string upiid = MainUPiHIstory.data.docs[i].upiId;
+            UPIHistoryPrefabClone.SetData(upiid, Index);
         }
     }
 
     public void OnClickBanHistoryButton(int Index)
     {
-        addBankPanel.SetActive(false);
-        BankListPanel.SetActive(false);
-        bankNameInputfield.text = bankHistoryPrefabList[Index].bankNameTxt.text;
-        accountHolderNameInputfield.text = bankHistoryPrefabList[Index].AccountHolderNameTxt.text;
-        accountNumberInputfield.text = bankHistoryPrefabList[Index].AccountNumberTxt.text;
-        accountHolderNameInputfield.text = bankHistoryPrefabList[Index].AccountHolderNameTxt.text;
-        IFSCInputfield.text = bankHistoryPrefabList[Index].AccountIFSCCode.text;
+        if (!isUpdate)
+        {
+            addBankPanel.SetActive(false);
+            BankListPanel.SetActive(false);
+            bankNameInputfield.text = bankHistoryPrefabList[Index].bankNameTxt.text;
+            accountHolderNameInputfield.text = bankHistoryPrefabList[Index].AccountHolderNameTxt.text;
+            accountNumberInputfield.text = bankHistoryPrefabList[Index].AccountNumberTxt.text;
+            IFSCInputfield.text = bankHistoryPrefabList[Index].AccountIFSCCode.text;
+            paymentID = MainGetBank.data.docs[Index].id;
+
+        }
+        else
+        {
+            isUpdate = false;
+            addBankPanel.SetActive(true);
+            BankListPanel.SetActive(false);
+            AddbankNameInputfield.text = bankHistoryPrefabList[Index].bankNameTxt.text;
+            AddaccountHolderNameInputfield.text = bankHistoryPrefabList[Index].AccountHolderNameTxt.text;
+            AddaccountNumberInputfield.text = bankHistoryPrefabList[Index].AccountNumberTxt.text;
+            AddaccountHolderNameInputfield.text = bankHistoryPrefabList[Index].AccountHolderNameTxt.text;
+            AddIFSCInputfield.text = bankHistoryPrefabList[Index].AccountIFSCCode.text;
+            updateBankid = MainGetBank.data.docs[Index].id;
+
+
+        }
+    }
+
+    public void OnClickUpiHisotyButton(int Index)
+    {
+        if (!isUpdate)
+        {
+            AddUPiPanel.SetActive(false);
+            UPIListPanel.SetActive(false);
+            UPIInputField.text = UPIHistoryPrefabList[Index].UPiID.text;
+            paymentID = MainUPiHIstory.data.docs[Index].id;
+        }
+        else
+        {
+            isUpdate = false;
+            AddUPiPanel.SetActive(true);
+            UPIListPanel.SetActive(false);
+            AddUPIInputField.text = MainUPiHIstory.data.docs[Index].upiId;
+            updateupiButton.SetActive(true);
+            UpdateUPIId = MainUPiHIstory.data.docs[Index].id;
+
+
+        }
+    }
+
+    public IEnumerator OffUodateText(GameObject Obj)
+    {
+        yield return new WaitForSeconds(2f);
+        Obj.SetActive(false);
+    }
+
+    public void OnclickUpdate(string name)
+    {
+        isUpdate = true;
+
+        switch (name)
+        {
+            case "bank":
+                UpdateBankTextObject.SetActive(true);
+                StartCoroutine(OffUodateText(UpdateBankTextObject));
+                break;
+
+            case "upi":
+                UpdateUPiTextObject.SetActive(true);
+                StartCoroutine(OffUodateText(UpdateUPiTextObject));
+                break;
+        }
     }
 
 
-    public IEnumerator WithDrawAmountApiBank()
+    internal string paymentID;
+
+    public IEnumerator WithDrawAmountApi()
     {
         WWWForm form = new WWWForm();
         form.AddField("amount", amountInputfield.text);
-        form.AddField("bankName", bankNameInputfield.text);
-        form.AddField("IFSC", IFSCInputfield.text);
-        form.AddField("accountHolderName", accountHolderNameInputfield.text);
-        form.AddField("accountNumber", accountNumberInputfield.text);
+        form.AddField("userPaymentId", paymentID);
 
         using (var profileApi = UnityWebRequest.Post(StaticData.baseURL + StaticData.withdrawAmout, form))
         {
@@ -165,6 +351,7 @@ public class WithdrawHandler : MonoBehaviour
                 IFSCInputfield.text = "";
                 accountHolderNameInputfield.text = "";
                 accountNumberInputfield.text = "";
+                paymentID = "";
             }
         }
     }
@@ -219,21 +406,21 @@ public class WithdrawHandler : MonoBehaviour
 
 
 
+    internal string updateBankid;
 
 
-
-    public IEnumerator updateBankAccount(string accountNumber, string BankId, string bankName, string IFSC, string accountHolderName)
+    public IEnumerator updateBankAccount()
     {
         WWWForm wwwform = new WWWForm();
 
-        Debug.Log("BANK ID : " + BankId);
+        Debug.Log("BANK ID : " + updateBankid);
 
-        wwwform.AddField("bankId", BankId);
-        wwwform.AddField("bankName", bankName);
-        wwwform.AddField("IFSC", IFSC);
-        wwwform.AddField("accountNumber", accountNumber);
-        wwwform.AddField("accountHolderName", accountHolderName);
-        Debug.Log("break" + BankId);
+        wwwform.AddField("bankId", updateBankid);
+        wwwform.AddField("bankName", AddbankNameInputfield.text);
+        wwwform.AddField("IFSC", AddIFSCInputfield.text);
+        wwwform.AddField("accountNumber", AddaccountNumberInputfield.text);
+        wwwform.AddField("accountHolderName", AddaccountHolderNameInputfield.text);
+        //Debug.Log("break" + BankId);
         using (UnityWebRequest request = UnityWebRequest.Post(StaticData.baseURL + StaticData.UpdateBank, wwwform))
         {
             request.SetRequestHeader("Authorization", GameManager.instance.token);
@@ -247,10 +434,6 @@ public class WithdrawHandler : MonoBehaviour
             else
             {
                 print("Response: " + request.downloadHandler.text);
-                PlayerPrefs.SetString("accountnumber", accountNumber);
-                PlayerPrefs.SetString("bankName", bankName);
-                PlayerPrefs.SetString("IFSC", IFSC);
-                PlayerPrefs.SetString("acountholdename", name);
             }
         }
     }
@@ -284,13 +467,17 @@ public class WithdrawHandler : MonoBehaviour
 
     public void OnClickToChange(string name)
     {
-        switch(name)
+        switch (name)
         {
             case "bank":
                 UPIInputField.text = "";
                 amountInputfield.text = "";
                 BankSectionBoard.SetActive(true);
                 UPISectionBoard.SetActive(false);
+                AddBankButton.SetActive(true);
+                AddUPIButton.SetActive(false);
+                isBank = true;
+                isUpi = false;
                 break;
 
             case "upi":
@@ -301,9 +488,112 @@ public class WithdrawHandler : MonoBehaviour
                 accountNumberInputfield.text = "";
                 BankSectionBoard.SetActive(false);
                 UPISectionBoard.SetActive(true);
+                AddBankButton.SetActive(false);
+                AddUPIButton.SetActive(true);
+                isBank = false;
+                isUpi=true;
                 break;
         }
     }
+
+
+
+
+
+    public IEnumerator addUPI()
+    {
+        SendUPIData sendUPIData = new();
+        sendUPIData.upiId = AddUPIInputField.text;
+
+        string jsonData = JsonUtility.ToJson(sendUPIData);
+
+        UnityWebRequest request = new UnityWebRequest(StaticData.baseURL + StaticData.AddUPI, "POST");
+
+        // Convert JSON string to byte array
+        byte[] rawData = System.Text.Encoding.UTF8.GetBytes(jsonData);
+
+        // Attach raw data to the request
+        request.uploadHandler = new UploadHandlerRaw(rawData);
+
+        // Set response handler
+        request.downloadHandler = new DownloadHandlerBuffer();
+
+        request.SetRequestHeader("Content-Type", "application/json");
+        request.SetRequestHeader("Authorization", GameManager.instance.token);
+
+        //UploadHandlerRaw    
+
+        yield return request.SendWebRequest();
+
+        // Check for errors
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.LogError(request.error);
+        }
+        else
+        {
+            Debug.Log("Response: " + request.downloadHandler.text);
+            MainAddUPI = JsonUtility.FromJson<MainAddUPI>(request.downloadHandler.text);
+            GetUPIData();
+            AddUPIInputField.text = "";
+        }
+    }
+
+    internal string UpdateUPIId;
+
+    public IEnumerator updateUPiAccount()
+    {
+        WWWForm wwwform = new WWWForm();
+
+        wwwform.AddField("upiId", UpdateUPIId);
+
+        using (UnityWebRequest request = UnityWebRequest.Post(StaticData.baseURL + StaticData.UpdateUPI, wwwform))
+        {
+            request.SetRequestHeader("Authorization", GameManager.instance.token);
+
+            yield return request.SendWebRequest();
+
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                print("Error: " + request.error);
+            }
+            else
+            {
+                print("Response: " + request.downloadHandler.text);
+                AddUPIInputField.text = "";
+            }
+        }
+    }
+
+    public IEnumerator GetUPIHis()
+    {
+        WWWForm wwwform = new WWWForm();
+
+        Debug.Log("Bank History CAllles");
+
+        using (UnityWebRequest request = UnityWebRequest.Post(StaticData.baseURL + StaticData.GetUPIHistory, wwwform))
+        {
+            request.SetRequestHeader("Authorization", GameManager.instance.token);
+            yield return request.SendWebRequest();
+
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                print("Error: " + request.error);
+            }
+            else
+            {
+                print("Response: " + request.downloadHandler.text);
+                MainUPiHIstory = JsonUtility.FromJson<MainUPiHIstory>(request.downloadHandler.text);
+                int GenerateCount = MainUPiHIstory.data.docs.Count;
+                GenerateUPIHistory(GenerateCount);
+            }
+        }
+    }
+
+
+
+
+
 }
 
 [System.Serializable]
@@ -362,6 +652,11 @@ public class SendDataAddBank
     public string accountHolderName;
 }
 
+public class SendUPIData
+{
+    public string upiId;
+}
+
 #endregion
 
 
@@ -412,3 +707,67 @@ public class MainGetBank
 
 #endregion
 
+
+
+#region Add UPi
+// Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
+[System.Serializable]
+public class MainAddUPI
+{
+    public string userId;
+    public string type;
+    public string _id;
+    public DateTime createdAt;
+    public DateTime updatedAt;
+    public string id;
+}
+[System.Serializable]
+public class AddUPIData
+{
+    public string message;
+    public string status;
+    public int statusCode;
+    public bool success;
+    public MainAddUPI data;
+}
+#endregion
+
+
+#region Get UPI History
+[System.Serializable]
+public class UPIHistory
+{
+    public List<UPIIDList> docs;
+    public int totalDocs;
+    public int offset;
+    public int limit;
+    public int totalPages;
+    public int page;
+    public int pagingCounter;
+    public bool hasPrevPage;
+    public bool hasNextPage;
+    public object prevPage;
+    public object nextPage;
+}
+[System.Serializable]
+public class UPIIDList
+{
+    public string _id;
+    public string userId;
+    public string type;
+    public string upiId;
+    public DateTime createdAt;
+    public DateTime updatedAt;
+    public string id;
+}
+[System.Serializable]
+public class MainUPiHIstory
+{
+    public string message;
+    public string status;
+    public int statusCode;
+    public bool success;
+    public UPIHistory data;
+}
+
+#endregion
