@@ -62,7 +62,7 @@ public class ProfileHandler : MonoBehaviour
                 userIdTxt.text = "#"+profileRes.data._id;
                 pointSlider.maxValue = profileRes.data.totalGamePlayed;
                 pointSlider.value = profileRes.data.totalWinGame;
-                amtTxt.text = profileRes.data.amount.ToString();
+                amtTxt.text = profileRes.data.amount.ToString("F2");
                 userMobilenumber.text = profileRes.data.phoneNumber;
 
                 StaticData.TotalBalance = profileRes.data.amount;

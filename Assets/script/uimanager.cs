@@ -274,7 +274,7 @@ public class uimanager : MonoBehaviour
     public void LogOut()
     {
         PlayerPrefs.DeleteAll();
-        SceneManager.LoadScene(0);
+        Application.Quit();
     }
 }
 

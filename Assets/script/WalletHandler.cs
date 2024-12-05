@@ -128,7 +128,7 @@ public class WalletHandler : MonoBehaviour
         {
             Destroy(withdraw[i].gameObject);
         }
-        deposite.Clear();
+        withdraw.Clear();
     }
 }
 

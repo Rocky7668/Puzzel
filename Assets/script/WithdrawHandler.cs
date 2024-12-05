@@ -133,8 +133,9 @@ public class WithdrawHandler : MonoBehaviour
         }
         else
         {
+            Debug.Log("Else  --------------");
             AddBankUpiPopUp.SetActive(true);
-            DOVirtual.DelayedCall(1f, delegate { AddBankUpiPopUp.SetActive(false); });
+            DOVirtual.DelayedCall(3f, delegate { AddBankUpiPopUp.SetActive(false); });
         }
     }
 
@@ -155,7 +156,6 @@ public class WithdrawHandler : MonoBehaviour
         {
             Debug.Log("Else ------------------");
             Debug.Log($"{isBank}--  {isUpi} -- {!string.IsNullOrEmpty(paymentID)}");
-            Debug.Log
         }
     }
     public void AddBankData()
@@ -406,7 +406,7 @@ public class WithdrawHandler : MonoBehaviour
 
 
 
-    internal string updateBankid;
+    public string updateBankid;
 
 
     public IEnumerator updateBankAccount()
@@ -539,13 +539,14 @@ public class WithdrawHandler : MonoBehaviour
         }
     }
 
-    internal string UpdateUPIId;
+    public string UpdateUPIId;
 
     public IEnumerator updateUPiAccount()
     {
         WWWForm wwwform = new WWWForm();
 
-        wwwform.AddField("upiId", UpdateUPIId);
+        wwwform.AddField("upiId", AddUPIInputField.text);
+        wwwform.AddField("updateId", UpdateUPIId);
 
         using (UnityWebRequest request = UnityWebRequest.Post(StaticData.baseURL + StaticData.UpdateUPI, wwwform))
         {

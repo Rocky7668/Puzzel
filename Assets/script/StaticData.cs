@@ -38,7 +38,7 @@ public class StaticData
     public static string AddUPI = "/user/addUpi";
     public static string UpdateUPI = "/user/updateUpi";
     public static string GetUPIHistory = "/user/upiHistory";
-    public static string GetCommissionHistory = "user/getCommissionHistory";
+    public static string GetCommissionHistory = "/user/getCommissionHistory";
 
     public static double TotalBalance;
 }

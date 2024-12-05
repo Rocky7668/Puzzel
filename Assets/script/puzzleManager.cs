@@ -70,10 +70,12 @@ public class puzzleManager : MonoBehaviour
         GameManager.instance.HintButton.SetActive(true);
         temp.Clear();
         temp.AddRange(puzzles[uimanager.instance.imgIdx].sprites);
-        Debug.Log($"puzzles[uimanager.instance.imgIdx].sprites{uimanager.instance.imgIdx}");
+       
         for (int i = 0; i < box.Count; i++)
         {
             int num = i;
+            box[i].GetComponent<Button>().onClick.RemoveAllListeners();
+
             box[i].GetComponent<Button>().onClick.AddListener(() => puzzlbox(num));
             temp[i].name = i.ToString();
         }
@@ -103,6 +105,7 @@ public class puzzleManager : MonoBehaviour
         for (int i = 0; i < box.Count; i++)
         {
             int num = i;
+            box[i].GetComponent<Button>().onClick.RemoveAllListeners();
             box[i].GetComponent<Button>().onClick.AddListener(() => puzzlbox(num));
             temp[i].name = i.ToString();
         }
@@ -190,6 +193,7 @@ public class puzzleManager : MonoBehaviour
     void puzzlbox(int i)
     {
         Debug.Log("hello");
+        Debug.Log("Count ----111 ----- " + couter.Count);
         if (couter.Count != 2)
         {
             couter.Add(i);
@@ -197,7 +201,7 @@ public class puzzleManager : MonoBehaviour
             {
                 SwapImagesAtIndices(couter[0], couter[1]);
                 CheckNumberForPoints(couter[1]);
-
+                Debug.Log("Count ----222 ----- " + couter.Count);
             }
         }
         else
@@ -205,6 +209,7 @@ public class puzzleManager : MonoBehaviour
             couter.Clear();
             couter.Add(i);
         }
+        Debug.Log("Count ----333 ----- " + couter.Count);
     }
     void timmer()
     {
@@ -247,6 +252,7 @@ public class puzzleManager : MonoBehaviour
             }
             else
             {
+                Debug.Log("Else  ----------- 11");
                 gamePoints -= addPoints;
             }
         }
@@ -254,6 +260,7 @@ public class puzzleManager : MonoBehaviour
         {
             if (temp[index].name != index.ToString())
             {
+                Debug.Log("Else  ----------- 22");
                 gamePoints -= addPoints;
             }
         }

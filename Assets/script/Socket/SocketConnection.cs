@@ -8,7 +8,7 @@ public class SocketConnection : MonoBehaviour
     public static SocketConnection instance;
 
     [Header("===== Socket Info =====")]
-    private SocketManager socketManager;
+    internal SocketManager socketManager;
     public string socketURL;
 
     public SocketState socketState;
