@@ -12,6 +12,8 @@ public class TimerHandler : MonoBehaviour
     public DashboardHandler dashboardHandler;
     public JoinGamePopup joinGamePopup;
 
+    public Text GameplayText;
+
     public void SecondSet(int sec)
     {
         second = sec;
@@ -27,7 +29,21 @@ public class TimerHandler : MonoBehaviour
     {
         uimanager.instance.periodTxt.text = resTimer.roundId.ToString();
         string formattedTime = FormatTime(resTimer.timer);
-        secondTxt.text = formattedTime;
+
+        if (resTimer.timer >= 210)
+        {
+            secondTxt.text = "Join Time Left\n" + formattedTime;
+            GameplayText.gameObject.SetActive(true);
+            GameplayText.text = "Game Start in \n " + formattedTime + " sec";
+        }
+        else
+        {
+            secondTxt.text = "Wair For Next Round\n" + formattedTime;
+            GameplayText.gameObject.SetActive(false);
+
+        }
+
+
         if (!resTimer.iStartGame)
         {
             //Debug.Log("First");

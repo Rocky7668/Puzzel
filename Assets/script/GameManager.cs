@@ -43,6 +43,10 @@ public class GameManager : MonoBehaviour
     internal bool isPraticeMode;
     public int time;
     public Sprite QuestionMark;
+    public GameObject QuestionBG;
+
+    public Text MainPanel;
+
 
     private void Awake()
     {
@@ -93,6 +97,7 @@ public class GameManager : MonoBehaviour
             if (uimanager.instance.JoinGamePopup.activeInHierarchy)
                 uimanager.instance.JoinGamePopup.SetActive(false);
             Onetime = true;
+            HintButton.SetActive(true);
         }
         if (isWingame)
         {
@@ -100,6 +105,7 @@ public class GameManager : MonoBehaviour
         }
         if (time == 0)
         {
+            QuestionBG.SetActive(true);
             QuestiomarkImage.sprite = QuestionMark;
             //StartCoroutine(GetPuzzelTexture());
         }
@@ -109,7 +115,7 @@ public class GameManager : MonoBehaviour
     {
         SelectObject.gameObject.SetActive(true);
         TimerObject.SetActive(false);
-        isPraticeMode = true;
+        //isPraticeMode = true;
     }
 
     public void IBtn()
@@ -128,7 +134,14 @@ public class GameManager : MonoBehaviour
     {
         TimerObject.SetActive(true);
         puzzleManager.instance.isEnterGame = true;
-        StartCoroutine(GetPuzzelTexture());
+        isPraticeMode = false;
+        uimanager.instance.top.SetActive(false);
+        //StartCoroutine(GetPuzzelTexture());
+        foreach (var item in puzzleManager.instance.box)
+        {
+            item.sprite = null;
+        }
+        HintButton.SetActive(false);
         SocketConnection.instance.SendDataToServer(StaticData.PuzzleEvent.JOIN_TABLE.ToString(), "");
     }
 
@@ -220,6 +233,7 @@ public class GameManager : MonoBehaviour
     public void SetImageAfterStartGame()
     {
         RunningGameImage.sprite = gamePlaySprite;
+        QuestionBG.SetActive(false);
         QuestiomarkImage.sprite = gamePlaySprite;
         RunningGamePeriodNumber.text = periodnumber.ToString();
         GameManager.instance.RunningGameTxt.text = "Running Game";

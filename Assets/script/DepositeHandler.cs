@@ -15,7 +15,7 @@ public class DepositeHandler : MonoBehaviour
     public List<Button> DepositeButtons;
     [SerializeField] private List<int> depositeBtnAmount;
 
-    public RawImage QrCodeImage;
+    public Image QrCodeImage;
 
     public GameObject QrCodePanel;
 
@@ -121,18 +121,24 @@ public class DepositeHandler : MonoBehaviour
 
     public IEnumerator DownloadQr(string url)
     {
+        Debug.Log("<color=red><b>----- url  -----</b></color>" + url);
         using (UnityWebRequest request = UnityWebRequestTexture.GetTexture(url))
         {
             yield return request.SendWebRequest();
 
             if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
             {
+                Debug.Log("<color=red><b>----- Qr Code Download  Failed -----</b></color>");
                 Debug.LogError("Error downloading texture: " + request.error);
             }
             else
             {
+                Debug.Log("<color=red><b>----- Qr Code Download -----</b></color>");
                 Texture2D texture = DownloadHandlerTexture.GetContent(request);
-                QrCodeImage.texture = texture;
+                Sprite newSprite = Sprite.Create(texture, new Rect(0, 0, 600, 600), new Vector2(0.5f, 0.5f));
+
+                //Debug.Log("<color=red><b>----- Qr Code name -------{" + newSprite.name + "} -----</b></color>");
+                QrCodeImage.sprite = newSprite;
                 QrCodeImage.color = Color.white;
             }
         }

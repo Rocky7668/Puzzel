@@ -10,16 +10,9 @@ public class Selection : MonoBehaviour
     public Sprite[] AllImg;
     public Sprite[] SliceImg;
 
-    // Start is called before the first frame update
-    void Start()
+    private void OnEnable()
     {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        
     }
 
     public void SelectImage(int idx)
@@ -39,6 +32,7 @@ public class Selection : MonoBehaviour
 
         GameManager.instance.ButtonsOnOff(true);
         puzzleManager.instance.EnablePlayImage();
+        GameManager.instance.isPraticeMode = true;
         this.gameObject.SetActive(false);
         
     }

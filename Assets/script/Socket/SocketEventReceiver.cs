@@ -74,7 +74,7 @@ public class SocketEventReceiver : MonoBehaviour
 
             case PuzzleEvent.WINNER:
                 winRes = JsonUtility.FromJson<WinRes>(res);
-                if (uimanager.instance.play.activeInHierarchy)
+                if (uimanager.instance.play.activeInHierarchy && !GameManager.instance.isPraticeMode)
                 {
                     uimanager.instance.WinButtonClick();
                     winHandler.WinningSet(winRes);

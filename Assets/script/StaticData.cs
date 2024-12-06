@@ -41,4 +41,5 @@ public class StaticData
     public static string GetCommissionHistory = "/user/getCommissionHistory";
 
     public static double TotalBalance;
+    public static double TotalCommission;
 }

@@ -37,8 +37,7 @@ public class puzzleManager : MonoBehaviour
 
     private void OnEnable()
     {
-        //InvokeRepeating(nameof(timmer), 1, 1
-        // Invoke(nameof(EnablePlayImage), .5f);
+       
     }
 
     public void OnStartGame()
@@ -50,7 +49,6 @@ public class puzzleManager : MonoBehaviour
         rows.SetActive(false);
         mainimageObj.SetActive(false);
         GameManager.instance.HintButton.SetActive(false);
-        //string url = "https://drive.google.com/file/d/1NhleXtwOWM15vslMns9_oinCjuTZydLY/view?usp=sharing";
         time = 180;
         temp.Clear();
         cout = 0;

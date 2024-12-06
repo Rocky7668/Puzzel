@@ -23,6 +23,8 @@ public class ProfileHandler : MonoBehaviour
     [SerializeField] private NotificationPrefabHandler notificationPrefabHandler;
     [SerializeField] private List<NotificationPrefabHandler> notificationPrefabHandlers;
 
+    public Text RefferalCodeText;
+
 
     private void Awake()
     {
@@ -65,6 +67,7 @@ public class ProfileHandler : MonoBehaviour
                 amtTxt.text = profileRes.data.amount.ToString("F2");
                 userMobilenumber.text = profileRes.data.phoneNumber;
 
+                RefferalCodeText.text = profileRes.data.referralCode;
                 StaticData.TotalBalance = profileRes.data.amount;
             }
         }
@@ -103,6 +106,11 @@ public class ProfileHandler : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void CopyReffralCode()
+    {
+        GUIUtility.systemCopyBuffer = RefferalCodeText.text;
     }
 
     void DestroyNotification()

@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 public class uimanager : MonoBehaviour
 {
     public static uimanager instance;
-    public GameObject home, play, magic, profile, notification, menu, win, notChipsObj, top, time, winBtnObj, practiceModeTxt, transactionPanel, topPanel, backBtn,JoinGamePopup;
+    public GameObject home, play, magic, profile, notification, menu, win, notChipsObj, top, time, winBtnObj, practiceModeTxt, transactionPanel, topPanel, backBtn, JoinGamePopup;
     public static int a;
     public List<GameObject> panels;
     public List<GameObject> mainpanels;
@@ -22,6 +22,9 @@ public class uimanager : MonoBehaviour
     public LoginResponse loginResponse;
     public EntryFeeResponse entryFeeResponse;
     public TextMeshProUGUI GamePointTxt;
+
+    public GameObject fullscreenNotificationCloseButton;
+    public GameObject fullscreenMenuCloseButton;
 
     internal int imgIdx = 0;
 
@@ -50,6 +53,7 @@ public class uimanager : MonoBehaviour
             {
                 menu.GetComponent<RectTransform>().DOAnchorPos(new Vector2(-990, 0), 0.5f);
                 isMenuopen = false;
+                fullscreenMenuCloseButton.SetActive(false);
                 return;
             }
             else if (isNotification)
@@ -76,10 +80,11 @@ public class uimanager : MonoBehaviour
                 play.SetActive(false);
                 home.SetActive(true);
                 top.SetActive(true);
+                GameManager.instance.isPraticeMode = false;
                 puzzleManager.instance.isEnterGame = false;
                 return;
             }
-            if(JoinGamePopup.activeSelf)
+            if (JoinGamePopup.activeSelf)
             {
                 JoinGamePopup.SetActive(false);
                 return;
@@ -118,7 +123,7 @@ public class uimanager : MonoBehaviour
                 return;
             }
 
-            if(win.activeSelf)
+            if (win.activeSelf)
             {
                 win.SetActive(false);
                 home.SetActive(true);
@@ -142,20 +147,19 @@ public class uimanager : MonoBehaviour
     public void NotificationButton()
     {
         isNotification = true;
-        //profile.transform.DOScale(Vector3.zero, 0.5f);
         profile.SetActive(false);
-        menu.GetComponent<RectTransform>().DOAnchorPos(new Vector2(-990, 0), 0.5f); isMenuopen = false;
-        //notification.transform.DOLocalMove(new Vector2(0, 0), 0.5f);
+        menu.GetComponent<RectTransform>().DOAnchorPos(new Vector2(-990, 0), 0.5f); isMenuopen = false; fullscreenMenuCloseButton.SetActive(false);
         notification.GetComponent<RectTransform>().DOAnchorPos(new Vector2(0, 0), 0.5f);
+        fullscreenNotificationCloseButton.SetActive(true);
     }
     public bool isMenuopen;
     public void MenuButton()
     {
         isMenuopen = true;
         isNotification = false;
-        //menu.transform.DOLocalMove(new Vector2(-615, 0), 0.5f);
         menu.GetComponent<RectTransform>().DOAnchorPos(new Vector2(-190, 0), 0.5f);
         notification.GetComponent<RectTransform>().DOAnchorPos(new Vector2(910, 0), 0.5f);
+        fullscreenMenuCloseButton.SetActive(true);
     }
 
     public void PlayBtnClick()
@@ -179,6 +183,7 @@ public class uimanager : MonoBehaviour
         magic.SetActive(true);
         home.SetActive(false);
         menu.GetComponent<RectTransform>().DOAnchorPos(new Vector2(-990, 0), 0.5f);
+        fullscreenMenuCloseButton.SetActive(false);
         isMenuopen = false;
 
     }
@@ -191,7 +196,9 @@ public class uimanager : MonoBehaviour
         magic.SetActive(false);
         home.SetActive(true);
         notification.GetComponent<RectTransform>().DOAnchorPos(new Vector2(910, 0), 0.5f);
-        menu.GetComponent<RectTransform>().DOAnchorPos(new Vector2(-990, 0), 0.5f);
+        fullscreenMenuCloseButton.SetActive(false);
+        //menu.GetComponent<RectTransform>().DOAnchorPos(new Vector2(-990, 0), 0.5f);
+        //fullscreenNotificationCloseButton.SetActive(false);
         isMenuopen = false;
     }
     public void ProfileBack()
@@ -212,12 +219,14 @@ public class uimanager : MonoBehaviour
         home.SetActive(true);
         play.SetActive(false);
         magic.SetActive(false);
-        //notification.transform.DOLocalMove(new Vector2(1550, 0), 0.5f);
+        
         notification.GetComponent<RectTransform>().DOAnchorPos(new Vector2(910, 0), 0.5f);
-        //menu.transform.DOLocalMove(new Vector2(-1550, 0), 0.5f); 
+      
         menu.GetComponent<RectTransform>().DOAnchorPos(new Vector2(-990, 0), 0.5f);
         isMenuopen = false;
-        //profile.transform.DOScale(Vector3.zero, 0.5f);
+        fullscreenMenuCloseButton.SetActive(false);
+        fullscreenNotificationCloseButton.SetActive(false);
+        isNotification = false;
         profile.SetActive(false);
         win.SetActive(false);
     }
@@ -228,7 +237,7 @@ public class uimanager : MonoBehaviour
         {
             g.SetActive(false);
         }
-        menu.GetComponent<RectTransform>().DOAnchorPos(new Vector2(-990, 0), 0.5f);
+        //menu.GetComponent<RectTransform>().DOAnchorPos(new Vector2(-990, 0), 0.5f);
         panels[index].SetActive(true);
         Screen.orientation = ScreenOrientation.Portrait;
     }
@@ -253,7 +262,8 @@ public class uimanager : MonoBehaviour
         {
             panels.SetActive(false);
         }
-        menu.GetComponent<RectTransform>().DOAnchorPos(new Vector2(-990, 0), 0.5f);
+        //menu.GetComponent<RectTransform>().DOAnchorPos(new Vector2(-990, 0), 0.5f);
+        //fullscreenMenuCloseButton.SetActive(false);
         _newPanels[number].SetActive(true);
         isMenuopen = false;
         isNotification = false;
@@ -262,8 +272,16 @@ public class uimanager : MonoBehaviour
 
     public void OnclickHomeInMenu()
     {
+        fullscreenMenuCloseButton.SetActive(false);
         menu.GetComponent<RectTransform>().DOAnchorPos(new Vector2(-990, 0), 0.5f);
         isMenuopen = false;
+    }
+
+    public void CloseNotification()
+    {
+        fullscreenNotificationCloseButton.SetActive(false);
+        notification.GetComponent<RectTransform>().DOAnchorPos(new Vector2(910, 0), 0.5f);
+        isNotification = false;
     }
 
     public void OnScreenResolutionLandScape()
