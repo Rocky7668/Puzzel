@@ -26,6 +26,8 @@ public class uimanager : MonoBehaviour
     public GameObject fullscreenNotificationCloseButton;
     public GameObject fullscreenMenuCloseButton;
 
+    public List<GameObject> MenuButtonList;
+
     internal int imgIdx = 0;
 
 
@@ -282,6 +284,28 @@ public class uimanager : MonoBehaviour
         fullscreenNotificationCloseButton.SetActive(false);
         notification.GetComponent<RectTransform>().DOAnchorPos(new Vector2(910, 0), 0.5f);
         isNotification = false;
+    }
+    public Color32 homeColor;
+    public Color32 highLightColor;
+
+    public void MenuButtonsHighLight(int Index)
+    {
+        foreach (var item in MenuButtonList)
+        {
+            item.transform.GetChild(0).GetComponent<Image>().color = Color.white;
+            item.transform.GetChild(1).GetComponent<Text>().color = Color.white;
+        }
+       
+        if(Index == 0)
+        {
+            MenuButtonList[Index].transform.GetChild(0).GetComponent<Image>().color = homeColor;
+            MenuButtonList[Index].transform.GetChild(1).GetComponent<Text>().color = Color.white;
+
+        }
+
+        MenuButtonList[Index].transform.GetChild(0).GetComponent<Image>().color = highLightColor;
+        MenuButtonList[Index].transform.GetChild(1).GetComponent<Text>().color = highLightColor;
+
     }
 
     public void OnScreenResolutionLandScape()

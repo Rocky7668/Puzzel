@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -10,13 +11,14 @@ public class ProfileHandler : MonoBehaviour
     public static ProfileHandler instance;
 
 
-    public Text userNameTxt, userIdTxt,userMobilenumber;
+    public Text userNameTxt, userIdTxt, userMobilenumber,WalletPopuUpAmount;
     public Slider pointSlider;
 
     public TextMeshProUGUI amtTxt;
 
     public ProfileRes profileRes;
     public NotificationRes notificationRes;
+    public MainUpdateProfile MainUpdateProfile;
 
     [Header("===== Notification =====")]
     [SerializeField] private Transform notificationGenerator;
@@ -25,10 +27,23 @@ public class ProfileHandler : MonoBehaviour
 
     public Text RefferalCodeText;
 
+    public Text FullnameTxt;
+    public Text DOBTxt;
+    public Text PincodeTxt;
+    public Text LocationTxt;
+
+    public InputField FullnameTxtIF;
+    public InputField DOBTxtIF;
+    public InputField PincodeTxtIF;
+    public InputField LocationTxtIF;
+
+    public GameObject FirstUpdateButton;
+    public GameObject SecondUpdateButton;
+
 
     private void Awake()
     {
-        if(instance == null)
+        if (instance == null)
             instance = this;
     }
 
@@ -37,9 +52,26 @@ public class ProfileHandler : MonoBehaviour
         ProfileDataSet();
     }
 
+    public void ClickUpdateProfile(bool isTrue)
+    {
+        FullnameTxtIF.gameObject.SetActive(isTrue);
+        DOBTxtIF.gameObject.SetActive(isTrue);
+        PincodeTxtIF.gameObject.SetActive(isTrue);
+        LocationTxtIF.gameObject.SetActive(isTrue);
+        SecondUpdateButton.SetActive(isTrue);
+        FirstUpdateButton.SetActive(!isTrue);
+
+    }
+
     public void ProfileDataSet()
     {
         StartCoroutine(PostProfile());
+    }
+
+    public void OnclickUpdateProfile()
+    {
+        if (FullnameTxtIF.text.Length >= 5 && DOBTxtIF.text.Length == 10 && PincodeTxtIF.text.Length >= 4 && LocationTxtIF.text.Length >= 4)
+            StartCoroutine(updateProfile());
     }
 
     IEnumerator PostProfile()
@@ -60,15 +92,18 @@ public class ProfileHandler : MonoBehaviour
             {
                 Debug.Log(api.downloadHandler.text);
                 profileRes = JsonUtility.FromJson<ProfileRes>(api.downloadHandler.text);
-                userNameTxt.text = profileRes.data._id.Substring(0, 8); 
-                userIdTxt.text = "#"+profileRes.data._id;
+                userNameTxt.text = profileRes.data._id.Substring(0, 8);
+                userIdTxt.text = "#" + profileRes.data._id;
                 pointSlider.maxValue = profileRes.data.totalGamePlayed;
                 pointSlider.value = profileRes.data.totalWinGame;
-                amtTxt.text = profileRes.data.amount.ToString("F2");
+                WalletPopuUpAmount.text = "₹ "+profileRes.data.amount.ToString("F2");
+                string Amount = FormatMoney((float)profileRes.data.amount);
+                amtTxt.text = Amount;
                 userMobilenumber.text = profileRes.data.phoneNumber;
 
                 RefferalCodeText.text = profileRes.data.referralCode;
                 StaticData.TotalBalance = profileRes.data.amount;
+                SetPersonalData();
             }
         }
     }
@@ -90,7 +125,7 @@ public class ProfileHandler : MonoBehaviour
 
             if (api.result == UnityWebRequest.Result.ConnectionError)
             {
-                Debug.Log("Error : "+api.error);
+                Debug.Log("Error : " + api.error);
             }
             else
             {
@@ -108,6 +143,68 @@ public class ProfileHandler : MonoBehaviour
         }
     }
 
+    IEnumerator updateProfile()
+    {
+        WWWForm form = new WWWForm();
+        SendUpdateProfile SendUpdateProfile = new();
+        SendUpdateProfile.name = FullnameTxtIF.text;
+        SendUpdateProfile.dateOfBirth = DOBTxtIF.text;
+        SendUpdateProfile.pincode = PincodeTxtIF.text;
+        SendUpdateProfile.location = LocationTxtIF.text;
+
+
+        string jsonData = JsonUtility.ToJson(SendUpdateProfile);
+        Debug.Log("Update json ---------  " + jsonData);
+
+
+
+        // Create a UnityWebRequest
+        UnityWebRequest request = new UnityWebRequest(StaticData.baseURL + StaticData.UpdateProfile, "POST");
+
+        // Convert JSON string to byte array
+        byte[] rawData = System.Text.Encoding.UTF8.GetBytes(jsonData);
+
+        // Attach raw data to the request
+        request.uploadHandler = new UploadHandlerRaw(rawData);
+
+        // Set response handler
+        request.downloadHandler = new DownloadHandlerBuffer();
+
+        request.SetRequestHeader("Content-Type", "application/json");
+        request.SetRequestHeader("Authorization", GameManager.instance.token);
+
+        //UploadHandlerRaw    
+
+        yield return request.SendWebRequest();
+
+        // Check for errors
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.LogError(request.error);
+        }
+        else
+        {
+            Debug.Log("Response: " + request.downloadHandler.text);
+            MainUpdateProfile = JsonUtility.FromJson<MainUpdateProfile>(request.downloadHandler.text);
+            StartCoroutine(PostProfile());
+            ClickUpdateProfile(false);
+            //SetPersonalData();
+        }
+    }
+
+    void SetPersonalData()
+    {
+        FullnameTxt.text = profileRes.data.fullName;
+        DOBTxt.text = profileRes.data.dateOfBirth;
+        PincodeTxt.text = profileRes.data.pincode.ToString();
+        LocationTxt.text = profileRes.data.location;
+
+        FullnameTxtIF.text = "";
+        DOBTxtIF.text = "";
+        PincodeTxtIF.text = "";
+        LocationTxtIF.text = "";
+    }
+
     public void CopyReffralCode()
     {
         GUIUtility.systemCopyBuffer = RefferalCodeText.text;
@@ -121,6 +218,31 @@ public class ProfileHandler : MonoBehaviour
         }
         notificationPrefabHandlers.Clear();
     }
+
+
+    public static string FormatMoney(float number)
+    {
+        if (number >= 1_000_000_000_000)
+        {
+            return (number / 1_000_000_000_000f).ToString((number % 1_000_000_000_000 == 0) ? "0" : "0.0") + "t"; // Trillion
+        }
+        else if (number >= 1_000_000_000)
+        {
+            return (number / 1_000_000_000f).ToString((number % 1_000_000_000 == 0) ? "0" : "0.0") + "b"; // Billion
+        }
+        else if (number >= 1_000_000)
+        {
+            return (number / 1_000_000f).ToString((number % 1_000_000 == 0) ? "0" : "0.0") + "m"; // Million
+        }
+        else if (number >= 1_000)
+        {
+            return (number / 1_000f).ToString((number % 1_000 == 0) ? "0" : "0.0") + "k"; // Thousand
+        }
+        else
+        {
+            return number.ToString("0"); // No formatting needed
+        }
+    }
 }
 
 #region ModelClass
@@ -132,6 +254,13 @@ public class ProfileResData
     public double amount;
     public string role;
     public string referralCode;
+    public bool isActive;
+    public bool isAllowNotifications;
+    public string notificationToken;
+    public string dateOfBirth;
+    public string fullName;
+    public string location;
+    public int pincode;
     public int totalGamePlayed;
     public int totalWinGame;
 }
@@ -152,8 +281,8 @@ public class NotificationResData
     public string _id;
     public string notificationImage;
     public string notificationContent;
-    public System.DateTime createdAt;
-    public System.DateTime updatedAt;
+    public string createdAt;
+    public string updatedAt;
     public string id;
 }
 
@@ -167,3 +296,49 @@ public class NotificationRes
     public List<NotificationResData> data;
 }
 #endregion
+
+[System.Serializable]
+public class SendUpdateProfile
+{
+    public string name;
+    public string dateOfBirth;
+    public string pincode;
+    public string location;
+}
+
+
+[System.Serializable]
+public class MainUpdateProfileData
+{
+    public string _id;
+    public string phoneNumber;
+    public double amount;
+    public string role;
+    public bool isBlock;
+    public string referralCode;
+    public bool isActive;
+    public bool isAllowNotifications;
+    public string notificationToken;
+    public DateTime lastActivateAt;
+    public DateTime createdAt;
+    public DateTime updatedAt;
+    public string token;
+    public string socketId;
+    public string dateOfBirth;
+    public string fullName;
+    public string location;
+    public int pincode;
+    public string id;
+}
+
+[System.Serializable]
+public class MainUpdateProfile
+{
+    public string message;
+    public string status;
+    public int statusCode;
+    public bool success;
+    public MainUpdateProfileData data;
+}
+
+

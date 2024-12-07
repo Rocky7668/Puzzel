@@ -55,8 +55,10 @@ public class TransactionHistory : MonoBehaviour
         {
             TransactionHistoryHandler transactionHistoryHandlerClone = Instantiate(transactionHistoryHandler, historyGenerator);
             transactionHistoryHandlerClone.typeTxt.text = transactionHistoryRes.data.docs[i].transactionType.ToString();
-            transactionHistoryHandlerClone.amtTxt.text = transactionHistoryRes.data.docs[i].amount.ToString();
+            transactionHistoryHandlerClone.amtTxt.text = "₹ "+transactionHistoryRes.data.docs[i].amount.ToString();
             transactionHistoryHandlerClone.TitleTxt.text = transactionHistoryRes.data.docs[i].title.ToString();
+            transactionHistoryHandlerClone.TransctionId.text = "Transcation id" + transactionHistoryRes.data.docs[i].id;
+            transactionHistoryHandlerClone.TimeTxt.text = "Time    " + transactionHistoryRes.data.docs[i].createdAt;
             transactionHistoryHandlers.Add(transactionHistoryHandlerClone);
         }
     }

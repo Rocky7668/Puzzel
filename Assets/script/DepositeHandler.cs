@@ -15,7 +15,7 @@ public class DepositeHandler : MonoBehaviour
     public List<Button> DepositeButtons;
     [SerializeField] private List<int> depositeBtnAmount;
 
-    public Image QrCodeImage;
+    public RawImage QrCodeImage;
 
     public GameObject QrCodePanel;
 
@@ -32,6 +32,7 @@ public class DepositeHandler : MonoBehaviour
         amountInputfield.text = "";
         transctionIdinputfield.text = "";
         StartCoroutine(GetPaymentDetails());
+        
     }
     private void OnDisable()
     {
@@ -121,7 +122,7 @@ public class DepositeHandler : MonoBehaviour
 
     public IEnumerator DownloadQr(string url)
     {
-        Debug.Log("<color=red><b>----- url  -----</b></color>" + url);
+        Debug.Log("<color=red><b>----- url -----</b></color>" + url);
         using (UnityWebRequest request = UnityWebRequestTexture.GetTexture(url))
         {
             yield return request.SendWebRequest();
@@ -135,10 +136,10 @@ public class DepositeHandler : MonoBehaviour
             {
                 Debug.Log("<color=red><b>----- Qr Code Download -----</b></color>");
                 Texture2D texture = DownloadHandlerTexture.GetContent(request);
-                Sprite newSprite = Sprite.Create(texture, new Rect(0, 0, 600, 600), new Vector2(0.5f, 0.5f));
+                //Sprite newSprite = Sprite.Create(texture, new Rect(0, 0, 600, 600), new Vector2(0.5f, 0.5f));
 
                 //Debug.Log("<color=red><b>----- Qr Code name -------{" + newSprite.name + "} -----</b></color>");
-                QrCodeImage.sprite = newSprite;
+                QrCodeImage.texture = texture;
                 QrCodeImage.color = Color.white;
             }
         }
@@ -155,6 +156,9 @@ public class DepositeHandler : MonoBehaviour
     {
         GUIUtility.systemCopyBuffer = UpiIdTxt.text;
     }
+
+    
+
 }
 
 [System.Serializable]

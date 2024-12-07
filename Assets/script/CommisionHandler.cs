@@ -83,7 +83,8 @@ public class CommisionHandler : MonoBehaviour
             {
                 Debug.Log("Commission Points --------- " + api.downloadHandler.text);
                 MainCommissionList = JsonUtility.FromJson<MainCommissionList>(api.downloadHandler.text);
-                int count = MainCommissionList.data.Count;
+                StaticData.TotalCommission = MainCommissionList.data.totalCommission;
+                int count = MainCommissionList.data.commisionHistory.Count;
                 GenerateCommissionList(count);
             }
         }
@@ -97,10 +98,10 @@ public class CommisionHandler : MonoBehaviour
         {
             CommisionRefferListPrefab CommisionRefferListPrefabClone = Instantiate(commisionRefferListPrefab, CommisionRefferPrefabContent);
             CommisionRefferListPrefabList.Add(CommisionRefferListPrefabClone);
-            string userPhone = MainCommissionList.data[i].fromUserId.phoneNumber;
-            string amount = MainCommissionList.data[i].amount.ToString();
-            string title = MainCommissionList.data[i].title;
-            CommisionRefferListPrefabClone.SetData(userPhone,amount,title);
+            string userPhone = MainCommissionList.data.commisionHistory[i].fromUserId.phoneNumber;
+            string amount = MainCommissionList.data.commisionHistory[i].amount.ToString();
+            string title = MainCommissionList.data.commisionHistory[i].title;
+            CommisionRefferListPrefabClone.SetData(userPhone, amount, title);
         }
     }
 
@@ -179,7 +180,15 @@ public class MainCommissionList
     public string status;
     public int statusCode;
     public bool success;
-    public List<MainCommissionListData> data;
+    public MainCommissionData data;
+
+}
+
+[System.Serializable]
+public class MainCommissionData
+{
+    public List<MainCommissionListData> commisionHistory;
+    public double totalCommission;
 }
 
 

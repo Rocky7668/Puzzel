@@ -27,7 +27,7 @@ public class DashboardHandler : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //totalCommission.text = StaticData.TotalCommission.ToString("F2");
+        totalCommission.text = "₹ " + StaticData.TotalCommission.ToString("F2");
     }
 
     public void DashboardSet(int timer)
@@ -71,28 +71,30 @@ public class DashboardHandler : MonoBehaviour
     }
 
 
-    //internal IEnumerator GetCommisionPoints()
-    //{
-    //    WWWForm form = new WWWForm();
+    MainCommissionList MainCommissionList;
+    internal IEnumerator GetCommisionList()
+    {
+        WWWForm form = new WWWForm();
 
-    //    using (var api = UnityWebRequest.Post(StaticData.baseURL + StaticData.commisionPoints, form))
-    //    {
-    //        api.SetRequestHeader("Authorization", PlayerPrefs.GetString("token"));
-    //        yield return api.SendWebRequest();
-    //        Debug.Log("Http : " + api.downloadHandler.text);
+        using (var api = UnityWebRequest.Post(StaticData.baseURL + StaticData.GetCommissionHistory, form))
+        {
+            api.SetRequestHeader("Authorization", PlayerPrefs.GetString("token"));
+            yield return api.SendWebRequest();
+            Debug.Log("Http : " + api.downloadHandler.text);
 
-    //        if (api.result == UnityWebRequest.Result.ConnectionError)
-    //        {
-    //            Debug.Log("Data Not Found");
-    //        }
-    //        else
-    //        {
-    //            Debug.Log("Commission Points --------- " + api.downloadHandler.text);
-    //            string s = JsonUtility.ToJson(api.downloadHandler.text);
-    //            StaticData.TotalCommission = s[""];
-    //        };
-    //    }
-    //}
+            if (api.result == UnityWebRequest.Result.ConnectionError)
+            {
+                Debug.Log("Data Not Found");
+            }
+            else
+            {
+                Debug.Log("Commission Points --------- " + api.downloadHandler.text);
+                MainCommissionList = JsonUtility.FromJson<MainCommissionList>(api.downloadHandler.text);
+                MainCommissionList.data.totalCommission = StaticData.TotalCommission;
+            }
+        }
+    }
+
 }
 
 
