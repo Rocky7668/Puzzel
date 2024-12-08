@@ -76,9 +76,15 @@ public class WithdrawHandler : MonoBehaviour
         GetBankData();
         GetUPIData();
 
-        DOVirtual.DelayedCall(.5f, delegate { checkForBankAndUPi(); });
         isBank = true;
     }
+
+    private void Start()
+    {
+
+        DOVirtual.DelayedCall(.5f, delegate { checkForBankAndUPi(); });
+    }
+
     private void OnDisable()
     {
         isUpdate = false;
@@ -128,7 +134,7 @@ public class WithdrawHandler : MonoBehaviour
             Debug.Log("UPI");
             OnClickToChange("upi");
             UPIInputField.text = MainUPiHIstory.data.docs[0].upiId;
-            Debug.Log(" -------------------- "+MainUPiHIstory.data.docs[0].upiId);
+            Debug.Log(" -------------------- " + MainUPiHIstory.data.docs[0].upiId);
             paymentID = MainUPiHIstory.data.docs[0].id;
         }
         else
@@ -250,8 +256,8 @@ public class WithdrawHandler : MonoBehaviour
     {
         if (!isUpdate)
         {
-            addBankPanel.SetActive(false);
-            BankListPanel.SetActive(false);
+            NewUIManager.instance.OpenPanel(Panel.Withdrwal);
+            OnClickToChange("bank");
             bankNameInputfield.text = bankHistoryPrefabList[Index].bankNameTxt.text;
             accountHolderNameInputfield.text = bankHistoryPrefabList[Index].AccountHolderNameTxt.text;
             accountNumberInputfield.text = bankHistoryPrefabList[Index].AccountNumberTxt.text;
@@ -262,8 +268,7 @@ public class WithdrawHandler : MonoBehaviour
         else
         {
             isUpdate = false;
-            addBankPanel.SetActive(true);
-            BankListPanel.SetActive(false);
+            NewUIManager.instance.OpenPanel(Panel.AddBank);
             AddbankNameInputfield.text = bankHistoryPrefabList[Index].bankNameTxt.text;
             AddaccountHolderNameInputfield.text = bankHistoryPrefabList[Index].AccountHolderNameTxt.text;
             AddaccountNumberInputfield.text = bankHistoryPrefabList[Index].AccountNumberTxt.text;
@@ -279,21 +284,18 @@ public class WithdrawHandler : MonoBehaviour
     {
         if (!isUpdate)
         {
-            AddUPiPanel.SetActive(false);
-            UPIListPanel.SetActive(false);
+            NewUIManager.instance.OpenPanel(Panel.Withdrwal);
+            OnClickToChange("upi");
             UPIInputField.text = UPIHistoryPrefabList[Index].UPiID.text;
             paymentID = MainUPiHIstory.data.docs[Index].id;
         }
         else
         {
             isUpdate = false;
-            AddUPiPanel.SetActive(true);
-            UPIListPanel.SetActive(false);
+            NewUIManager.instance.OpenPanel(Panel.AddUPI);
             AddUPIInputField.text = MainUPiHIstory.data.docs[Index].upiId;
             updateupiButton.SetActive(true);
             UpdateUPIId = MainUPiHIstory.data.docs[Index].id;
-
-
         }
     }
 
@@ -352,6 +354,7 @@ public class WithdrawHandler : MonoBehaviour
                 accountHolderNameInputfield.text = "";
                 accountNumberInputfield.text = "";
                 paymentID = "";
+                NewUIManager.instance.OpenPanel(Panel.Withdrwal);
             }
         }
     }
@@ -491,7 +494,7 @@ public class WithdrawHandler : MonoBehaviour
                 AddBankButton.SetActive(false);
                 AddUPIButton.SetActive(true);
                 isBank = false;
-                isUpi=true;
+                isUpi = true;
                 break;
         }
     }

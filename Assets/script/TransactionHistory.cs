@@ -44,7 +44,7 @@ public class TransactionHistory : MonoBehaviour
 
     void SetTransactionHistory()
     {
-        uimanager.instance.transactionPanel.SetActive(true);
+        //uimanager.instance.transactionPanel.SetActive(true);
 
         if (transactionHistoryRes.data.docs.Count < 1)
             return;

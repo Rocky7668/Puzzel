@@ -11,7 +11,7 @@ public class ProfileHandler : MonoBehaviour
     public static ProfileHandler instance;
 
 
-    public Text userNameTxt, userIdTxt, userMobilenumber,WalletPopuUpAmount;
+    public Text userNameTxt, userIdTxt, userMobilenumber, WalletPopuUpAmount;
     public Slider pointSlider;
 
     public TextMeshProUGUI amtTxt;
@@ -96,7 +96,7 @@ public class ProfileHandler : MonoBehaviour
                 userIdTxt.text = "#" + profileRes.data._id;
                 pointSlider.maxValue = profileRes.data.totalGamePlayed;
                 pointSlider.value = profileRes.data.totalWinGame;
-                WalletPopuUpAmount.text = "₹ "+profileRes.data.amount.ToString("F2");
+                WalletPopuUpAmount.text = "₹ " + profileRes.data.amount.ToString("F2");
                 string Amount = FormatMoney((float)profileRes.data.amount);
                 amtTxt.text = Amount;
                 userMobilenumber.text = profileRes.data.phoneNumber;
@@ -196,7 +196,10 @@ public class ProfileHandler : MonoBehaviour
     {
         FullnameTxt.text = profileRes.data.fullName;
         DOBTxt.text = profileRes.data.dateOfBirth;
-        PincodeTxt.text = profileRes.data.pincode.ToString();
+
+        if (profileRes.data.pincode != 0)
+            PincodeTxt.text = profileRes.data.pincode.ToString();
+
         LocationTxt.text = profileRes.data.location;
 
         FullnameTxtIF.text = "";

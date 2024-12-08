@@ -19,6 +19,9 @@ public class DepositeHandler : MonoBehaviour
 
     public GameObject QrCodePanel;
 
+    Double amount;
+    string transcationId;
+
     private void OnEnable()
     {
         for (int i = 0; i < DepositeButtons.Count; i++)
@@ -43,7 +46,11 @@ public class DepositeHandler : MonoBehaviour
     public void OnClickPayNow()
     {
         if (amountInputfield.text.Length >= 3)
-            QrCodePanel.SetActive(true);
+        {
+            amount = int.Parse(amountInputfield.text);
+            transcationId = transctionIdinputfield.text;
+            NewUIManager.instance.OpenPanel(Panel.QrPanel);
+        }
     }
 
     public void DepositeAmount()
@@ -51,7 +58,7 @@ public class DepositeHandler : MonoBehaviour
         if (transctionIdinputfield.text.Length >= 2)
         {
             StartCoroutine(Deposite());
-            QrCodePanel.SetActive(false);
+            //QrCodePanel.SetActive(false);
         }
     }
 
@@ -59,8 +66,8 @@ public class DepositeHandler : MonoBehaviour
     {
         WWWForm form = new WWWForm();
         SendDeposite sendDeposite = new();
-        sendDeposite.amount = int.Parse(amountInputfield.text);
-        sendDeposite.transactionId = Double.Parse(transctionIdinputfield.text);
+        sendDeposite.amount = (int)amount;
+        sendDeposite.transactionId = transcationId;
 
         string jsonData = JsonUtility.ToJson(sendDeposite);
 
@@ -94,7 +101,7 @@ public class DepositeHandler : MonoBehaviour
             mainDeposite = JsonUtility.FromJson<MainDeposite>(request.downloadHandler.text);
             amountInputfield.text = "";
             transctionIdinputfield.text = "";
-
+            NewUIManager.instance.OpenPreviosPanel();
         }
     }
 
@@ -216,5 +223,5 @@ public class MainDepositePaymentDetails
 public class SendDeposite
 {
     public int amount;
-    public double transactionId;
+    public string transactionId;
 }

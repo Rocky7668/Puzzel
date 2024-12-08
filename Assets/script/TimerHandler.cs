@@ -33,8 +33,12 @@ public class TimerHandler : MonoBehaviour
         if (resTimer.timer >= 210)
         {
             secondTxt.text = "Join Time Left\n" + formattedTime;
+            if(puzzleManager.instance.isEnterGame)
+            {
+
             GameplayText.gameObject.SetActive(true);
             GameplayText.text = "Game Start in \n " + formattedTime + " sec";
+            }else GameplayText.gameObject.SetActive(false);
         }
         else
         {

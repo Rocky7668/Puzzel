@@ -65,6 +65,7 @@ public class puzzleManager : MonoBehaviour
         cols.SetActive(true);
         rows.SetActive(true);
         mainimageObj.SetActive(true);
+        pointsTxt.text = "0";
         GameManager.instance.HintButton.SetActive(true);
         temp.Clear();
         temp.AddRange(puzzles[uimanager.instance.imgIdx].sprites);

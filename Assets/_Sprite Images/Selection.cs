@@ -12,29 +12,25 @@ public class Selection : MonoBehaviour
 
     private void OnEnable()
     {
-        
+
     }
 
     public void SelectImage(int idx)
     {
-        Debug.Log(idx);
         uimanager.instance.imgIdx = idx;
-        Debug.Log("from Here");
-
         GameManager.instance.gamePlaySprite = AllImg[idx];
-        uimanager.instance.play.SetActive(true);
+        GameManager.instance.ButtonsOnOff(true);
+        GameManager.instance.isPraticeMode = true;
+
+        
         uimanager.instance.practiceModeTxt.SetActive(true);
         uimanager.instance.top.SetActive(false);
-        uimanager.instance.home.SetActive(false);
-     
-        uimanager.instance.winBtnObj.SetActive(false);
         uimanager.instance.backBtn.SetActive(true);
+        uimanager.instance.time.SetActive(false);
 
-        GameManager.instance.ButtonsOnOff(true);
         puzzleManager.instance.EnablePlayImage();
-        GameManager.instance.isPraticeMode = true;
-        this.gameObject.SetActive(false);
-        
+        NewUIManager.instance.OpenPanel(Panel.PracticeMode);
+
     }
 
 }

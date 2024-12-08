@@ -59,7 +59,8 @@ public class SpriteCutter : MonoBehaviour
             }
         }
         isImage = true;
-        SetImageinPuzzel();
+        if (puzzleManager.instance.isEnterGame)
+            SetImageinPuzzel();
     }
 
     public void SetImageinPuzzel()
@@ -71,6 +72,5 @@ public class SpriteCutter : MonoBehaviour
         uimanager.instance.imgIdx = puzzleManager.instance.puzzles.Count - 1;
 
         puzzleManager.instance.EnablePlayImage();
-
     }
 }

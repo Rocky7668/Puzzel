@@ -20,8 +20,6 @@ public class WalletHandler : MonoBehaviour
     [SerializeField] private TextMeshProUGUI totalCashTxt;
 
 
-
-
     private void OnEnable()
     {
         for (int i = 0; i < Parent.transform.childCount; i++)

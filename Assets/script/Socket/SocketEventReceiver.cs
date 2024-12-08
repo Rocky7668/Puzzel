@@ -67,7 +67,8 @@ public class SocketEventReceiver : MonoBehaviour
             case PuzzleEvent.ENTRYFEE:
                 entryFeeResponse = JsonUtility.FromJson<EntryFeeResponse>(res);
                 Debug.Log("Entry Fee deducted and game start");
-                joinGamePopup.gameObject.SetActive(true);
+                uimanager.instance.time.SetActive(true);
+                NewUIManager.instance.OpenPanel(Panel.JoinGamePopUp);
                 entryFeeResponse.totalEntryFee -= entryFeeResponse.gstAmount;
                 joinGamePopup.TextSet(entryFeeResponse.entryFee, entryFeeResponse.gstAmount, entryFeeResponse.totalEntryFee);
                 break;
@@ -76,7 +77,8 @@ public class SocketEventReceiver : MonoBehaviour
                 winRes = JsonUtility.FromJson<WinRes>(res);
                 if (uimanager.instance.play.activeInHierarchy && !GameManager.instance.isPraticeMode)
                 {
-                    uimanager.instance.WinButtonClick();
+                    NewUIManager.instance.OpenPanel(Panel.Win);
+                    //uimanager.instance.WinButtonClick();
                     winHandler.WinningSet(winRes);
                     puzzleManager.instance.isEnterGame = false;
                 }

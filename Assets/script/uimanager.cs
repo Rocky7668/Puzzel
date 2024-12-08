@@ -47,7 +47,7 @@ public class uimanager : MonoBehaviour
 
     private void Update()
     {
-        #region Device Back
+        /*#region Device Back
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -133,13 +133,12 @@ public class uimanager : MonoBehaviour
                 return;
             }
 
-            #endregion
             if (home.activeSelf)
             {
-                Debug.Break();
                 Application.Quit();
             }
         }
+            #endregion*/
     }
     public void HomeButtonBack()
     {
