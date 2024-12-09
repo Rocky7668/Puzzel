@@ -235,8 +235,24 @@ public class GameManager : MonoBehaviour
         RunningGameImage.sprite = gamePlaySprite;
         QuestionBG.SetActive(false);
         QuestiomarkImage.sprite = gamePlaySprite;
-        RunningGamePeriodNumber.text = periodnumber.ToString();
+        RunningGamePeriodNumber.text = FormatLastThreeAbove(periodnumber.ToString());
         GameManager.instance.RunningGameTxt.text = "Running Game";
+    }
+
+    string FormatLastThreeAbove(string input)
+    {
+        if (input.Length < 3)
+        {
+            return input; // Jo string 3 karta ochhi hoy to original return karva
+        }
+
+        // Last 3 characters replace karva
+        string lastThree = input.Substring(input.Length - 3);
+        string remaining = input.Substring(0, input.Length - 3);
+
+        // Output ne line format ma mukva
+        string output = "*****" + lastThree;
+        return output;
     }
 }
 

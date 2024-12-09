@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using Newtonsoft.Json.Linq;
+using CandyCoded.HapticFeedback;
 
 
 public class puzzleManager : MonoBehaviour
@@ -248,10 +249,12 @@ public class puzzleManager : MonoBehaviour
             {
                 tempPointCheck.Add(index);
                 gamePoints += addPoints;
+                HapticFeedback.MediumFeedback();
+                
             }
             else
             {
-                Debug.Log("Else  ----------- 11");
+               
                 gamePoints -= addPoints;
             }
         }
@@ -259,7 +262,6 @@ public class puzzleManager : MonoBehaviour
         {
             if (temp[index].name != index.ToString())
             {
-                Debug.Log("Else  ----------- 22");
                 gamePoints -= addPoints;
             }
         }

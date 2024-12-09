@@ -63,7 +63,7 @@ public class WithdrawHandler : MonoBehaviour
     public GameObject AddBankUpiPopUp;
 
 
-    internal bool isUpdate;
+    public bool isUpdate;
 
     private void Awake()
     {
@@ -87,7 +87,7 @@ public class WithdrawHandler : MonoBehaviour
 
     private void OnDisable()
     {
-        isUpdate = false;
+        //isUpdate = false;
 
         addBankPanel.SetActive(false);
         BankListPanel.SetActive(false);
@@ -110,6 +110,15 @@ public class WithdrawHandler : MonoBehaviour
         AddIFSCInputfield.text = "";
         AddaccountHolderNameInputfield.text = "";
         AddUPIInputField.text = "";
+    }
+
+    private void Update()
+    {
+        if (isUpdate)
+        {
+            updateBankButton.SetActive(true);
+            updateupiButton.SetActive(true);
+        }
     }
 
     public void checkForBankAndUPi()
@@ -166,7 +175,8 @@ public class WithdrawHandler : MonoBehaviour
     }
     public void AddBankData()
     {
-        StartCoroutine(addBankAccount());
+        if (AddbankNameInputfield.text.Length >= 2 && AddIFSCInputfield.text.Length >= 2 && AddaccountHolderNameInputfield.text.Length >= 2 && AddaccountNumberInputfield.text.Length >= 2)
+            StartCoroutine(addBankAccount());
     }
     public void GetBankData()
     {
@@ -176,21 +186,24 @@ public class WithdrawHandler : MonoBehaviour
 
     public void AddUPIData()
     {
-        StartCoroutine(addUPI());
+        if (AddUPIInputField.text.Length >= 5)
+            StartCoroutine(addUPI());
     }
     public void GetUPIData()
     {
-        StartCoroutine(GetUPIHis());
+            StartCoroutine(GetUPIHis());
     }
 
     public void UpdateBankAccountDetails()
     {
-        StartCoroutine(updateBankAccount());
+        if (AddbankNameInputfield.text.Length >= 2 && AddIFSCInputfield.text.Length >= 2 && AddaccountHolderNameInputfield.text.Length >= 2 && AddaccountNumberInputfield.text.Length >= 2 && !string.IsNullOrEmpty(updateBankid))
+            StartCoroutine(updateBankAccount());
     }
 
     public void UpdateUpiAccountDetails()
     {
-        StartCoroutine(updateUPiAccount());
+        if (AddUPIInputField.text.Length >= 5 && !string.IsNullOrEmpty(UpdateUPIId))
+            StartCoroutine(updateUPiAccount());
     }
 
 
@@ -267,7 +280,7 @@ public class WithdrawHandler : MonoBehaviour
         }
         else
         {
-            isUpdate = false;
+            //isUpdate = false;
             NewUIManager.instance.OpenPanel(Panel.AddBank);
             AddbankNameInputfield.text = bankHistoryPrefabList[Index].bankNameTxt.text;
             AddaccountHolderNameInputfield.text = bankHistoryPrefabList[Index].AccountHolderNameTxt.text;
@@ -275,8 +288,6 @@ public class WithdrawHandler : MonoBehaviour
             AddaccountHolderNameInputfield.text = bankHistoryPrefabList[Index].AccountHolderNameTxt.text;
             AddIFSCInputfield.text = bankHistoryPrefabList[Index].AccountIFSCCode.text;
             updateBankid = MainGetBank.data.docs[Index].id;
-
-
         }
     }
 
@@ -291,7 +302,7 @@ public class WithdrawHandler : MonoBehaviour
         }
         else
         {
-            isUpdate = false;
+            //isUpdate = false;
             NewUIManager.instance.OpenPanel(Panel.AddUPI);
             AddUPIInputField.text = MainUPiHIstory.data.docs[Index].upiId;
             updateupiButton.SetActive(true);
@@ -314,11 +325,15 @@ public class WithdrawHandler : MonoBehaviour
             case "bank":
                 UpdateBankTextObject.SetActive(true);
                 StartCoroutine(OffUodateText(UpdateBankTextObject));
+                updateBankButton.SetActive(true);
+                Debug.Log("------------ From Here ------------------");
                 break;
 
             case "upi":
                 UpdateUPiTextObject.SetActive(true);
                 StartCoroutine(OffUodateText(UpdateUPiTextObject));
+                updateupiButton.SetActive(true);
+                Debug.Log("------------ From Here ------------------");
                 break;
         }
     }
@@ -437,6 +452,7 @@ public class WithdrawHandler : MonoBehaviour
             else
             {
                 print("Response: " + request.downloadHandler.text);
+                isUpdate = false;
             }
         }
     }
@@ -564,6 +580,7 @@ public class WithdrawHandler : MonoBehaviour
             else
             {
                 print("Response: " + request.downloadHandler.text);
+                isUpdate = false;
                 AddUPIInputField.text = "";
             }
         }
@@ -573,7 +590,7 @@ public class WithdrawHandler : MonoBehaviour
     {
         WWWForm wwwform = new WWWForm();
 
-        Debug.Log("Bank History CAllles");
+        Debug.Log("UPi History CAllles");
 
         using (UnityWebRequest request = UnityWebRequest.Post(StaticData.baseURL + StaticData.GetUPIHistory, wwwform))
         {

@@ -8,6 +8,7 @@ public class TimerHandler : MonoBehaviour
 
     public Text secondTxt, JoinGamePopUpTimeTxt;
     public TextMeshProUGUI gamePlaySecTxt;
+    public TextMeshProUGUI gamePlaySecTxt2;
 
     public DashboardHandler dashboardHandler;
     public JoinGamePopup joinGamePopup;
@@ -69,14 +70,19 @@ public class TimerHandler : MonoBehaviour
             {
                 gamePlaySecTxt.fontSize = 100;
                 gamePlaySecTxt.color = Color.white;
+                NewUIManager.instance.SolveTimeObjectBig.SetActive(true);
+                NewUIManager.instance.SolveTimeObjet.SetActive(false);
             }
             else
             {
 
                 gamePlaySecTxt.fontSize = 52;
                 gamePlaySecTxt.color = Color.red;
+                NewUIManager.instance.SolveTimeObjectBig.SetActive(false);
+                NewUIManager.instance.SolveTimeObjet.SetActive(true);
             }
             gamePlaySecTxt.text = formatteTime;
+            gamePlaySecTxt2.text = formatteTime;
             dashboardHandler.firstBtn.interactable = false;
         }
     }

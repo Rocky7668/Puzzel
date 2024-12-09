@@ -19,6 +19,9 @@ public class NewUIManager : MonoBehaviour
 
     public List<Panel> ExitPanelsList;
 
+    public GameObject SolveTimeObjet;
+    public GameObject SolveTimeObjectBig;
+
     private void Awake()
     {
         if (instance == null)
@@ -93,7 +96,12 @@ public class NewUIManager : MonoBehaviour
             Panels[(int)Panel.Withdrwal].SetActive(true);      // For Mix Script 
         }
         else if (panelType == Panel.QrPanel)
-            Panels[(int)Panel.Deposite].SetActive(true);       // For Mix Script 
+            Panels[(int)Panel.Deposite].SetActive(true);       // For Mix Script
+
+        if (panelType == Panel.Play)
+            uimanager.instance.practiceModeTxt.SetActive(false);
+        else
+            uimanager.instance.practiceModeTxt.SetActive(true);
     }
 
     void SetOriation(int number)
@@ -167,7 +175,13 @@ public class NewUIManager : MonoBehaviour
             Panels[(int)Panel.Withdrwal].SetActive(true);      // For Mix Script 
         }
         else if (panelType == Panel.QrPanel)
-            Panels[(int)Panel.Deposite].SetActive(true);       // For Mix Script 
+            Panels[(int)Panel.Deposite].SetActive(true);       // For Mix Script
+
+        if (panelType == Panel.Play)
+            uimanager.instance.practiceModeTxt.SetActive(false);
+        else
+            uimanager.instance.practiceModeTxt.SetActive(true);
+
     }
 
     public void OpenPreviosPanel()
