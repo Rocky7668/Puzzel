@@ -30,7 +30,14 @@ public class JoinGamePopup : MonoBehaviour
         joinGameTxt.text = "Join Time = " + (second - 209) + " Seconds";
         if (second >= 0)
         {
+
+            Debug.Log("Called From Here ");
             MeCose();
         }
+    }
+
+    private void OnDisable()
+    {
+        NewUIManager.instance.ExitPanelsList.Remove(Panel.HelperObject);
     }
 }

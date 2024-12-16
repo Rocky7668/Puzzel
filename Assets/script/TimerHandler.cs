@@ -127,7 +127,7 @@ public class TimerHandler : MonoBehaviour
 
     private void Update()
     {
-        JoinGamePopUpTimeTxt.text = "Join Time Left : " + secondTxt.text;
+        JoinGamePopUpTimeTxt.text = "Join Time Left " + secondTxt.text.Substring(secondTxt.text.Length - 2);
     }
 }
 

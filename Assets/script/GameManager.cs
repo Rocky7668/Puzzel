@@ -95,7 +95,10 @@ public class GameManager : MonoBehaviour
         {
             StartCoroutine(GetPuzzelTexture());
             if (uimanager.instance.JoinGamePopup.activeInHierarchy)
-                uimanager.instance.JoinGamePopup.SetActive(false);
+            {
+                NewUIManager.instance.OpenPanel(Panel.Home);
+                //uimanager.instance.JoinGamePopup.SetActive(false);
+            }
             Onetime = true;
             HintButton.SetActive(true);
         }

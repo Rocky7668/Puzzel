@@ -15,15 +15,8 @@ public class WinHandler : MonoBehaviour
 
     private void OnEnable()
     {
+        NewUIManager.instance.ExitPanelsList.Remove(Panel.HelperObject);
         Invoke(nameof(OnCloseWinPage), 8f);
-    }
-
-    private void Update()
-    {
-        if (Input.GetKey(KeyCode.Escape))
-        {
-            this.gameObject.SetActive(false);
-        }
     }
 
     public void WinningSet(WinRes winResData)
@@ -85,6 +78,8 @@ public class WinHandler : MonoBehaviour
             uimanager.instance.play.SetActive(false);
             uimanager.instance.home.SetActive(true);
             uimanager.instance.top.SetActive(true);
+
+            NewUIManager.instance.OpenPanel(Panel.Home);
         }
     }
 

@@ -3439,18 +3439,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1537325254}
-        m_TargetAssemblyTypeName: uimanager, Assembly-CSharp
-        m_MethodName: onChangePanel
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 685203072}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
@@ -29618,7 +29606,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &685203073
 RectTransform:
   m_ObjectHideFlags: 0
@@ -58989,7 +58977,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -990, y: 0}
+  m_AnchoredPosition: {x: -989.99994, y: 0}
   m_SizeDelta: {x: 960, y: 0}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1314069794
@@ -64234,6 +64222,7 @@ MonoBehaviour:
   BankSectionBoard: {fileID: 1668111753}
   UPISectionBoard: {fileID: 957326078}
   AddBankUpiPopUp: {fileID: 1535947994}
+  isUpdate: 0
   updateBankid: 
   UpdateUPIId: 
 --- !u!1 &1460745086
@@ -68003,6 +67992,7 @@ MonoBehaviour:
   secondTxt: {fileID: 1470299008}
   JoinGamePopUpTimeTxt: {fileID: 1195126477}
   gamePlaySecTxt: {fileID: 1702870629}
+  gamePlaySecTxt2: {fileID: 0}
   dashboardHandler: {fileID: 1959656499}
   joinGamePopup: {fileID: 1132987674}
   GameplayText: {fileID: 144227666}
@@ -79543,18 +79533,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1537325254}
-        m_TargetAssemblyTypeName: uimanager, Assembly-CSharp
-        m_MethodName: onChangePanel
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 3
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 685203072}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
@@ -83404,7 +83382,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -90.93996}
+  m_AnchoredPosition: {x: 0, y: -90.93994}
   m_SizeDelta: {x: -80.52, y: -285.41}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1868614143
@@ -84913,7 +84891,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 910, y: 0}
+  m_AnchoredPosition: {x: 909.99994, y: 0}
   m_SizeDelta: {x: 896.69995, y: 0}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1902981791

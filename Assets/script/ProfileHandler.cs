@@ -63,6 +63,17 @@ public class ProfileHandler : MonoBehaviour
 
     }
 
+    IEnumerator DashBoradAmount()
+    {
+        while (true)
+        { 
+            yield return new WaitForSeconds(1);
+            WalletPopuUpAmount.text = "₹ " + profileRes.data.amount.ToString("F2");
+            string Amount = FormatMoney((float)profileRes.data.amount);
+            amtTxt.text = Amount;
+        }
+    }
+
     public void ProfileDataSet()
     {
         StartCoroutine(PostProfile());
@@ -104,6 +115,7 @@ public class ProfileHandler : MonoBehaviour
                 RefferalCodeText.text = profileRes.data.referralCode;
                 StaticData.TotalBalance = profileRes.data.amount;
                 SetPersonalData();
+                StartCoroutine(DashBoradAmount());
             }
         }
     }
