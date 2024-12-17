@@ -31,6 +31,11 @@ public class LoginHandler : MonoBehaviour
             instance = this;
     }
 
+    public void OnEnable()
+    {
+        Application.runInBackground = true;
+    }
+
     public void LoginBtnClick()
     {
         //string email = loginMailInputfield.text;

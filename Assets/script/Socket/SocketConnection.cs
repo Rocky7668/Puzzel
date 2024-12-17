@@ -30,6 +30,32 @@ public class SocketConnection : MonoBehaviour
         InvokeRepeating(nameof(CheckConnection), 0f, 2f);
     }
 
+    private void OnApplicationPause(bool pause)
+    {
+        if (pause)
+        {
+            Debug.Log("Game Paused. Handle socket disconnection if needed.");
+            OnDisConnectedToServer();
+        }
+        else
+        {
+            Debug.Log("Game Resumed. Attempting to reconnect socket.");
+            CheckConnection();
+        }
+    }
+
+    private void OnApplicationFocus(bool hasFocus)
+    {
+        if (hasFocus)
+        {
+            Debug.Log("Game in Focus. Reconnecting socket if necessary.");
+            CheckConnection();
+        }
+    }
+
+
+
+
     public void CheckConnection()
     {
         Debug.Log(" CheckConnection Start ");

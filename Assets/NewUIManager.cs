@@ -88,7 +88,7 @@ public class NewUIManager : MonoBehaviour
         }
         Panels[Index].SetActive(true);
 
-        SetOriation(Index <= 6 || Index == 21 ? 1 : 0);
+        SetOriation(Index <= 6 || Index == 21 || Index == 17 ? 1 : 0);
         TopBottomONOFF(panelType);
 
         if (panelType == Panel.AddBank || panelType == Panel.AddUPI || panelType == Panel.ListBank || panelType == Panel.ListUPI)
