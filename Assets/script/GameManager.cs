@@ -45,7 +45,8 @@ public class GameManager : MonoBehaviour
     public Sprite QuestionMark;
     public GameObject QuestionBG;
 
-    public Text MainPanel;
+    public GameObject Image1Border;
+
 
 
     private void Awake()
@@ -108,8 +109,10 @@ public class GameManager : MonoBehaviour
         }
         if (time == 0)
         {
+            QuestiomarkImage.sprite = null;
+            QuestiomarkImage.GetComponent<Animator>().enabled = true;
             QuestionBG.SetActive(true);
-            QuestiomarkImage.sprite = QuestionMark;
+            Image1Border.SetActive(false);
             //StartCoroutine(GetPuzzelTexture());
         }
     }
@@ -237,6 +240,12 @@ public class GameManager : MonoBehaviour
     {
         RunningGameImage.sprite = gamePlaySprite;
         QuestionBG.SetActive(false);
+        Vector2 NewSizeDelta = QuestiomarkImage.gameObject.GetComponent<RectTransform>().sizeDelta;
+        Image1Border.GetComponent<RectTransform>().sizeDelta = new Vector2(NewSizeDelta.x + 13,NewSizeDelta.y - 27);
+        
+        Image1Border.SetActive(true);
+        QuestiomarkImage.GetComponent<Animator>().enabled = false;
+        QuestiomarkImage.color = Color.white;
         QuestiomarkImage.sprite = gamePlaySprite;
         RunningGamePeriodNumber.text = FormatLastThreeAbove(periodnumber.ToString());
         GameManager.instance.RunningGameTxt.text = "Running Game";
