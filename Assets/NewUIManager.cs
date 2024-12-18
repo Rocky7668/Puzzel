@@ -102,6 +102,13 @@ public class NewUIManager : MonoBehaviour
             uimanager.instance.practiceModeTxt.SetActive(false);
         else
             uimanager.instance.practiceModeTxt.SetActive(true);
+
+
+        if (panelType == Panel.PracticeMode)
+            GameManager.instance.isPraticeMode = true;
+        else
+            GameManager.instance.isPraticeMode = false;
+
     }
 
     void SetOriation(int number)
@@ -168,7 +175,7 @@ public class NewUIManager : MonoBehaviour
         }
         Panels[(int)paneltype].SetActive(true);
 
-        SetOriation((int)paneltype <= 6 || (int)paneltype == 21 ? 1 : 0);
+        SetOriation((int)paneltype <= 6 || (int)paneltype == 21 || (int)paneltype == 17 ? 1 : 0);
         TopBottomONOFF(panelType);
         if (panelType == Panel.AddBank || panelType == Panel.AddUPI || panelType == Panel.ListBank || panelType == Panel.ListUPI)
         {
@@ -182,13 +189,23 @@ public class NewUIManager : MonoBehaviour
         else
             uimanager.instance.practiceModeTxt.SetActive(true);
 
+        if (panelType == Panel.PracticeMode)
+            GameManager.instance.isPraticeMode = true;
+        else
+            GameManager.instance.isPraticeMode = false;
+
+
     }
 
     public void OpenPreviosPanel()
     {
-        Debug.Log("Back -------------");
-        if (panelType == Panel.JoinGamePopUp && panelType == Panel.Play && panelType == Panel.PracticeMode)
+        if (panelType == Panel.JoinGamePopUp || panelType == Panel.Play)
+        {
+            uimanager.instance.top.SetActive(true);
             OpenPanel(Panel.Home);
+            return;
+        }
+
 
         ExitPanelsList.Remove(ExitPanelsList[ExitPanelsList.Count - 1]);
         OpenPanel(ExitPanelsList[ExitPanelsList.Count - 1]);

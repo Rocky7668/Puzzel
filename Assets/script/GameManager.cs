@@ -40,12 +40,40 @@ public class GameManager : MonoBehaviour
     public bool isWingame;
     public int periodnumber;
     internal bool Onetime;
-    internal bool isPraticeMode;
+    public bool isPraticeMode;
     public int time;
     public Sprite QuestionMark;
     public GameObject QuestionBG;
 
     public GameObject Image1Border;
+
+    public Animator TextColorAnimation;
+
+    [Space(5f)]
+
+    [SerializeField] internal int currentTime;
+
+
+    [SerializeField] private bool _isJoinedBefore;
+
+
+
+    public AudioSource buttonAudioSource;
+    public AudioClip ButtonClick;
+
+    public bool isJoinBefore
+    {
+        get
+        {
+            return PlayerPrefs.GetInt("isJoinBefore") == 1;
+        }
+        set
+        {
+            int n = value ? 1 : 0;
+            PlayerPrefs.SetInt("isJoinBefore", n);
+            _isJoinedBefore = value;
+        }
+    }
 
 
 
@@ -110,7 +138,7 @@ public class GameManager : MonoBehaviour
         if (time == 0)
         {
             QuestiomarkImage.sprite = null;
-            QuestiomarkImage.GetComponent<Animator>().enabled = true;
+            TextColorAnimation.enabled = true;
             QuestionBG.SetActive(true);
             Image1Border.SetActive(false);
             //StartCoroutine(GetPuzzelTexture());
@@ -142,13 +170,23 @@ public class GameManager : MonoBehaviour
         puzzleManager.instance.isEnterGame = true;
         isPraticeMode = false;
         uimanager.instance.top.SetActive(false);
+        HintButton.SetActive(false);
+
         //StartCoroutine(GetPuzzelTexture());
         foreach (var item in puzzleManager.instance.box)
         {
             item.sprite = null;
         }
-        HintButton.SetActive(false);
+
+
+
+        if (isJoinBefore)
+        {
+            NewUIManager.instance.OpenPanel(Panel.Play);
+            return;
+        }
         SocketConnection.instance.SendDataToServer(StaticData.PuzzleEvent.JOIN_TABLE.ToString(), "");
+        isJoinBefore = true;
     }
 
 
@@ -205,7 +243,7 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
+    Sprite tempSprite;
 
     public IEnumerator GenerateTexture()
     {
@@ -227,7 +265,10 @@ public class GameManager : MonoBehaviour
                 // Assign to SpriteCutter or use the texture as needed
                 SpriteCutter.instance.spriteToCut = texture;
                 SpriteCutter.instance.GenerateAndDisplaySprites(5, 4);
-                gamePlaySprite = ConvertTextureToSprite(texture);
+                if (!isPraticeMode)
+                    gamePlaySprite = ConvertTextureToSprite(texture);
+                else
+                    tempSprite = ConvertTextureToSprite(texture);
 
                 yield return new WaitUntil(() => isStarGame);
                 SetImageAfterStartGame();
@@ -235,18 +276,29 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
+    public Color DefaultTextColor;
     public void SetImageAfterStartGame()
     {
-        RunningGameImage.sprite = gamePlaySprite;
+        if (isPraticeMode)
+        {
+            RunningGameImage.sprite = tempSprite;
+            QuestiomarkImage.sprite = tempSprite;
+        }
+        else
+        {
+            RunningGameImage.sprite = gamePlaySprite;
+            QuestiomarkImage.sprite = gamePlaySprite;
+        }
+
         QuestionBG.SetActive(false);
+        TextColorAnimation.enabled = false;
+        TextColorAnimation.GetComponent<Text>().color = DefaultTextColor;
+
         Vector2 NewSizeDelta = QuestiomarkImage.gameObject.GetComponent<RectTransform>().sizeDelta;
-        Image1Border.GetComponent<RectTransform>().sizeDelta = new Vector2(NewSizeDelta.x + 13,NewSizeDelta.y - 27);
-        
+        Image1Border.GetComponent<RectTransform>().sizeDelta = new Vector2(NewSizeDelta.x + 13, NewSizeDelta.y - 27);
+
         Image1Border.SetActive(true);
-        QuestiomarkImage.GetComponent<Animator>().enabled = false;
         QuestiomarkImage.color = Color.white;
-        QuestiomarkImage.sprite = gamePlaySprite;
         RunningGamePeriodNumber.text = FormatLastThreeAbove(periodnumber.ToString());
         GameManager.instance.RunningGameTxt.text = "Running Game";
     }
@@ -265,6 +317,11 @@ public class GameManager : MonoBehaviour
         // Output ne line format ma mukva
         string output = "*****" + lastThree;
         return output;
+    }
+
+    public void ButtonClickSound()
+    {
+        buttonAudioSource.PlayOneShot(ButtonClick);
     }
 }
 

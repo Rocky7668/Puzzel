@@ -33,17 +33,18 @@ public class TimerHandler : MonoBehaviour
 
         if (resTimer.timer >= 210)
         {
-            secondTxt.text = "Join Time Left\n" + formattedTime;
-            if(puzzleManager.instance.isEnterGame)
+            secondTxt.text = "Join Time Left : " + formattedTime;
+            if (puzzleManager.instance.isEnterGame)
             {
 
-            GameplayText.gameObject.SetActive(true);
-            GameplayText.text = "Game Start in \n " + formattedTime + " sec";
-            }else GameplayText.gameObject.SetActive(false);
+                GameplayText.gameObject.SetActive(true);
+                GameplayText.text = "Game Start in \n " + formattedTime + " sec";
+            }
+            else GameplayText.gameObject.SetActive(false);
         }
         else
         {
-            secondTxt.text = "Wair For Next Round\n" + formattedTime;
+            secondTxt.text = "Wair For Next Round " + formattedTime;
             GameplayText.gameObject.SetActive(false);
 
         }
@@ -119,10 +120,11 @@ public class TimerHandler : MonoBehaviour
         {
             int n = totalSeconds - 210;
             Debug.Log("<color=red><b> n.ToString() " + n.ToString() + "</b></color>");
+            GameManager.instance.currentTime = n;
             return n.ToString();
         }
+        GameManager.instance.isJoinBefore = false;
         return string.Format("{0}:{1:D2}", minutes, seconds);
-
     }
 
     private void Update()

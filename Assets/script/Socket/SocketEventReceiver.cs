@@ -70,7 +70,7 @@ public class SocketEventReceiver : MonoBehaviour
                 uimanager.instance.time.SetActive(true);
                 NewUIManager.instance.OpenPanel(Panel.JoinGamePopUp);
                 entryFeeResponse.totalEntryFee -= entryFeeResponse.gstAmount;
-                joinGamePopup.TextSet(entryFeeResponse.entryFee, entryFeeResponse.gstAmount, entryFeeResponse.totalEntryFee);
+                joinGamePopup.TextSet(entryFeeResponse.entryFee, entryFeeResponse.gstAmount, GameManager.instance.isJoinBefore ? 0 : entryFeeResponse.totalEntryFee);
                 break;
 
             case PuzzleEvent.WINNER:

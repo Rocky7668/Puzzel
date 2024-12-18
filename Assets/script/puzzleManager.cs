@@ -26,7 +26,7 @@ public class puzzleManager : MonoBehaviour
 
 
     public TimerHandler timerHandler;
-    internal bool isEnterGame;
+    public bool isEnterGame;
 
     private void Awake()
     {
@@ -38,7 +38,7 @@ public class puzzleManager : MonoBehaviour
 
     private void OnEnable()
     {
-       
+
     }
 
     public void OnStartGame()
@@ -70,7 +70,7 @@ public class puzzleManager : MonoBehaviour
         GameManager.instance.HintButton.SetActive(true);
         temp.Clear();
         temp.AddRange(puzzles[uimanager.instance.imgIdx].sprites);
-       
+
         for (int i = 0; i < box.Count; i++)
         {
             int num = i;
@@ -86,9 +86,7 @@ public class puzzleManager : MonoBehaviour
         {
             box[i].sprite = temp[i];
         }
-        GameManager.instance.isPraticeMode = false;
-
-
+        //GameManager.instance.isPraticeMode = false;
     }
 
     public void SetPuzzelImageForPracticePanel(int Index)
@@ -249,13 +247,14 @@ public class puzzleManager : MonoBehaviour
             {
                 tempPointCheck.Add(index);
                 gamePoints += addPoints;
-                HapticFeedback.MediumFeedback();
-                
+                trueObjectaudioSource.PlayOneShot(trueObjectClipp);
+
             }
             else
             {
-               
+
                 gamePoints -= addPoints;
+                HapticFeedback.MediumFeedback();
             }
         }
         else
@@ -263,6 +262,7 @@ public class puzzleManager : MonoBehaviour
             if (temp[index].name != index.ToString())
             {
                 gamePoints -= addPoints;
+                HapticFeedback.MediumFeedback();
             }
         }
 
@@ -273,6 +273,9 @@ public class puzzleManager : MonoBehaviour
     {
         pointsTxt.text = gamePoints.ToString("F0");
     }
+
+    public AudioSource trueObjectaudioSource;
+    public AudioClip trueObjectClipp;
 }
 
 [System.Serializable]
