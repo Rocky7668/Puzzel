@@ -34,7 +34,7 @@ public class TimerHandler : MonoBehaviour
         if (resTimer.timer >= 210)
         {
             secondTxt.text = "Join Time Left : " + formattedTime;
-            if (puzzleManager.instance.isEnterGame)
+            if (puzzleManager.instance.isEnterGame && !GameManager.instance.isPraticeMode)
             {
 
                 GameplayText.gameObject.SetActive(true);
@@ -78,7 +78,7 @@ public class TimerHandler : MonoBehaviour
             {
 
                 gamePlaySecTxt.fontSize = 52;
-                gamePlaySecTxt.color = Color.red;
+                gamePlaySecTxt.color = Color.white;
                 NewUIManager.instance.SolveTimeObjectBig.SetActive(false);
                 NewUIManager.instance.SolveTimeObjet.SetActive(true);
             }
