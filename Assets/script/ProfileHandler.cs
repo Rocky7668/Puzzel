@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -11,7 +13,7 @@ public class ProfileHandler : MonoBehaviour
     public static ProfileHandler instance;
 
 
-    public Text userNameTxt, userIdTxt, userMobilenumber, WalletPopuUpAmount;
+    public Text userNameTxt, userIdTxt, userMobilenumber, WalletPopuUpAmount, emailTxt;
     public Slider pointSlider;
 
     public TextMeshProUGUI amtTxt;
@@ -19,6 +21,8 @@ public class ProfileHandler : MonoBehaviour
     public ProfileRes profileRes;
     public NotificationRes notificationRes;
     public MainUpdateProfile MainUpdateProfile;
+    public MainUserNameUpdateData MainUserNameUpdateData;
+    public MainUpdateEmailData MainUpdateEmailData;
 
     [Header("===== Notification =====")]
     [SerializeField] private Transform notificationGenerator;
@@ -40,6 +44,14 @@ public class ProfileHandler : MonoBehaviour
     public GameObject FirstUpdateButton;
     public GameObject SecondUpdateButton;
 
+    public GameObject FirstUpdateAccountButton;
+    public GameObject SecondUpdateAccountButton;
+
+
+    public Image EmailImage;
+    public Sprite emailPending;
+    public Sprite emailVerified;
+
 
     private void Awake()
     {
@@ -60,23 +72,57 @@ public class ProfileHandler : MonoBehaviour
         LocationTxtIF.gameObject.SetActive(isTrue);
         SecondUpdateButton.SetActive(isTrue);
         FirstUpdateButton.SetActive(!isTrue);
+    }
 
+    public void ClickUpdateAccountDetails(bool isTrue)
+    {
+        UpdateUsernameINF.gameObject.SetActive(isTrue);
+        UpdateEmailINF.gameObject.SetActive(isTrue);
+        SecondUpdateAccountButton.SetActive(isTrue);
+        FirstUpdateAccountButton.SetActive(!isTrue);
     }
 
     IEnumerator DashBoradAmount()
     {
         while (true)
-        { 
+        {
             yield return new WaitForSeconds(1);
             WalletPopuUpAmount.text = "₹ " + profileRes.data.amount.ToString("F2");
             string Amount = FormatMoney((float)profileRes.data.amount);
             amtTxt.text = Amount;
         }
     }
-
     public void ProfileDataSet()
     {
         StartCoroutine(PostProfile());
+    }
+
+
+
+    private static readonly string emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+    public static bool IsValidEmail(string email)
+    {
+        if (string.IsNullOrWhiteSpace(email))
+            return false;
+
+        return Regex.IsMatch(email, emailPattern);
+    }
+
+    public void OnClickUpdateAccountDetails()
+    {
+        UpdateUsername();
+        UpdateEmail();
+    }
+
+    public void UpdateUsername()
+    {
+        if (UpdateUsernameINF.text.Length >= 4)
+            StartCoroutine(UpdateUsernameData());
+    }
+    public void UpdateEmail()
+    {
+        if (IsValidEmail(UpdateEmailINF.text))
+            StartCoroutine(UpdateEmailData());
     }
 
     public void OnclickUpdateProfile()
@@ -103,7 +149,7 @@ public class ProfileHandler : MonoBehaviour
             {
                 Debug.Log(api.downloadHandler.text);
                 profileRes = JsonUtility.FromJson<ProfileRes>(api.downloadHandler.text);
-                userNameTxt.text = profileRes.data._id.Substring(0, 8);
+                userNameTxt.text = profileRes.data.userName;
                 userIdTxt.text = "#" + profileRes.data._id;
                 pointSlider.maxValue = profileRes.data.totalGamePlayed;
                 pointSlider.value = profileRes.data.totalWinGame;
@@ -111,11 +157,17 @@ public class ProfileHandler : MonoBehaviour
                 string Amount = FormatMoney((float)profileRes.data.amount);
                 amtTxt.text = Amount;
                 userMobilenumber.text = profileRes.data.phoneNumber;
+                emailTxt.text = profileRes.data.email;
 
                 RefferalCodeText.text = profileRes.data.referralCode;
                 StaticData.TotalBalance = profileRes.data.amount;
                 SetPersonalData();
                 StartCoroutine(DashBoradAmount());
+
+                if (emailTxt.text.Length >= 5)
+                    EmailImage.sprite = emailVerified;
+                else
+                    EmailImage.sprite = emailPending;
             }
         }
     }
@@ -258,6 +310,101 @@ public class ProfileHandler : MonoBehaviour
             return number.ToString("0"); // No formatting needed
         }
     }
+
+    public InputField UpdateUsernameINF;
+    public InputField UpdateEmailINF;
+
+    IEnumerator UpdateUsernameData()
+    {
+        WWWForm form = new WWWForm();
+        UpdateUsernameSendData update = new();
+        update.userName = UpdateUsernameINF.text;
+
+
+        string jsonData = JsonUtility.ToJson(update);
+        Debug.Log("Update json ---------  " + jsonData);
+
+
+
+        // Create a UnityWebRequest
+        UnityWebRequest request = new UnityWebRequest(StaticData.baseURL + StaticData.UpdateUsername, "POST");
+
+        // Convert JSON string to byte array
+        byte[] rawData = System.Text.Encoding.UTF8.GetBytes(jsonData);
+
+        // Attach raw data to the request
+        request.uploadHandler = new UploadHandlerRaw(rawData);
+
+        // Set response handler
+        request.downloadHandler = new DownloadHandlerBuffer();
+
+        request.SetRequestHeader("Content-Type", "application/json");
+        request.SetRequestHeader("Authorization", GameManager.instance.token);
+
+        //UploadHandlerRaw    
+
+        yield return request.SendWebRequest();
+
+        // Check for errors
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.LogError(request.error);
+        }
+        else
+        {
+            Debug.Log("Response: " + request.downloadHandler.text);
+            MainUserNameUpdateData = JsonUtility.FromJson<MainUserNameUpdateData>(request.downloadHandler.text);
+            userNameTxt.text = MainUserNameUpdateData.data.userName;
+            StartCoroutine(PostProfile());
+            ClickUpdateAccountDetails(false);
+        }
+    }
+
+    IEnumerator UpdateEmailData()
+    {
+        WWWForm form = new WWWForm();
+        UpdateEmailSendData update = new();
+        update.email = UpdateEmailINF.text;
+
+
+        string jsonData = JsonUtility.ToJson(update);
+        Debug.Log("Update json ---------  " + jsonData);
+
+
+
+        // Create a UnityWebRequest
+        UnityWebRequest request = new UnityWebRequest(StaticData.baseURL + StaticData.UpdateEmail, "POST");
+
+        // Convert JSON string to byte array
+        byte[] rawData = System.Text.Encoding.UTF8.GetBytes(jsonData);
+
+        // Attach raw data to the request
+        request.uploadHandler = new UploadHandlerRaw(rawData);
+
+        // Set response handler
+        request.downloadHandler = new DownloadHandlerBuffer();
+
+        request.SetRequestHeader("Content-Type", "application/json");
+        request.SetRequestHeader("Authorization", GameManager.instance.token);
+
+        //UploadHandlerRaw    
+
+        yield return request.SendWebRequest();
+
+        // Check for errors
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.LogError(request.error);
+        }
+        else
+        {
+            Debug.Log("Response: " + request.downloadHandler.text);
+            MainUpdateEmailData = JsonUtility.FromJson<MainUpdateEmailData>(request.downloadHandler.text);
+            emailTxt.text = MainUpdateEmailData.data.email;
+            StartCoroutine(PostProfile());
+            ClickUpdateAccountDetails(false);
+        }
+    }
 }
 
 #region ModelClass
@@ -278,6 +425,8 @@ public class ProfileResData
     public int pincode;
     public int totalGamePlayed;
     public int totalWinGame;
+    public string userName;
+    public string email;
 }
 
 [System.Serializable]
@@ -334,9 +483,9 @@ public class MainUpdateProfileData
     public bool isActive;
     public bool isAllowNotifications;
     public string notificationToken;
-    public DateTime lastActivateAt;
-    public DateTime createdAt;
-    public DateTime updatedAt;
+    public string lastActivateAt;
+    public string createdAt;
+    public string updatedAt;
     public string token;
     public string socketId;
     public string dateOfBirth;
@@ -357,3 +506,90 @@ public class MainUpdateProfile
 }
 
 
+
+
+
+[System.Serializable]
+public class UserNameUpdateData
+{
+    public int pincode;
+    public string location;
+    public string dateOfBirth;
+    public string _id;
+    public string phoneNumber;
+    public double amount;
+    public string role;
+    public bool isBlock;
+    public string referralCode;
+    public bool isActive;
+    public bool isAllowNotifications;
+    public string notificationToken;
+    public string lastActivateAt;
+    public string createdAt;
+    public string updatedAt;
+    public string token;
+    public string socketId;
+    public string userName;
+    public string id;
+}
+
+
+[System.Serializable]
+public class MainUserNameUpdateData
+{
+    public string message;
+    public string status;
+    public int statusCode;
+    public bool success;
+    public UserNameUpdateData data;
+}
+
+
+[System.Serializable]
+public class UpdateEmailData
+{
+    public int pincode;
+    public string location;
+    public string dateOfBirth;
+    public string _id;
+    public string phoneNumber;
+    public double amount;
+    public string role;
+    public bool isBlock;
+    public string referralCode;
+    public bool isActive;
+    public bool isAllowNotifications;
+    public string notificationToken;
+    public string lastActivateAt;
+    public string createdAt;
+    public string updatedAt;
+    public string token;
+    public string socketId;
+    public string userName;
+    public string email;
+    public string id;
+}
+
+[System.Serializable]
+public class MainUpdateEmailData
+{
+    public string message;
+    public string status;
+    public int statusCode;
+    public bool success;
+    public UpdateEmailData data;
+}
+
+
+
+[System.Serializable]
+public class UpdateUsernameSendData
+{
+    public string userName;
+}
+
+[System.Serializable]
+public class UpdateEmailSendData
+{
+    public string email;
+}
