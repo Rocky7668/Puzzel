@@ -34,9 +34,8 @@ public class TimerHandler : MonoBehaviour
         if (resTimer.timer >= 210)
         {
             secondTxt.text = "Join Time Left : " + formattedTime;
-            if (puzzleManager.instance.isEnterGame && !GameManager.instance.isPraticeMode)
+            if (!GameManager.instance.isPraticeMode)
             {
-
                 GameplayText.gameObject.SetActive(true);
                 GameplayText.text = "Game Start in \n " + formattedTime + " sec";
             }

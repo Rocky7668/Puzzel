@@ -10,6 +10,7 @@ public class PlayerGameExitManager : MonoBehaviour
 
     private void OnEnable()
     {
+        puzzleManager.instance.isEnterGame = true;  
         if(GameManager.instance.isPraticeMode)
         {
             gamePointObj.transform.localScale = Vector3.one * 1.6f;

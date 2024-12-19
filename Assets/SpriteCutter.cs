@@ -59,7 +59,7 @@ public class SpriteCutter : MonoBehaviour
             }
         }
         isImage = true;
-        if (puzzleManager.instance.isEnterGame)
+        if (puzzleManager.instance.isEnterGame && !GameManager.instance.isPraticeMode)
             SetImageinPuzzel();
     }
 
