@@ -166,9 +166,15 @@ public class LoginHandler : MonoBehaviour
         StartCoroutine(SendOTP(registerMailInputfield.text));
     }
 
+    [System.Serializable]
+    public class SendOptData
+    {
+        public string phoneNumber;
+    }
+
     IEnumerator SendOTP(string phone)
     {
-        WWWForm form = new WWWForm();
+        /*WWWForm form = new WWWForm();
         form.AddField("phoneNumber", phone);
 
         Debug.Log("phone : " + phone);
@@ -193,6 +199,50 @@ public class LoginHandler : MonoBehaviour
                 otpPanel.SetActive(true);
 
             }
+        }*/
+        WWWForm form = new WWWForm();
+        SendOptData update = new();
+
+        update.phoneNumber = registerMailInputfield.text;
+
+        string jsonData = JsonUtility.ToJson(update);
+        Debug.Log("Update json ---------  " + jsonData);
+
+
+
+        // Create a UnityWebRequest
+        UnityWebRequest request = new UnityWebRequest(StaticData.baseURL + StaticData.sendOTP, "POST");
+
+        // Convert JSON string to byte array
+        byte[] rawData = System.Text.Encoding.UTF8.GetBytes(jsonData);
+
+        // Attach raw data to the request
+        request.uploadHandler = new UploadHandlerRaw(rawData);
+
+        // Set response handler
+        request.downloadHandler = new DownloadHandlerBuffer();
+
+        request.SetRequestHeader("Content-Type", "application/json");
+        //request.SetRequestHeader("Authorization", GameManager.instance.token);
+
+        //UploadHandlerRaw    
+
+        yield return request.SendWebRequest();
+
+        // Check for errors
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.LogError(request.error);
+        }
+        else
+        {
+            Debug.Log(request.downloadHandler.text);
+            sendOTPRes = JsonUtility.FromJson<SendOTPRes>(request.downloadHandler.text);
+            otpTxt.text = sendOTPRes.data.otp;
+            PlayerPrefs.SetString("phone", phone);
+            Debug.Log("User Phone : " + phone);
+            registerPanel.SetActive(false);
+            otpPanel.SetActive(true);
         }
     }
 

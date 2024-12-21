@@ -109,7 +109,7 @@ public class SliderScript : MonoBehaviour
     }
     public void otpBack()
     {
-        login.SetActive(true);
+        register.SetActive(true);
         otp.SetActive(false);
     }
     public void ConfirmClick()
