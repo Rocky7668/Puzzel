@@ -86,8 +86,7 @@ public class SliderScript : MonoBehaviour
             {
                 Debug.Log(api.downloadHandler.text);
                 termsConditionRes = JsonUtility.FromJson<TermsConditionRes>(api.downloadHandler.text);
-                if (termsConditionRes.data.Count > 0)
-                    LoginHandler.instance.termsTxt.text = termsConditionRes.data[0].termsAndConditions;
+                    LoginHandler.instance.termsTxt.text = termsConditionRes.data.termsAndConditions;
                 term.SetActive(true);
             }
         }
@@ -175,6 +174,6 @@ public class TermsConditionRes
     public string status;
     public int statusCode;
     public bool success;
-    public List<TermsConditionResData> data;
+    public TermsConditionResData data;
 }
 #endregion

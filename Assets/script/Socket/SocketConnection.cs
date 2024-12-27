@@ -138,7 +138,7 @@ public class SocketConnection : MonoBehaviour
                 //if (!res.Contains("HEART_BEAT"))
                 try
                 {
-                    Debug.Log("<color=green> Data Recived " + en + "</color>");
+                    //Debug.Log("<color=green> Data Recived " + en + "</color>");
                     //JSONNode data = JSONNode.Parse(res);
                     string j = JsonUtility.ToJson(res);
                     //Debug.Log("<color=green> Data Recived " + res + " DONE " + "</color>");

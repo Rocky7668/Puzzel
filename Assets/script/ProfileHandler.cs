@@ -6,7 +6,9 @@ using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static LoginHandler;
 
 public class ProfileHandler : MonoBehaviour
 {
@@ -14,6 +16,7 @@ public class ProfileHandler : MonoBehaviour
 
 
     public Text userNameTxt, userIdTxt, userMobilenumber, WalletPopuUpAmount, emailTxt;
+    public TextMeshProUGUI MenuUsernameText;
     public Slider pointSlider;
 
     public TextMeshProUGUI amtTxt;
@@ -44,8 +47,11 @@ public class ProfileHandler : MonoBehaviour
     public GameObject FirstUpdateButton;
     public GameObject SecondUpdateButton;
 
-    public GameObject FirstUpdateAccountButton;
-    public GameObject SecondUpdateAccountButton;
+    public GameObject FirstUpdateUserNameButton;
+    public GameObject SecondUpdateUserNameButton;
+
+    public GameObject FirstUpdateEmailButton;
+    public GameObject SecondUpdateEmailButton;
 
 
     public Image EmailImage;
@@ -66,6 +72,11 @@ public class ProfileHandler : MonoBehaviour
 
     public void ClickUpdateProfile(bool isTrue)
     {
+        FullnameTxtIF.text = FullnameTxt.text;
+        DOBTxtIF.text = DOBTxt.text;
+        PincodeTxtIF.text = PincodeTxt.text;
+        LocationTxtIF.text = LocationTxt.text;
+
         FullnameTxtIF.gameObject.SetActive(isTrue);
         DOBTxtIF.gameObject.SetActive(isTrue);
         PincodeTxtIF.gameObject.SetActive(isTrue);
@@ -76,10 +87,28 @@ public class ProfileHandler : MonoBehaviour
 
     public void ClickUpdateAccountDetails(bool isTrue)
     {
-        UpdateUsernameINF.gameObject.SetActive(isTrue);
+        /*UpdateUsernameINF.gameObject.SetActive(isTrue);
         UpdateEmailINF.gameObject.SetActive(isTrue);
         SecondUpdateAccountButton.SetActive(isTrue);
-        FirstUpdateAccountButton.SetActive(!isTrue);
+        FirstUpdateAccountButton.SetActive(!isTrue);*/
+    }
+
+    public void OnClickChangeUsername(bool isTrue)
+    {
+        UpdateUsernameINF.text = userNameTxt.text;
+        UpdateUsernameINF.gameObject.SetActive(isTrue);
+        SecondUpdateUserNameButton.SetActive(isTrue);
+        FirstUpdateUserNameButton.SetActive(!isTrue);
+
+    }
+
+
+    public void OnClickChnageEmail(bool isTrue)
+    {
+        UpdateEmailINF.text = emailTxt.text;
+        UpdateEmailINF.gameObject.SetActive(isTrue);
+        SecondUpdateEmailButton.SetActive(isTrue);
+        FirstUpdateEmailButton.SetActive(!isTrue);
     }
 
     IEnumerator DashBoradAmount()
@@ -114,21 +143,42 @@ public class ProfileHandler : MonoBehaviour
         UpdateEmail();
     }
 
+    //StartCoroutine(VerifyOTP(profileRes.data.phoneNumber,NewUIManager.instance.ProfileOtpVerification.OtpInf.text));
     public void UpdateUsername()
     {
         if (UpdateUsernameINF.text.Length >= 4)
+        {
             StartCoroutine(UpdateUsernameData());
+        }
+        else
+        {
+            NewUIManager.instance.InformationPopUp.NoticeText.text = "Invalid Username";
+            NewUIManager.instance.InformationPopUp.gameObject.SetActive(true);
+            OnClickChangeUsername(false);
+        }
     }
     public void UpdateEmail()
     {
         if (IsValidEmail(UpdateEmailINF.text))
             StartCoroutine(UpdateEmailData());
+        else
+        {
+            NewUIManager.instance.InformationPopUp.NoticeText.text = "Invalid Email";
+            NewUIManager.instance.InformationPopUp.gameObject.SetActive(true);
+            OnClickChnageEmail(false);
+        }
     }
 
     public void OnclickUpdateProfile()
     {
         if (FullnameTxtIF.text.Length >= 5 && DOBTxtIF.text.Length == 10 && PincodeTxtIF.text.Length >= 4 && LocationTxtIF.text.Length >= 4)
             StartCoroutine(updateProfile());
+        else
+        {
+            NewUIManager.instance.InformationPopUp.NoticeText.text = "Invalid Personal Details";
+            NewUIManager.instance.InformationPopUp.gameObject.SetActive(true);
+            ClickUpdateProfile(false);
+        }
     }
 
     IEnumerator PostProfile()
@@ -150,6 +200,7 @@ public class ProfileHandler : MonoBehaviour
                 Debug.Log(api.downloadHandler.text);
                 profileRes = JsonUtility.FromJson<ProfileRes>(api.downloadHandler.text);
                 userNameTxt.text = profileRes.data.userName;
+                MenuUsernameText.text = profileRes.data.userName;
                 userIdTxt.text = "#" + profileRes.data._id;
                 pointSlider.maxValue = profileRes.data.totalGamePlayed;
                 pointSlider.value = profileRes.data.totalWinGame;
@@ -266,10 +317,10 @@ public class ProfileHandler : MonoBehaviour
 
         LocationTxt.text = profileRes.data.location;
 
-        FullnameTxtIF.text = "";
-        DOBTxtIF.text = "";
-        PincodeTxtIF.text = "";
-        LocationTxtIF.text = "";
+        FullnameTxtIF.text = FullnameTxt.text;
+        DOBTxtIF.text = DOBTxt.text;
+        PincodeTxtIF.text = PincodeTxt.text;
+        LocationTxtIF.text = LocationTxt.text;
     }
 
     public void CopyReffralCode()
@@ -355,8 +406,10 @@ public class ProfileHandler : MonoBehaviour
             Debug.Log("Response: " + request.downloadHandler.text);
             MainUserNameUpdateData = JsonUtility.FromJson<MainUserNameUpdateData>(request.downloadHandler.text);
             userNameTxt.text = MainUserNameUpdateData.data.userName;
+            MenuUsernameText.text = MainUserNameUpdateData.data.userName;
             StartCoroutine(PostProfile());
-            ClickUpdateAccountDetails(false);
+            //ClickUpdateAccountDetails(false);
+            OnClickChangeUsername(false);
         }
     }
 
@@ -402,12 +455,180 @@ public class ProfileHandler : MonoBehaviour
             MainUpdateEmailData = JsonUtility.FromJson<MainUpdateEmailData>(request.downloadHandler.text);
             emailTxt.text = MainUpdateEmailData.data.email;
             StartCoroutine(PostProfile());
-            ClickUpdateAccountDetails(false);
+            //ClickUpdateAccountDetails(false);
+            OnClickChnageEmail(false);
+        }
+    }
+
+    public SendOTPRes1 sendOTPRes1;
+
+    IEnumerator SendOTP(string phone)
+    {
+        WWWForm form = new WWWForm();
+        SendOptData update = new();
+
+        update.phoneNumber = profileRes.data.phoneNumber;
+
+        string jsonData = JsonUtility.ToJson(update);
+        Debug.Log("Update json ---------  " + jsonData);
+
+
+
+        // Create a UnityWebRequest
+        UnityWebRequest request = new UnityWebRequest(StaticData.baseURL + StaticData.sendOTP, "POST");
+
+        // Convert JSON string to byte array
+        byte[] rawData = System.Text.Encoding.UTF8.GetBytes(jsonData);
+
+        // Attach raw data to the request
+        request.uploadHandler = new UploadHandlerRaw(rawData);
+
+        // Set response handler
+        request.downloadHandler = new DownloadHandlerBuffer();
+
+        request.SetRequestHeader("Content-Type", "application/json");
+        //request.SetRequestHeader("Authorization", GameManager.instance.token);
+
+        //UploadHandlerRaw    
+
+        yield return request.SendWebRequest();
+
+        // Check for errors
+        if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Debug.LogError(request.error);
+        }
+        else
+        {
+            Debug.Log(request.downloadHandler.text);
+            sendOTPRes1 = JsonUtility.FromJson<SendOTPRes1>(request.downloadHandler.text);
+            NewUIManager.instance.ProfileOtpVerification.gameObject.SetActive(true);
+        }
+    }
+
+    public void SendOtpForUsername()
+    {
+        if (UpdateUsernameINF.text.Length >= 4)
+            StartCoroutine(SendOTP(profileRes.data.phoneNumber));
+        else
+        {
+            NewUIManager.instance.InformationPopUp.NoticeText.text = "Invalid Username";
+            NewUIManager.instance.InformationPopUp.gameObject.SetActive(true);
+        }
+    }
+    public void VerifyOtpForUsername()
+    {
+        StartCoroutine(VerifyOTP(profileRes.data.phoneNumber, NewUIManager.instance.ProfileOtpVerification.OtpInf.text));
+    }
+
+    IEnumerator VerifyOTP(string phone, string otp)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("phoneNumber", phone);
+        form.AddField("otp", otp);
+
+        Debug.Log("phone : " + phone);
+
+        using (var api = UnityWebRequest.Post(StaticData.baseURL + StaticData.verifyOtp, form))
+        {
+            Debug.Log("NEtwork : " + api.result);
+            yield return api.SendWebRequest();
+            Debug.Log("Http : " + api.downloadHandler.text);
+            if (api.result == UnityWebRequest.Result.ConnectionError)
+            {
+                Debug.Log("Data Not Found");
+            }
+            else
+            {
+                Debug.Log(api.downloadHandler.text);
+                sendOTPRes1 = JsonUtility.FromJson<SendOTPRes1>(api.downloadHandler.text);
+                NewUIManager.instance.ProfileOtpVerification.gameObject.SetActive(false);
+                UpdateUsername();
+            }
         }
     }
 }
 
+
+
+
+
+
+
+
+#region OTPSEND
+[System.Serializable]
+public class SendOTPResData1
+{
+    public string phoneNumber;
+    public string otp;
+    public string expireAt;
+    public string _id;
+    public string createdAt;
+    public string updatedAt;
+}
+
+[System.Serializable]
+public class SendOTPRes1
+{
+    public string message;
+    public string status;
+    public int statusCode;
+    public bool success;
+    public SendOTPResData1 data;
+}
+
+
+#endregion
+
+#region VerifyOTP
+[System.Serializable]
+public class VerifyOtpResData1
+{
+    public Users user;
+    public TokenDatas tokenData;
+}
+
+[System.Serializable]
+public class VerifyOtpRes1
+{
+    public string message;
+    public string status;
+    public int statusCode;
+    public bool success;
+    public VerifyOtpResData1 data;
+}
+
+[System.Serializable]
+public class TokenDatas1
+{
+    public string token;
+}
+
+[System.Serializable]
+public class Users1
+{
+    public string phoneNumber;
+    public int amount;
+    public string role;
+    public bool isBlock;
+    public string referralCode;
+    public string _id;
+    public string lastActivateAt;
+    public string createdAt;
+    public string updatedAt;
+}
+
+
+#endregion
+
+
+
+
+
 #region ModelClass
+
+
 [System.Serializable]
 public class ProfileResData
 {

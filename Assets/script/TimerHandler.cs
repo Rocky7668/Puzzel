@@ -43,7 +43,7 @@ public class TimerHandler : MonoBehaviour
         }
         else
         {
-            secondTxt.text = "Wair For Next Round " + formattedTime;
+            secondTxt.text = "Wait For Next Round " + formattedTime;
             GameplayText.gameObject.SetActive(false);
 
         }
@@ -118,7 +118,7 @@ public class TimerHandler : MonoBehaviour
         if (totalSeconds >= 210)
         {
             int n = totalSeconds - 210;
-            Debug.Log("<color=red><b> n.ToString() " + n.ToString() + "</b></color>");
+            
             GameManager.instance.currentTime = n;
             return n.ToString();
         }
@@ -146,6 +146,7 @@ public class ResTimer
     public bool isWinning;
     public bool iStartGame;
     public int roundId;
+    public double onlineUsers;
 }
 
 

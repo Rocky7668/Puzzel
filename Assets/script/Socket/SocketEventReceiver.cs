@@ -1,4 +1,6 @@
 using System;
+using System.Diagnostics.Contracts;
+using TMPro;
 using UnityEngine;
 using static StaticData;
 
@@ -18,13 +20,16 @@ public class SocketEventReceiver : MonoBehaviour
     [SerializeField] private EntryFeeResponse entryFeeResponse;
     [SerializeField] private ResTimer resTimer;
 
+    [SerializeField] TextMeshProUGUI OnlinePlayerCount;
+
+
+
 
     public void HandleEventResponse(string en, string res)
     {
         string enumString = en;
         PuzzleEvent enumValue = (PuzzleEvent)Enum.Parse(typeof(PuzzleEvent), enumString);
 
-        Debug.Log("Event : " + en + "\nResponse : " + res);
 
         switch (enumValue)
         {
@@ -38,6 +43,7 @@ public class SocketEventReceiver : MonoBehaviour
                 break;
 
             case PuzzleEvent.JOIN_TABLE:
+                Debug.Log("Event : " + en + "\nResponse : " + res);
 
                 joinTableRes = JsonUtility.FromJson<JoinTableRes>(res);
                 if (joinTableRes.success)
@@ -51,12 +57,16 @@ public class SocketEventReceiver : MonoBehaviour
                 break;
 
             case PuzzleEvent.START_GAME:
+                Debug.Log("Event : " + en + "\nResponse : " + res);
+
                 startTimerRes = JsonUtility.FromJson<StartTimerRes>(res);
                 dashboardHandler.DashboardSet(startTimerRes.timer);
                 GameManager.instance.ButtonsOnOff(true);
                 break;
 
             case PuzzleEvent.END_GAME:
+                Debug.Log("Event : " + en + "\nResponse : " + res);
+
                 GameManager.instance.ButtonsOnOff(false);
                 break;
 
@@ -65,6 +75,8 @@ public class SocketEventReceiver : MonoBehaviour
                 break;
 
             case PuzzleEvent.ENTRYFEE:
+                Debug.Log("Event : " + en + "\nResponse : " + res);
+
                 entryFeeResponse = JsonUtility.FromJson<EntryFeeResponse>(res);
                 Debug.Log("Entry Fee deducted and game start");
                 uimanager.instance.time.SetActive(true);
@@ -74,6 +86,8 @@ public class SocketEventReceiver : MonoBehaviour
                 break;
 
             case PuzzleEvent.WINNER:
+                Debug.Log("Event : " + en + "\nResponse : " + res);
+
                 winRes = JsonUtility.FromJson<WinRes>(res);
                 if (uimanager.instance.play.activeInHierarchy && !GameManager.instance.isPraticeMode)
                 {
@@ -91,6 +105,7 @@ public class SocketEventReceiver : MonoBehaviour
                 GameManager.instance.isWingame = resTimer.isWinning;
                 GameManager.instance.periodnumber = resTimer.roundId;
                 GameManager.instance.time = resTimer.timer;
+                OnlinePlayerCount.text = resTimer.onlineUsers.ToString("F0");
                 break;
         }
     }

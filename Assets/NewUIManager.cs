@@ -22,6 +22,11 @@ public class NewUIManager : MonoBehaviour
     public GameObject SolveTimeObjet;
     public GameObject SolveTimeObjectBig;
 
+    public InformationPopUp InformationPopUp;
+
+    internal bool isOtp;
+
+    public ProfileOtpVerification ProfileOtpVerification;
     private void Awake()
     {
         if (instance == null)
@@ -30,7 +35,7 @@ public class NewUIManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && !isOtp)
         {
             if (panelType == Panel.Home)
             {
@@ -210,6 +215,22 @@ public class NewUIManager : MonoBehaviour
         ExitPanelsList.Remove(ExitPanelsList[ExitPanelsList.Count - 1]);
         OpenPanel(ExitPanelsList[ExitPanelsList.Count - 1]);
     }
+
+    public void OpenWhatsAppChat(string phoneNumber)
+    {
+        string whatsappURL = "https://wa.me/" + phoneNumber;
+
+        // Open the URL
+        Application.OpenURL(whatsappURL);
+    }
+
+    public void OpenWebsite(string WebLink)
+    {
+        Application.OpenURL(WebLink);
+    }
+
+
+
 }
 
 public enum Panel
@@ -240,5 +261,8 @@ public enum Panel
     AddBank,
     AddUPI,
     ListBank,
-    ListUPI
+    ListUPI,
+    privacyPolicy,
+    GSTPolicy,
+    Legality
 }

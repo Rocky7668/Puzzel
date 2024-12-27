@@ -48,8 +48,12 @@ public class DepositeHandler : MonoBehaviour
         if (amountInputfield.text.Length >= 3)
         {
             amount = int.Parse(amountInputfield.text);
-            transcationId = transctionIdinputfield.text;
             NewUIManager.instance.OpenPanel(Panel.QrPanel);
+        }
+        else
+        {
+            NewUIManager.instance.InformationPopUp.NoticeText.text = "Enter Valid Details";
+            NewUIManager.instance.InformationPopUp.gameObject.SetActive(true);
         }
     }
 
@@ -60,12 +64,18 @@ public class DepositeHandler : MonoBehaviour
             StartCoroutine(Deposite());
             //QrCodePanel.SetActive(false);
         }
+        else
+        {
+            NewUIManager.instance.InformationPopUp.NoticeText.text = "Enter Valid Details";
+            NewUIManager.instance.InformationPopUp.gameObject.SetActive(true);
+        }
     }
 
     public IEnumerator Deposite()
     {
         WWWForm form = new WWWForm();
         SendDeposite sendDeposite = new();
+        transcationId = transctionIdinputfield.text;
         sendDeposite.amount = (int)amount;
         sendDeposite.transactionId = transcationId;
 
@@ -102,6 +112,8 @@ public class DepositeHandler : MonoBehaviour
             amountInputfield.text = "";
             transctionIdinputfield.text = "";
             NewUIManager.instance.OpenPreviosPanel();
+            NewUIManager.instance.InformationPopUp.NoticeText.text = "Deposite Request Sent";
+            NewUIManager.instance.InformationPopUp.gameObject.SetActive(true);
         }
     }
 

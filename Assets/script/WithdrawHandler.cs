@@ -131,7 +131,6 @@ public class WithdrawHandler : MonoBehaviour
 
         if (count >= 2)
         {
-            Debug.Log("Bank");
             bankNameInputfield.text = MainGetBank.data.docs[0].bankName;
             accountHolderNameInputfield.text = MainGetBank.data.docs[0].accountHolderName;
             accountNumberInputfield.text = MainGetBank.data.docs[0].accountNumber;
@@ -140,15 +139,13 @@ public class WithdrawHandler : MonoBehaviour
         }
         else if (count1 >= 1)
         {
-            Debug.Log("UPI");
             OnClickToChange("upi");
             UPIInputField.text = MainUPiHIstory.data.docs[0].upiId;
-            Debug.Log(" -------------------- " + MainUPiHIstory.data.docs[0].upiId);
             paymentID = MainUPiHIstory.data.docs[0].id;
         }
         else
         {
-            Debug.Log("Else  --------------");
+           
             AddBankUpiPopUp.SetActive(true);
             DOVirtual.DelayedCall(3f, delegate { AddBankUpiPopUp.SetActive(false); });
         }
@@ -159,18 +156,16 @@ public class WithdrawHandler : MonoBehaviour
         if (amountInputfield.text.Length >= 3 && bankNameInputfield.text.Length >= 2 && IFSCInputfield.text.Length >= 2 && accountHolderNameInputfield.text.Length >= 2 && accountNumberInputfield.text.Length >= 2 && isBank && !string.IsNullOrEmpty(paymentID))
         {
             StartCoroutine(WithDrawAmountApi());
-            Debug.Log("Bank ----------------");
 
         }
         else if (amountInputfield.text.Length >= 3 && UPIInputField.text.Length >= 5 && isUpi && !string.IsNullOrEmpty(paymentID))
         {
             StartCoroutine(WithDrawAmountApi());
-            Debug.Log("Upi ----------------");
         }
         else
         {
-            Debug.Log("Else ------------------");
-            Debug.Log($"{isBank}--  {isUpi} -- {!string.IsNullOrEmpty(paymentID)}");
+            NewUIManager.instance.InformationPopUp.NoticeText.text = "Enter Valid Details";
+            NewUIManager.instance.InformationPopUp.gameObject.SetActive(true);
         }
     }
     public void AddBankData()
@@ -191,7 +186,7 @@ public class WithdrawHandler : MonoBehaviour
     }
     public void GetUPIData()
     {
-            StartCoroutine(GetUPIHis());
+        StartCoroutine(GetUPIHis());
     }
 
     public void UpdateBankAccountDetails()
@@ -370,6 +365,8 @@ public class WithdrawHandler : MonoBehaviour
                 accountNumberInputfield.text = "";
                 paymentID = "";
                 NewUIManager.instance.OpenPanel(Panel.Withdrwal);
+                NewUIManager.instance.InformationPopUp.NoticeText.text = "Withdrwal Request Sent.";
+                NewUIManager.instance.InformationPopUp.gameObject.SetActive(true);
             }
         }
     }
@@ -418,6 +415,8 @@ public class WithdrawHandler : MonoBehaviour
             AddIFSCInputfield.text = "";
             AddaccountHolderNameInputfield.text = "";
             GetBankData();
+            NewUIManager.instance.InformationPopUp.NoticeText.text = "Bank Add";
+            NewUIManager.instance.InformationPopUp.gameObject.SetActive(true);
         }
     }
 
@@ -453,6 +452,8 @@ public class WithdrawHandler : MonoBehaviour
             {
                 print("Response: " + request.downloadHandler.text);
                 isUpdate = false;
+                NewUIManager.instance.InformationPopUp.NoticeText.text = "Bank Update";
+                NewUIManager.instance.InformationPopUp.gameObject.SetActive(true);
             }
         }
     }
@@ -555,6 +556,8 @@ public class WithdrawHandler : MonoBehaviour
             MainAddUPI = JsonUtility.FromJson<MainAddUPI>(request.downloadHandler.text);
             GetUPIData();
             AddUPIInputField.text = "";
+            NewUIManager.instance.InformationPopUp.NoticeText.text = "UPI Add";
+            NewUIManager.instance.InformationPopUp.gameObject.SetActive(true);
         }
     }
 
@@ -582,6 +585,10 @@ public class WithdrawHandler : MonoBehaviour
                 print("Response: " + request.downloadHandler.text);
                 isUpdate = false;
                 AddUPIInputField.text = "";
+
+
+                NewUIManager.instance.InformationPopUp.NoticeText.text = "UPI Update";
+                NewUIManager.instance.InformationPopUp.gameObject.SetActive(true);
             }
         }
     }

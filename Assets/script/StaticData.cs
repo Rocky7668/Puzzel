@@ -42,6 +42,9 @@ public class StaticData
     public static string UpdateProfile = "/user/updateProfile";
     public static string UpdateUsername = "/user/updateUserName";
     public static string UpdateEmail = "/user/updateEmail";
+    public static string getPrivacyPolicy = "/user/getPrivacyAndPolicy";
+    public static string getGstPolicy = "/user/getGSTPolicy";
+    public static string getLegality = "/user/getLegality";
 
 
     public static double TotalBalance;

@@ -292,7 +292,7 @@ public class GameManager : MonoBehaviour
 
         QuestionBG.SetActive(false);
         TextColorAnimation.enabled = false;
-        TextColorAnimation.GetComponent<Text>().color = DefaultTextColor;
+        TextColorAnimation.transform.GetChild(0).GetComponent<Text>().color = DefaultTextColor;
 
         Vector2 NewSizeDelta = QuestiomarkImage.gameObject.GetComponent<RectTransform>().sizeDelta;
         Image1Border.GetComponent<RectTransform>().sizeDelta = new Vector2(NewSizeDelta.x + 13, NewSizeDelta.y - 27);

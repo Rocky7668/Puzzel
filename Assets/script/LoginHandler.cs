@@ -174,32 +174,6 @@ public class LoginHandler : MonoBehaviour
 
     IEnumerator SendOTP(string phone)
     {
-        /*WWWForm form = new WWWForm();
-        form.AddField("phoneNumber", phone);
-
-        Debug.Log("phone : " + phone);
-
-        using (var api = UnityWebRequest.Post(StaticData.baseURL + StaticData.sendOTP, form))
-        {
-            Debug.Log("NEtwork : " + api.result);
-            yield return api.SendWebRequest();
-            Debug.Log("Http : " + api.downloadHandler.text);
-            if (api.result == UnityWebRequest.Result.ConnectionError)
-            {
-                Debug.Log("Data Not Found");
-            }
-            else
-            {
-                Debug.Log(api.downloadHandler.text);
-                sendOTPRes = JsonUtility.FromJson<SendOTPRes>(api.downloadHandler.text);
-                otpTxt.text = sendOTPRes.data.otp;
-                PlayerPrefs.SetString("phone", phone);
-                Debug.Log("User Phone : " + phone);
-                registerPanel.SetActive(false);
-                otpPanel.SetActive(true);
-
-            }
-        }*/
         WWWForm form = new WWWForm();
         SendOptData update = new();
 
