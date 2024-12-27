@@ -45823,7 +45823,7 @@ MonoBehaviour:
   pointsTxt: {fileID: 1724089298}
   timerHandler: {fileID: 1537325255}
   isEnterGame: 0
-  WinObjectAnimation: {fileID: 0}
+  WinObjectAnimation: {fileID: 380372205}
   tempPointCheck: 
   gamePoints: 0
   addPoints: 1100
