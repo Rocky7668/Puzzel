@@ -20,8 +20,8 @@ public class StaticData
     public static string withdrawAmout = "/user/withdrawlAmount";
     public static string getNotification = "/user/getNotification";
     public static string getTermsAndCondition = "/user/getTermsAndCondition";
-    public static string sendOTP = "/user/sendOtp";
-    public static string verifyOtp = "/user/verifyOtp";
+    public static string sendOTP = "/user/auth/sendOtp";
+    public static string verifyOtp = "/user/auth/verifyOtp";
     public static string transactionHistory = "/user/getTransactionHistory";
     public static string getTopusers = "/user/getTopUsers";
     public static string userAccountView = "/user/getAccountOverview";
