@@ -27,6 +27,9 @@ public class NewUIManager : MonoBehaviour
     internal bool isOtp;
 
     public ProfileOtpVerification ProfileOtpVerification;
+
+    public GameObject NoInteretPopUp;
+
     private void Awake()
     {
         if (instance == null)
@@ -222,6 +225,11 @@ public class NewUIManager : MonoBehaviour
 
         // Open the URL
         Application.OpenURL(whatsappURL);
+    }
+
+    public void Perform(float delay, Action DoWork)
+    {
+        DOVirtual.DelayedCall(delay, delegate { DoWork?.Invoke(); });
     }
 
     public void OpenWebsite(string WebLink)

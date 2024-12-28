@@ -460,7 +460,7 @@ public class ProfileHandler : MonoBehaviour
         }
     }
 
-    public SendOTPRes1 sendOTPRes1;
+    public SendDataUSernameOtp sendDataUSernameOtp;
 
     IEnumerator SendOTP(string phone)
     {
@@ -475,7 +475,7 @@ public class ProfileHandler : MonoBehaviour
 
 
         // Create a UnityWebRequest
-        UnityWebRequest request = new UnityWebRequest(StaticData.baseURL + StaticData.sendOTP, "POST");
+        UnityWebRequest request = new UnityWebRequest(StaticData.baseURL + StaticData.SendOtpUsername, "POST");
 
         // Convert JSON string to byte array
         byte[] rawData = System.Text.Encoding.UTF8.GetBytes(jsonData);
@@ -487,7 +487,7 @@ public class ProfileHandler : MonoBehaviour
         request.downloadHandler = new DownloadHandlerBuffer();
 
         request.SetRequestHeader("Content-Type", "application/json");
-        //request.SetRequestHeader("Authorization", GameManager.instance.token);
+        request.SetRequestHeader("Authorization", GameManager.instance.token);
 
         //UploadHandlerRaw    
 
@@ -501,7 +501,7 @@ public class ProfileHandler : MonoBehaviour
         else
         {
             Debug.Log(request.downloadHandler.text);
-            sendOTPRes1 = JsonUtility.FromJson<SendOTPRes1>(request.downloadHandler.text);
+            sendDataUSernameOtp = JsonUtility.FromJson<SendDataUSernameOtp>(request.downloadHandler.text);
             NewUIManager.instance.ProfileOtpVerification.gameObject.SetActive(true);
         }
     }
@@ -521,17 +521,19 @@ public class ProfileHandler : MonoBehaviour
         StartCoroutine(VerifyOTP(profileRes.data.phoneNumber, NewUIManager.instance.ProfileOtpVerification.OtpInf.text));
     }
 
+    public VerifyOtpUsername VerifyOtpUsername;
     IEnumerator VerifyOTP(string phone, string otp)
     {
         WWWForm form = new WWWForm();
-        form.AddField("phoneNumber", phone);
         form.AddField("otp", otp);
 
         Debug.Log("phone : " + phone);
 
-        using (var api = UnityWebRequest.Post(StaticData.baseURL + StaticData.verifyOtp, form))
+        using (var api = UnityWebRequest.Post(StaticData.baseURL + StaticData.VerifyOtpUsername, form))
         {
             Debug.Log("NEtwork : " + api.result);
+
+            api.SetRequestHeader("Authorization", GameManager.instance.token);
             yield return api.SendWebRequest();
             Debug.Log("Http : " + api.downloadHandler.text);
             if (api.result == UnityWebRequest.Result.ConnectionError)
@@ -540,10 +542,21 @@ public class ProfileHandler : MonoBehaviour
             }
             else
             {
-                Debug.Log(api.downloadHandler.text);
-                sendOTPRes1 = JsonUtility.FromJson<SendOTPRes1>(api.downloadHandler.text);
-                NewUIManager.instance.ProfileOtpVerification.gameObject.SetActive(false);
-                UpdateUsername();
+                VerifyOtpUsername = JsonUtility.FromJson<VerifyOtpUsername>(api.downloadHandler.text);
+                if (VerifyOtpUsername.success == false)
+                {
+                    NewUIManager.instance.InformationPopUp.NoticeText.text = "Invalid or Expired OTP";
+                    NewUIManager.instance.InformationPopUp.gameObject.SetActive(true);
+                    NewUIManager.instance.ProfileOtpVerification.gameObject.SetActive(false);
+                    OnClickChangeUsername(false);
+                    UpdateUsernameINF.text = "";
+                }
+                else
+                {
+                    Debug.Log(api.downloadHandler.text);
+                    NewUIManager.instance.ProfileOtpVerification.gameObject.SetActive(false);
+                    UpdateUsername();
+                }
             }
         }
     }
@@ -558,7 +571,7 @@ public class ProfileHandler : MonoBehaviour
 
 #region OTPSEND
 [System.Serializable]
-public class SendOTPResData1
+public class DataUSernameOtp
 {
     public string phoneNumber;
     public string otp;
@@ -567,59 +580,56 @@ public class SendOTPResData1
     public string createdAt;
     public string updatedAt;
 }
-
 [System.Serializable]
-public class SendOTPRes1
+public class SendDataUSernameOtp
 {
     public string message;
     public string status;
     public int statusCode;
     public bool success;
-    public SendOTPResData1 data;
+    public DataUSernameOtp data;
 }
-
-
 #endregion
 
 #region VerifyOTP
 [System.Serializable]
-public class VerifyOtpResData1
+public class VerifyOtpUsernameData
 {
-    public Users user;
-    public TokenDatas tokenData;
+    public VerifyOtpUsernameUser user;
 }
-
 [System.Serializable]
-public class VerifyOtpRes1
+public class VerifyOtpUsername
 {
     public string message;
     public string status;
     public int statusCode;
     public bool success;
-    public VerifyOtpResData1 data;
+    public VerifyOtpUsernameData data;
 }
-
 [System.Serializable]
-public class TokenDatas1
+public class VerifyOtpUsernameUser
 {
-    public string token;
-}
-
-[System.Serializable]
-public class Users1
-{
+    public string _id;
     public string phoneNumber;
-    public int amount;
+    public double amount;
     public string role;
     public bool isBlock;
     public string referralCode;
-    public string _id;
+    public bool isActive;
+    public bool isAllowNotifications;
+    public string notificationToken;
     public string lastActivateAt;
     public string createdAt;
     public string updatedAt;
+    public string token;
+    public string socketId;
+    public string userName;
+    public string email;
+    public string dateOfBirth;
+    public string fullName;
+    public string location;
+    public int pincode;
 }
-
-
 #endregion
 
 

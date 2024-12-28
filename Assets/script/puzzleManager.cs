@@ -70,6 +70,7 @@ public class puzzleManager : MonoBehaviour
         if (isEnterGame)
             uimanager.instance.top.SetActive(false);
 
+        tempPointCheck.Clear();
         WinObjectAnimation.SetActive(false);
         cols.SetActive(false);
         rows.SetActive(false);
@@ -89,6 +90,7 @@ public class puzzleManager : MonoBehaviour
         OnStartGame();
         UpdatePoints();
 
+        tempPointCheck.Clear();
         cols.SetActive(true);
         rows.SetActive(true);
         mainimageObj.SetActive(true);
@@ -121,6 +123,8 @@ public class puzzleManager : MonoBehaviour
     {
         UpdatePoints();
 
+
+        tempPointCheck.Clear();
         cols.SetActive(true);
         rows.SetActive(true);
         mainimageObj.SetActive(true);
@@ -158,7 +162,6 @@ public class puzzleManager : MonoBehaviour
 
     void SwapImagesRandomly()
     {
-
         for (int i = 0; i < temp.Count; i++)
         {
             int randomIndex = Random.Range(0, temp.Count);
@@ -279,6 +282,8 @@ public class puzzleManager : MonoBehaviour
             if (temp[index].name == index.ToString())
             {
                 tempPointCheck.Add(index);
+                Debug.Log("Index ------ " + index + "   ------- Name ---- " + box[index].name);
+                box[index].gameObject.GetComponent<Button>().enabled = false;
                 gamePoints += addPoints;
                 trueObjectaudioSource.PlayOneShot(trueObjectClipp);
             }

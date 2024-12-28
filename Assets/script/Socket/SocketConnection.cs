@@ -30,12 +30,28 @@ public class SocketConnection : MonoBehaviour
         InvokeRepeating(nameof(CheckConnection), 0f, 2f);
     }
 
+    private void Update()
+    {
+        if (!IsInternetConnection())
+        {
+            Debug.Log("NoInternEtCinnection");
+            NewUIManager.instance.NoInteretPopUp.SetActive(true);
+            NewUIManager.instance.Perform(3f, delegate
+            {
+                Application.Quit();
+#if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+#endif
+            });
+            return;
+        }
+    }
     private void OnApplicationPause(bool pause)
     {
         if (pause)
         {
             Debug.Log("Game Paused. Handle socket disconnection if needed.");
-            OnDisConnectedToServer();
+            //OnDisConnectedToServer();
         }
         else
         {
@@ -64,6 +80,7 @@ public class SocketConnection : MonoBehaviour
             Debug.Log("SocketConnection || CheckConnection");
             StartSocketConnection();
             // Write code for No internet
+
         }
         else
         {
@@ -184,7 +201,9 @@ public class SocketConnection : MonoBehaviour
         Debug.LogError(" SocketConnectionStart || Socket Disconnected || Disconnected!" + socketManager.Socket.IsOpen);
         socketManager.Socket.Disconnect();
         socketState = SocketState.Disconnect;
+
     }
+
 
     private void OnConnected()
     {

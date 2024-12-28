@@ -295,7 +295,7 @@ public class GameManager : MonoBehaviour
         TextColorAnimation.transform.GetChild(0).GetComponent<Text>().color = DefaultTextColor;
 
         Vector2 NewSizeDelta = QuestiomarkImage.gameObject.GetComponent<RectTransform>().sizeDelta;
-        Image1Border.GetComponent<RectTransform>().sizeDelta = new Vector2(NewSizeDelta.x + 13, NewSizeDelta.y - 27);
+        Image1Border.GetComponent<RectTransform>().sizeDelta = new Vector2(NewSizeDelta.x + 13, NewSizeDelta.y + 12);
 
         Image1Border.SetActive(true);
         QuestiomarkImage.color = Color.white;

@@ -45,6 +45,8 @@ public class StaticData
     public static string getPrivacyPolicy = "/user/getPrivacyAndPolicy";
     public static string getGstPolicy = "/user/getGSTPolicy";
     public static string getLegality = "/user/getLegality";
+    public static string SendOtpUsername = "/user/sendOtp";
+    public static string VerifyOtpUsername = "/user/verifyOtp";
 
 
     public static double TotalBalance;

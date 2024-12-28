@@ -126,11 +126,15 @@ public class LoginHandler : MonoBehaviour
         StartCoroutine(VerifyOTP(registerMailInputfield.text, otpInputfield.text));
     }
 
+    public InputField RefferalCodINF;
     IEnumerator VerifyOTP(string phone, string otp)
     {
         WWWForm form = new WWWForm();
         form.AddField("phoneNumber", phone);
         form.AddField("otp", otp);
+
+        if (RefferalCodINF.text != null)
+            form.AddField("referCode", RefferalCodINF.text);
 
         Debug.Log("phone : " + phone);
 
@@ -148,7 +152,7 @@ public class LoginHandler : MonoBehaviour
                 Debug.Log(api.downloadHandler.text);
                 verifyOtpRes = JsonUtility.FromJson<VerifyOtpRes>(api.downloadHandler.text);
                 otpTxt.text = sendOTPRes.data.otp;
-                PlayerPrefs.SetString("phone", phone);  
+                PlayerPrefs.SetString("phone", phone);
                 PlayerPrefs.SetString("token", verifyOtpRes.data.tokenData.token);
                 Debug.Log("Token ------ " + verifyOtpRes.data.tokenData.token);
                 Debug.Log("User Phone : " + phone);
