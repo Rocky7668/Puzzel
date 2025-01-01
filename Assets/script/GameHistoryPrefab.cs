@@ -1,16 +1,23 @@
+﻿using NUnit.Framework.Internal;
+using TMPro;
+using Unity.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameHistoryPrefab : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    public Text PeriodNumberTxt;
+    public Text WinTxt;
+    public Text WinAmountTxt;
+    public Text GameJoinTimeTxt;
+    public Text GameEndTimeTxt;
 
-    // Update is called once per frame
-    void Update()
+    internal void SetData(string periodNumber, string Win, double winAmount, string gameJoin, string gameCompleteTime)
     {
-        
+        PeriodNumberTxt.text = periodNumber;
+        WinTxt.text = Win;
+        WinAmountTxt.text = "₹ "+winAmount.ToString();
+        GameJoinTimeTxt.text = "Game Join Time  " + gameJoin;
+        GameEndTimeTxt.text = "Game Complete Time  " + gameCompleteTime;
     }
 }

@@ -260,12 +260,13 @@ public class puzzleManager : MonoBehaviour
     string SubmitTimerReq(int sec)
     {
         SubmitTimer submitTimer = new SubmitTimer();
-        SubmitTimerData submitTimerData = new SubmitTimerData();
-        submitTimerData.completeTime = sec;
+        submitTimer.data.completeTime = sec;
 
-        submitTimerData = submitTimer.data;
+       // submitTimerData = submitTimer.data;
 
-        return JsonUtility.ToJson(submitTimer);
+        string json = JsonUtility.ToJson(submitTimer);
+        Debug.Log(" eufgueiof ----------- " + json);
+        return json;
     }
     public List<int> tempPointCheck = new List<int>();
 
@@ -388,7 +389,7 @@ public class SubmitTimer
 {
     public SubmitTimerData data;
 }
-
+[System.Serializable]
 public class SubmitTimerData
 {
     public int completeTime;
