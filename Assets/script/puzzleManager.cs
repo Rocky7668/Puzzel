@@ -36,8 +36,6 @@ public class puzzleManager : MonoBehaviour
         {
             instance = this;
         }
-
-
     }
 
     private void OnEnable()

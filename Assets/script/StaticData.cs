@@ -47,6 +47,7 @@ public class StaticData
     public static string getLegality = "/user/getLegality";
     public static string SendOtpUsername = "/user/sendOtp";
     public static string VerifyOtpUsername = "/user/verifyOtp";
+    public static string GetGameHistory = "/user/getGameHistory";
 
 
     public static double TotalBalance;
